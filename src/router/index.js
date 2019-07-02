@@ -40,7 +40,7 @@ export default new Router({
                 ...article,    //  文章  
                 ...coupon,   //  优惠劵
                 // ...edition,  //  版本
-                // ...operate,  //  运营
+                ...operate,  //  运营
                 ...push,    //  推送  
                 ...riskManagement,   //  风控
                 ...statistics,  //  统计

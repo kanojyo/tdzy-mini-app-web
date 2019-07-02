@@ -132,6 +132,7 @@ export default {
         },
         twoMenuClick(item) {
             //	二级导航
+            console.log(item)
             sessionStorage.setItem("twoId", item.id); //  存储当前导航菜单ID
             this.isActiveShow = item.id;
             this.$router.push(item.route_web);

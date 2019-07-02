@@ -52,7 +52,6 @@ export default {
         random: (state) => state.login.random,   //   验证随机码
     }),
     mounted(){
-        this.index();
         if(!localStorage.getItem('device')){
             this.index();
         }else{
