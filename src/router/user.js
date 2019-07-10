@@ -8,7 +8,7 @@ export default [
     {                                        // 用户 -> 用户档案列表
         path: '/User/FileList',
         name: 'FileList',
-        meta: { title: '档案关联日志', keepAlive: true },
+        meta: { title: ' 用户档案列表', keepAlive: true },
         component: () => import(/* webpackChunkName: "about" */ '@/views/User/FileList.vue')
     },
     {                                        // 用户 -> 档案关联日志

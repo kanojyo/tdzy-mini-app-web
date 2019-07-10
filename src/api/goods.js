@@ -14,7 +14,7 @@ export function changeStatus(params){ return fetch({url: '/v1/hot_goods/change_s
 /*
 *   NO:3    商品 -- 兑换商品详情
 */
-export function goodsDetails(params){ return fetch({url: '/v1/hot_goods/details', method: 'POST', data:params}) }
+export function goodsDetails(params){ return fetch({url: '/v1/hot_goods/details?id='+params.id, method: 'GET', }) }
 
 /*
 *   NO:4    商品 -- 商品修改

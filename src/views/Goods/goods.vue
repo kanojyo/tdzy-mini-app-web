@@ -106,14 +106,11 @@
                     <el-input v-model="formLabelAlign.goods_name" placeholder="请输入商品名称"></el-input>
                     <span class="font_12">1至30字符或汉字</span>
                 </el-form-item>
-                <el-form-item label="* 商品名称">
+                <el-form-item label="* 商品类型">
                     <el-select v-model="formLabelAlign.goods_type" clearable size="mini" placeholder="请商品类型">
                         <el-option v-for="item in type" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="* 商品图片">
-                    <img :src="formLabelAlign.pic_url" alt="">
-                </el-form-item> -->
                 <el-form-item label="* 商品图片">
                     <el-upload
                         class="upload-demo"
@@ -139,18 +136,19 @@
                 <el-form-item label="* 兑换上限">
                     <el-input v-model="formLabelAlign.exchange_max_num" placeholder="请输入兑换上限"></el-input>
                 </el-form-item>
-                <el-form-item label="* 有效期">
+                <el-form-item class="date" label="* 有效期">
                     <el-radio v-model="formLabelAlign.valid_type" label="1">
                         <el-date-picker
                         v-model="timeValue"
-                        type="daterange"
+                        type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                        end-placeholder="结束日期"
+                        value-format="yyyy-MM-dd HH:mm:ss">
                         </el-date-picker>
                     </el-radio>
                     <el-radio v-model="formLabelAlign.valid_type" label="2">
-                        <el-input v-model="formLabelAlign.surplus_days" placeholder="请输入排序值"></el-input>
+                        <el-input v-model="formLabelAlign.surplus_days" placeholder="请输入天数"></el-input>
                     </el-radio>
                 </el-form-item>
                 <el-form-item label="排序值">
@@ -158,7 +156,9 @@
                     <span class="font_12">排序值越高权重越大</span>
                 </el-form-item>
                 <el-form-item label="状态">
-                    <el-switch v-model="formLabelAlign.status" :active-value="2" :inactive-value="1" active-text="下架" inactive-text="正常" active-color="#e4e4e4" inactive-color="#1ABC9C"></el-switch>
+                    <el-radio-group v-model="formLabelAlign.goods_status">
+                        <el-radio v-for="item in status"   :key="item.type" :label="item.type" >{{item.value}}</el-radio>
+                    </el-radio-group>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -170,8 +170,7 @@
 </template>
 
 <script type="text/javascript">
-import { doctorIndex, doctorSave, doctorUpdate, doctorInfo, doctorStatus, schedulingStatus} from "@/api/doctor.js";
-import { goodsIndex, changeStatus} from "@/api/goods.js";
+import { goodsIndex, changeStatus, goodsAdd, goodsUpdate, goodsDetails} from "@/api/goods.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer } from "@/utils/validate.js";
 
@@ -209,7 +208,6 @@ export default {
             type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
-            radio:"",
         };
     },
     mounted() {
@@ -236,16 +234,14 @@ export default {
         },
         handleSuccess(file) {   //  上传附件
             if(file.code === 200){
-                this.fileList = [
-                    {name: file.data.originName, url: file.data.url}
-                ];
-                this.formLabelAlign.avatar = file.data.url;
+                this.fileList = [{name: file.data.originName, url: file.data.url}];
+                this.formLabelAlign.pic_url = file.data.url;
             }
         },
         handleRemove(file, fileList) {  // 移除附件
             if(fileList.length === 0){
                 this.fileList = [];
-                this.formLabelAlign.avatar = '';
+                this.formLabelAlign.pic_url = '';
             }
         },
         beforeAvatarUpload(file){   //  限制上传附件大小
@@ -257,66 +253,95 @@ export default {
         },
         async edit(id) { //  编辑
             this.title = "编辑";
-            let data = await doctorInfo({id: id});
+            let data = await goodsDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
                 this.fileList = [
-                    {name: '', url: data.data.avatar}
+                    {name: '', url: data.data.pic_url}
                 ];
                 this.dialogVisible = true;
             }
         },
-        add() {
+        add() {  //添加
             this.title = "添加";
             this.formLabelAlign = {
-                avatar: "",
-                name: '',
-                brief: '',
-                office: '',
-                position: '',
-                remark: '',
-                link_url: '',
+                pic_url: '',
+                goods_name: '',
+                goods_rules: '',
+                goods_type: '',
+                original_score: '',
+                now_score: '',
+                exchange_max_num: '',
+                valid_type: '',
+                start_time: '',
+                end_time: '',
+                surplus_days: '',
                 sort: '',
-                status: 1,
+                goods_status: '',
             };
             this.fileList = [];
             this.dialogVisible = true;
         },
         async handleClose() {
             //  添加/编辑
-            if (this.formLabelAlign.avatar == "") {
-                this.$message({ message: "请上传医生头像", type: "warning" });
+            if (this.formLabelAlign.goods_name == "") {
+                this.$message({ message: "请輸入商品名称", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.name == "") {
-                this.$message({ message: "请输入医生名称", type: "warning" });
+            if (this.formLabelAlign.goods_type == "") {
+                this.$message({ message: "请输入商品类型", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.brief == "") {
-                this.$message({ message: "请输入医生擅长", type: "warning" });
+            if (this.formLabelAlign.pic_url == "") {
+                this.$message({ message: "请输入商品图片", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.position == "") {
-                this.$message({ message: "请输入医生职位", type: "warning" });
+            if (this.formLabelAlign.goods_rules == "") {
+                this.$message({ message: "请输入商品規則", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.remark == "") {
-                this.$message({ message: "请输入医生标签", type: "warning" });
+            if (this.formLabelAlign.now_score == "") {
+                this.$message({ message: "请输入兑换所需积分", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.link_url == "") {
-                this.$message({ message: "请输入资料链接", type: "warning" });
+            if (this.formLabelAlign.original_score == "") {
+                this.$message({ message: "请输入商品原有积分", type: "warning" });
+                return;
+            }
+            if (this.formLabelAlign.exchange_max_num == "") {
+                this.$message({ message: "请输入兑换上限", type: "warning" });
+                return;
+            }
+            if (this.formLabelAlign.valid_type == "") {
+                this.$message({ message: "请输入有效期类型", type: "warning" });
                 return;
             }
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
             }
-            let data = "";
+            if(this.formLabelAlign.valid_type ==1){
+                this.formLabelAlign.start_time=this.timeValue[0];
+                this.formLabelAlign.end_time=this.timeValue[1];
+            }else{
+                this.formLabelAlign.surplus_days=parseInt(this.formLabelAlign.surplus_days);
+            }
+            //转成int
+            this.formLabelAlign.original_score=parseInt(this.formLabelAlign.original_score);
+            this.formLabelAlign.now_score=parseInt(this.formLabelAlign.now_score);
+            this.formLabelAlign.exchange_max_num=parseInt(this.formLabelAlign.exchange_max_num);
+            this.formLabelAlign.valid_type=parseInt(this.formLabelAlign.valid_type);
+            if(this.formLabelAlign.sort){
+                this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
+            }
+            if(this.formLabelAlign.goods_status){
+                this.formLabelAlign.goods_status=parseInt(this.formLabelAlign.goods_status);
+            }
+            let data;
             if (this.title === "添加") {
-                data = await doctorSave(this.formLabelAlign);
+                data = await goodsAdd(this.formLabelAlign);
             } else {
-                data = await doctorUpdate(this.formLabelAlign);
+                data = await goodsUpdate(this.formLabelAlign);
             }
             if (data.code === 200) {
                 this.dialogVisible = false;
@@ -334,7 +359,7 @@ export default {
             }else if(val ===3){
                 title = '暂停兑换';
             }
-            this.$confirm("此商品将" + title + ", 是否继续?", "提示", {
+            this.$confirm("将" + title + "此商品, 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
@@ -354,8 +379,6 @@ export default {
         search() {
             //  检索
             this.params.page = 1;
-            this.params.start_time=this.timeValue[0]
-            this.params.end_time=this.timeValue[1]
             this.index();
         },
         empty() {
@@ -370,9 +393,13 @@ export default {
 </script>
 <style lang="less">
 .el-dialog{
-    .el-radio+.el-radio{
+    .date{
+        .el-radio+.el-radio{
         margin-left: 0;
+        margin-top: 10px;
+        }
     }
+    
 }
 
     

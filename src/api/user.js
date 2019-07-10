@@ -12,7 +12,7 @@ export function userIndex(params){ return fetch({url: '/v1/user/index?' + urlEnc
 export function userAssign(params){ return fetch({url: '/v1/user/yz-assign', method: 'POST', data: params}) }
 
 /*
-*   NO:3    用户 -- 分配医助
+*   NO:3    用户 -- 用户详情
 */
 export function userInfo(params){ return fetch({url: '/v1/user/userinfo?id=' + params.id, method: 'GET'}) }
 
@@ -75,3 +75,13 @@ export function newInfo(params){ return fetch({url: '/v1/disease/new-info?diseas
 *   NO:15    用户 -- 档案关联日志
 */
 export function archiveLog(params){ return fetch({url: '/v1/archive/log?' + urlEncode(params), method: 'GET'}) }
+
+/*
+*   NO:16    用户 -- 部门选择列表（下拉选择）
+*/
+export function departmentList(params){ return fetch({url: '/v1/rule/department-list', method: 'GET'}) }
+
+/*
+*   NO:17    用户 -- 用户列表
+*/
+export function getIndex(params){ return fetch({url: '/v1/user/index?' + urlEncode(params), method: 'GET'}) }
