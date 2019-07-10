@@ -4,20 +4,17 @@
         <div class="operation">
             <div class="pull-left">
                 <div class="input">
-                    <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
-                        <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
+                    <el-input size="mini" v-model="params.goods_name" placeholder="商品名称"></el-input>
+                </div>
+                <div class="input">
+                    <el-select v-model="params.goods_type" clearable size="mini" placeholder="商品类型">
+                        <el-option v-for="item in type" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
                 </div>
                 <div class="input">
-                    <el-date-picker
-                        size="mini"
-                        v-model="timeValue"
-                        type="datetimerange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        value-format="yyyy-MM-dd HH-mm-ss"
-                    ></el-date-picker>
+                    <el-select v-model="params.goods_status" clearable size="mini" placeholder="状态">
+                        <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
+                    </el-select>
                 </div>
                 <div class="search">
                     <el-button icon="el-icon-search" type="primary" size="mini" @click="search">查询结果</el-button>
@@ -34,46 +31,54 @@
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
                     <el-table-column align="center" prop="id" label="ID"></el-table-column>
-                    <el-table-column align="center" label="医生头像">
+                    <el-table-column align="center" label="商品图片">
+                        <template slot-scope="scope">
+                            <img :src="scope.row.pic_url"  >
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="goods_name" label="商品名称"></el-table-column>
+                    <el-table-column align="center" prop="now_score" label="兑换所需积分"></el-table-column>
+                    <el-table-column align="center" prop="original_score" label="原兑换所需积分"></el-table-column>
+                    <el-table-column align="center" prop="exchange_max_num" label="兑换上限"></el-table-column>
+                    <el-table-column align="center" prop="exchange_get_num" label="已兑换数量"></el-table-column>
+                    <el-table-column align="center" prop="surplus_days" label="有效期" width="200px"></el-table-column>
+                    <el-table-column align="center" label="商品类型">
                         <template slot-scope="scope">
                             <div>
-                                <img :src="scope.row.avatar" class="img-width-50" alt="">
+                                <span class="color-f8494c" v-if="scope.row.goods_type === 1">诊疗类</span>
+                                <span class="color-f8494c" v-if="scope.row.goods_type === 2">实物类</span>
+                                <span class="color-f8494c" v-if="scope.row.goods_type === 3">虚拟类</span>
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="name" label="医生姓名"></el-table-column>
-                    <!-- <el-table-column align="center" prop="name" label="科室"></el-table-column>
-                    <el-table-column align="center" prop="name" label="职位"></el-table-column> -->
-                    <el-table-column align="center" label="预约状态">
+                    <el-table-column align="center" label="状态">
                         <template slot-scope="scope">
                             <div>
-                                <span class="color-f8494c" v-if="scope.row.scheduling_status === 1">可预约</span>
-                                <span class="color_red" v-else>不可预约</span>
+                                <span class="color-f8494c" v-if="scope.row.goods_status === 1">正常</span>
+                                <span class="color_red" v-if="scope.row.goods_status === 2">下架</span>
+                                <span class="color_red" v-if="scope.row.goods_status === 3">暂停兑换</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="sort" label="排序值"></el-table-column>
-                    <el-table-column align="center" label="状态">
+                    <el-table-column align="center" prop="admin_name" label="创建人"></el-table-column>
+                    <el-table-column align="center" prop="created_at" label="创建时间" width="120px"></el-table-column>
+                    <el-table-column align="center" label="操作" width="150px">
                         <template slot-scope="scope">
-                            <div>
-                                <span class="color-f8494c" v-if="scope.row.status === 1">正常</span>
-                                <span class="color_red" v-else>下架</span>
+                            <div v-if="scope.row.goods_status === 2">
+                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
                             </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="admin" label="创建人"></el-table-column>
-                    <el-table-column align="center" prop="ctime" label="创建时间" width="180"></el-table-column>
-                    <el-table-column align="center" label="操作" width="250px">
-                        <template slot-scope="scope">
-                            <div>
-                                <span class="cursor color-f8494c" v-if="scope.row.scheduling_status === 2" @click="scheduleChange(scope.row.id, 1)">开启预约</span>
-                                <span class="cursor color_red" v-if="scope.row.scheduling_status === 1" @click="scheduleChange(scope.row.id, 2)">关闭预约</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>&nbsp;
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 2" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" v-if="scope.row.status === 1" @click="statusChange(scope.row.id, 2)">下架</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">预览</span>
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">排班设置</span>
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">预约记录</span>
+                            <div v-if="scope.row.goods_status === 1">
+                                <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                            </div>
+                            <div v-if="scope.row.goods_status === 3">
+                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -95,9 +100,21 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="'首页医生介绍' + title" :visible.sync="dialogVisible" width="650px">
+        <el-dialog :title="'商品' + title" :visible.sync="dialogVisible" width="650px">
             <el-form label-width="120px" :model="formLabelAlign">
-                <el-form-item label="* 医生头像">
+                <el-form-item label="* 商品名称">
+                    <el-input v-model="formLabelAlign.goods_name" placeholder="请输入商品名称"></el-input>
+                    <span class="font_12">1至30字符或汉字</span>
+                </el-form-item>
+                <el-form-item label="* 商品名称">
+                    <el-select v-model="formLabelAlign.goods_type" clearable size="mini" placeholder="请商品类型">
+                        <el-option v-for="item in type" :key="item.type" :label="item.value" :value="item.type" ></el-option>
+                    </el-select>
+                </el-form-item>
+                <!-- <el-form-item label="* 商品图片">
+                    <img :src="formLabelAlign.pic_url" alt="">
+                </el-form-item> -->
+                <el-form-item label="* 商品图片">
                     <el-upload
                         class="upload-demo"
                         :action="uploadUrl"
@@ -110,28 +127,31 @@
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="* 医生名称">
-                    <el-input v-model="formLabelAlign.name" placeholder="请输入医生名称"></el-input>
-                    <span class="font_12">长度限制:2至10个英文,数字或汉字</span>
+                <el-form-item label="* 商品使用规则">
+                    <el-input type="textarea" v-model="formLabelAlign.goods_rules" placeholder="请输入商品使用规则" :max-length="500" ></el-input>
                 </el-form-item>
-                <el-form-item label="* 医生擅长">
-                    <el-input v-model="formLabelAlign.brief" placeholder="请输入医生擅长"></el-input>
-                    <span class="font_12">长度限制:为2~50字符</span>
+                <el-form-item label="* 兑换所需积分">
+                    <el-input v-model="formLabelAlign.now_score" placeholder="请输入兑换所需积分"></el-input>
                 </el-form-item>
-                <el-form-item label="医生科室">
-                    <el-input v-model="formLabelAlign.office" placeholder="请输入医生科室"></el-input>
-                    <span class="font_12">长度限制:2至10个英文,数字或汉字</span>
+                <el-form-item label="* 原有积分">
+                    <el-input v-model="formLabelAlign.original_score" placeholder="请输入原有积分"></el-input>
                 </el-form-item>
-                <el-form-item label="* 医生职位">
-                    <el-input v-model="formLabelAlign.position" placeholder="请输入医生职位"></el-input>
-                    <span class="font_12">长度限制:2至10个英文,数字或汉字</span>
+                <el-form-item label="* 兑换上限">
+                    <el-input v-model="formLabelAlign.exchange_max_num" placeholder="请输入兑换上限"></el-input>
                 </el-form-item>
-                <el-form-item label="* 医生标签">
-                    <el-input v-model="formLabelAlign.remark" placeholder="请输入医生标签"></el-input>
-                    <span class="font_12">每个标签用英文逗号分隔,标签内容为英文,数字或汉字，如：标签a,标签b</span>
-                </el-form-item>
-                <el-form-item label="* 医生资料链接">
-                    <el-input v-model="formLabelAlign.link_url" placeholder="请输入医生资料链接"></el-input>
+                <el-form-item label="* 有效期">
+                    <el-radio v-model="formLabelAlign.valid_type" label="1">
+                        <el-date-picker
+                        v-model="timeValue"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-radio>
+                    <el-radio v-model="formLabelAlign.valid_type" label="2">
+                        <el-input v-model="formLabelAlign.surplus_days" placeholder="请输入排序值"></el-input>
+                    </el-radio>
                 </el-form-item>
                 <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
@@ -151,6 +171,7 @@
 
 <script type="text/javascript">
 import { doctorIndex, doctorSave, doctorUpdate, doctorInfo, doctorStatus, schedulingStatus} from "@/api/doctor.js";
+import { goodsIndex, changeStatus} from "@/api/goods.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer } from "@/utils/validate.js";
 
@@ -158,9 +179,9 @@ export default {
     data() {
         return {
             params: {
-                scheduling_status: "", //  查询状态 1：可预约，2：不可预约
-                start_time:"",
-                end_time:"",
+                goods_name:"",
+                goods_type: "", //  商品类型 1：诊疗类，2：实物类, 3:虚拟类
+                goods_status: "", //  状态 1：正常，2：下架, 3:暂停兑换
                 page: 1, //  分页
                 pageSize: 30 //    每页显示条数
             },
@@ -169,20 +190,26 @@ export default {
             title: "", //  添加/编辑
             dialogVisible: false, //	添加/编辑公司 弹框
             formLabelAlign: {   //  添加/编辑
-                avatar: "",
-                name: '',
-                brief: '',
-                office: '',
-                position: '',
-                remark: '',
-                link_url: '',
+                pic_url: '',
+                goods_name: '',
+                goods_rules: '',
+                goods_type: '',
+                original_score: '',
+                now_score: '',
+                exchange_max_num: '',
+                valid_type: '',
+                start_time: '',
+                end_time: '',
+                surplus_days: '',
                 sort: '',
-                status: 1,
+                goods_status: '',
             },
             fileList: [],   //  附件容器
             uploadUrl: uploadUrl(), //  上传地址
-            status: [{ type: 1, value: "可预约" }, { type: 2, value: "不可预约" }],    //  状态
+            type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
+            status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
+            radio:"",
         };
     },
     mounted() {
@@ -191,7 +218,7 @@ export default {
     methods: {
         async index() {
             //  主页列表数据
-            let data = await doctorIndex(this.params);
+            let data = await goodsIndex(this.params);
             if (data.code === 200) {
                 this.list = data.data.list;
                 this.count = data.data.total;
@@ -297,20 +324,23 @@ export default {
                 this.$message({ message: data.data.msg, type: "success" });
             }
         },
-        statusChange(id, val){ //  上架、下架
+        statusChange(id, val){ //  上架、下架、暂停兑换
             let title = '';
             if(val === 1){
                 title = '上架';
-            }else{
+            }else if(val ===2)
+            {
                 title = '下架';
+            }else if(val ===3){
+                title = '暂停兑换';
             }
-            this.$confirm("此操作将" + title + "此医生, 是否继续?", "提示", {
+            this.$confirm("此商品将" + title + ", 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             })
                 .then(() => {
-                    doctorStatus({id: id, status: val}).then(data => {
+                    changeStatus({id: id, goods_status: val}).then(data => {
                         if (data.code === 200) {
                             this.index();
                             this.$message({ message: title + '成功~', type: "success"});
@@ -320,9 +350,6 @@ export default {
                 .catch(() => {
                     this.$message({ type: "info", message: "已取消操作~" });
                 });
-        },
-        target(url){    //  打开医生预览
-            window.open(url);
         },
         search() {
             //  检索
@@ -333,34 +360,20 @@ export default {
         },
         empty() {
             //  清空删选条件
-            this.params.status = "";
-            this.timeValue="",
+            this.params.goods_name = "";
+            this.params.goods_type = "";
+            this.params.goods_status = "";
             this.index();
         },
-        scheduleChange(id,val){
-            let title = '';
-            if(val === 1){
-                title = '开启预约';
-            }else{
-                title = '关闭预约';
-            }
-            this.$confirm("此操作将" + title + ", 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-            })
-                .then(() => {
-                    schedulingStatus({id: id, scheduling_status: val}).then(data => {
-                        if (data.code === 200) {
-                            this.index();
-                            this.$message({ message: title + '成功~', type: "success"});
-                        }
-                    });
-                })
-                .catch(() => {
-                    this.$message({ type: "info", message: "已取消操作~" });
-                });
-        }
     }
 };
 </script>
+<style lang="less">
+.el-dialog{
+    .el-radio+.el-radio{
+        margin-left: 0;
+    }
+}
+
+    
+</style>

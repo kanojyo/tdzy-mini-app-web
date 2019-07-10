@@ -47,6 +47,7 @@
                                 <i class="icon iconfont icon-ai-article" v-if="item.name === '文章'"></i>
                                 <!-- <i class="icon iconfont icon-wodeyouhuijuan" v-if="item.name === '优惠劵'"></i> -->
                                 <!-- <i class="icon iconfont icon-banben" v-if="item.name === '版本'"></i> -->
+                                <i class="icon iconfont icon-banben" v-if="item.name === '商品'"></i>
                                 <i class="icon iconfont icon-yonghu" v-if="item.name === '用户'"></i>
                                 <i class="icon iconfont icon-yunyingguanli" v-if="item.name === '运营'"></i>
                                 <i class="icon iconfont icon-yisheng" v-if="item.name === '医生'"></i>
@@ -164,10 +165,10 @@ export default {
     display: flex;
     background-color: #464c5b;
     .list-1 {
-        width: 75px;
+        width: 85px;
         .item {
             position: relative;
-            width: 75px;
+            width: 85px;
             height: 40px;
             color: #ccc;
             font-size: 12px;

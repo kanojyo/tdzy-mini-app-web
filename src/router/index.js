@@ -12,6 +12,7 @@ import doctor from './doctor';
 import set from './set';
 import slideshow from './slideshow';
 import hospital from './hospital';
+import goods from './goods';
 
 Vue.use(Router);
 
@@ -38,7 +39,7 @@ export default new Router({
             component: () => import(/* webpackChunkName: "about" */ '@/views/Main.vue'),
             children: [ 
                 ...article,    //  文章  
-                ...coupon,   //  优惠劵
+                // ...coupon,   //  优惠劵
                 // ...edition,  //  版本
                 ...operate,  //  运营
                 ...push,    //  推送  
@@ -49,6 +50,7 @@ export default new Router({
                 ...set, //  设置
                 ...slideshow,   //  轮播图
                 ...hospital,    //  医院
+                ...goods,
             ],
         }
     ]

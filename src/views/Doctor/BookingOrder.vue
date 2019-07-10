@@ -4,9 +4,9 @@
     <div class="operation">
       <div class="pull-left">
         <div class="input">
-          <el-select v-model="params.status" clearable size="mini" placeholder="分类状态">
+          <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
             <el-option
-              v-for="item in status"
+              v-for="item in scheduling_status"
               :key="item.type"
               :label="item.value"
               :value="item.type"
@@ -39,25 +39,35 @@
       <div class="table-list">
         <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
           <el-table-column align="center" prop="id" label="ID"></el-table-column>
-          <el-table-column align="center" label="轮播图图片">
+          <el-table-column align="center"  label="医生头像">
             <template slot-scope="scope">
               <div>
-                <img :src="scope.row.pic" class="img-width-50" alt>
+                <img :src="scope.row.avatar" class="img-width-50" alt>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="link" label="链接地址"></el-table-column>
-          <el-table-column align="center" label="状态">
+          <el-table-column align="center" prop="name"  label="医生姓名"></el-table-column>
+          <el-table-column align="center" prop="office"  label="科室"></el-table-column>
+          <el-table-column align="center"  label="职位"></el-table-column>
+          <el-table-column align="center" label="预约状态">
             <template slot-scope="scope">
               <div>
-                <span class="color-f8494c" v-if="scope.row.status === 1">展示中</span>
-                <span class="color_red" v-else>未展示</span>
+                <span class="color-f8494c" v-if="scope.row.scheduling_status === 1">可预约</span>
+                <span class="color_red" v-else>不可预约</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="admin_username" label="创建人"></el-table-column>
-          <el-table-column align="center" prop="sort" label="排序"></el-table-column>
-          <el-table-column align="center" prop="created_at" label="创建时间" width="180"></el-table-column>
+          <el-table-column align="center" prop="sort" label="排序值"></el-table-column>
+          <el-table-column align="center"  label="状态">
+            <template slot-scope="scope">
+              <div>
+                <span class="color-f8494c" v-if="scope.row.status === 1">正常</span>
+                <span class="color_red" v-else>下架</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="admin" label="创建人"></el-table-column>
+          <el-table-column align="center" prop="ctime" label="创建时间" width="180"></el-table-column>
           <el-table-column align="center" label="操作" width="250px">
             <template slot-scope="scope">
               <div>
@@ -72,7 +82,6 @@
                   v-if="scope.row.status === 1"
                   @click="statusChange(scope.row.id, 2)"
                 >下架</span>&nbsp;
-                <!-- <span class="cursor color-f8494c" @click="target(scope.row.link)">预览</span> -->
               </div>
             </template>
           </el-table-column>
@@ -154,7 +163,7 @@ export default {
   data() {
     return {
       params: {
-        status: 1, //  查询状态 1：正常，2：下架
+        scheduling_status: "", //  查询状态 1：可预约，2：不可预约
         start_time:'',
         end_time:'',
         page: 1, //  分页
@@ -174,7 +183,7 @@ export default {
       },
       fileList: [], //  附件容器
       uploadUrl: uploadUrl(), //  上传地址
-      status: [{ type: 1, value: "展示中" }, { type: 2, value: "未展示" }], //  状态
+      scheduling_status: [{ type: 1, value: "可预约" }, { type: 2, value: "不可预约" }], //  状态
       timeValue:''
     };
   },
@@ -186,7 +195,7 @@ export default {
       //  主页列表数据
       let data = await slideIndex(this.params);
       if (data.code === 200) {
-        this.list = data.data.data;
+        // this.list = data.data.data;
         this.count = data.data.total;
       }
     },
@@ -314,3 +323,7 @@ export default {
   }
 };
 </script>
+
+<style lang="">
+    
+</style>

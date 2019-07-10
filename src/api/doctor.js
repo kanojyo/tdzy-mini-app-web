@@ -25,3 +25,33 @@ export function doctorInfo(params){ return fetch({url: '/v1/doctor/info?id=' + p
 *   NO:5    医生 -- 医生上架下架
 */
 export function doctorStatus(params){ return fetch({url: '/v1/doctor/status', method: 'POST', data: params}) }
+
+/*
+*   NO:6    医生 -- 预约列表
+*/
+export function appointmentList(params){ return fetch({url: '/v1/appointment/list?' + urlEncode(params), method: 'GET'}) }
+
+/*
+*   NO:7    医生 -- 确认就诊
+*/
+export function appointmentConfirm(params){ return fetch({url: '/v1/appointment/confirm' , method: 'POST', data: params}) }
+
+/*
+*   NO:8    医生 -- 取消预约
+*/
+export function appointmentCancel(params){ return fetch({url: '/v1/appointment/cancel' , method: 'POST', data: params}) }
+
+/*
+*   NO:9    医生 -- 预约详情
+*/
+export function appointmentInfo(params){ return fetch({url: '/v1/appointment/info?id=' +params.id , method: 'GET'}) }
+
+/*
+*   NO:10    医生 -- 预约操作日志列表
+*/
+export function appointmentLog(params){ return fetch({url: '/v1/appointment_log/index' + urlEncode(params) , method: 'GET'}) }
+
+/*
+*   NO:11    医生 -- 医生开启关闭预约
+*/
+export function schedulingStatus(params){ return fetch({url: '/v1/doctor/scheduling_status' , method: 'POST', data: params}) }
