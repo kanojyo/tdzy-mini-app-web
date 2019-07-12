@@ -72,8 +72,8 @@
                                 <span class="cursor color-f8494c" v-if="scope.row.status === 2" @click="statusChange(scope.row.id, 1)">上架</span>
                                 <span class="cursor color_red" v-if="scope.row.status === 1" @click="statusChange(scope.row.id, 2)">下架</span>&nbsp;
                                 <span class="cursor color-f8494c" @click="target(scope.row.link_url)">预览</span>
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">排班设置</span>
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">预约记录</span>
+                                <span class="cursor color-f8494c" @click="paiban(scope.row.id)">排班设置</span>
+                                <span class="cursor color-f8494c" @click="book(scope.row.id)">预约记录</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -360,6 +360,12 @@ export default {
                 .catch(() => {
                     this.$message({ type: "info", message: "已取消操作~" });
                 });
+        },
+        paiban(id){
+            this.$router.push({path:'Schedule',query:{doctor_id:id}});
+        },
+        book(id){
+            this.$router.push({path:'BookingOrder',query:{doctor_id:id}});
         }
     }
 };

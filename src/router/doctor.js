@@ -2,13 +2,13 @@ export default [
     {                                        // 医生 -> 预约订单
         path: '/Doctor/BookingOrder',
         name: 'BookingOrder',
-        meta: { title: '医生介绍', keepAlive: true },
+        meta: { title: '预约订单', keepAlive: false },
         component: () => import(/* webpackChunkName: "about" */ '@/views/Doctor/BookingOrder.vue')
     },
-    {                                        // 医生 -> 排班介绍
+    {                                        // 医生 -> 排班设置
         path: '/Doctor/Schedule',
         name: 'Schedule',
-        meta: { title: '医生介绍', keepAlive: true },
+        meta: { title: '排班设置', keepAlive: false },
         component: () => import(/* webpackChunkName: "about" */ '@/views/Doctor/Schedule.vue')
     },
     {                                        // 医生 -> 医生介绍

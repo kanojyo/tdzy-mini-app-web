@@ -49,9 +49,30 @@ export function appointmentInfo(params){ return fetch({url: '/v1/appointment/inf
 /*
 *   NO:10    医生 -- 预约操作日志列表
 */
-export function appointmentLog(params){ return fetch({url: '/v1/appointment_log/index' + urlEncode(params) , method: 'GET'}) }
+export function appointmentLog(params){ return fetch({url: '/v1/appointment_log/index?' + urlEncode(params) , method: 'GET'}) }
 
 /*
 *   NO:11    医生 -- 医生开启关闭预约
 */
 export function schedulingStatus(params){ return fetch({url: '/v1/doctor/scheduling_status' , method: 'POST', data: params}) }
+
+/*
+*   NO:12    医生 -- 排班列表
+*/
+export function schedulingList(params){ return fetch({url: '/v1/scheduling/list?' + urlEncode(params) , method: 'GET'}) }
+
+/*
+*   NO:13    医生 -- 添加排班
+*/
+export function schedulingSave(params){ return fetch({url: '/v1/scheduling/save' , method: 'POST', data: params}) }
+
+/*
+*   NO:14    医生 -- 修改排班
+*/
+export function schedulingUpdate(params){ return fetch({url: '/v1/scheduling/update' , method: 'POST', data: params}) }
+
+/*
+*   NO:15    医生 -- 排班详情
+*/
+export function schedulingDetail(params){ return fetch({url: '/v1/scheduling/info?id=' + params.id , method: 'GET'}) }
+

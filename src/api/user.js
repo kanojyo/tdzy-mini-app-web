@@ -85,3 +85,8 @@ export function departmentList(params){ return fetch({url: '/v1/rule/department-
 *   NO:17    用户 -- 用户列表
 */
 export function getIndex(params){ return fetch({url: '/v1/user/index?' + urlEncode(params), method: 'GET'}) }
+
+/*
+*   NO:18    用户 -- 预约记录
+*/
+export function getLog(params){ return fetch({url: '/v1/appointment/list?' + urlEncode(params), method: 'GET'}) }

@@ -71,7 +71,7 @@
                     <el-table-column align="center" label="操作" width="180px">
                         <template slot-scope="scope">
                             <div >
-                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">预约记录</span>
+                                <span class="cursor color-f8494c" @click="popLog(scope.row.user_id)">预约记录</span>
                                 <span class="cursor color-f8494c" @click="detail(scope.row.user_id)">用户详情</span>
                             </div>
                         </template>
@@ -178,11 +178,60 @@
                 </table>
             </div>
         </el-dialog>
+        <!-- 预约记录 -->
+        <el-dialog title="预约记录" :visible.sync="logVisible" width="1250px">
+          <div class="table">
+            <div class="table-list">
+                <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
+                    <el-table-column align="center" prop="appointment_code" label="预约编号"></el-table-column>
+                    <el-table-column align="center" prop="office" label="就诊科室"></el-table-column>
+                    <el-table-column align="center" prop="doctor_name" label="预约医生" ></el-table-column>
+                    <el-table-column align="center"  label="预约状态" >
+                        <template slot-scope="scope">
+                            <div>
+                                <span v-if="scope.row.status == 1">未就诊</span>
+                                <span v-if="scope.row.status == 2">已就诊</span>
+                                <span v-if="scope.row.status == 3">已取消</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="order_time" label="预约日期" ></el-table-column>
+                    <el-table-column align="center" label="预约时间" >
+                        <template slot-scope="scope">
+                            <div>
+                                <span v-if="scope.row.time_slot == 1">上午(9:00-12:00)</span>
+                                <span v-if="scope.row.time_slot == 2">下午(14:00-18:00)</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="created_at" label="创建时间" width="200px"></el-table-column>
+                </el-table>
+            </div>
+            <div class="table-peg">
+                <div class="pull-left"></div>
+                <div class="pull-right">
+                    <el-pagination
+                        @size-change="handleSizeChange2"
+                        @current-change="handleCurrentChange2"
+                        :current-page="logParams.page"
+                        :page-sizes="[30, 50, 100]"
+                        :page-size="logParams.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="logCount"
+                    ></el-pagination>
+                </div>
+            </div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="logVisible = false">取 消</el-button>
+            <el-button type="primary" @click="logVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { departmentList, getIndex, userInfo} from "@/api/user.js";
+import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
  export default {
    data () {
      return {
@@ -204,6 +253,21 @@ import { departmentList, getIndex, userInfo} from "@/api/user.js";
             userInfo:[], //用户信息
             timeValue:'',
             departList:[],//部门列表
+            logParams:{
+              doctor_id:0,
+              user_id:"",
+              status:"",
+              name:"",
+              start_time:"",
+              end_time:"",
+              appointment_code:"",
+              mobile:"",
+              page:1,
+              pagesize:30
+            },
+            logList:[], //预约记录列表数据
+            logCount:0,
+            logVisible:false, //预约记录状态
         };
    },
    filters:{
@@ -239,10 +303,20 @@ import { departmentList, getIndex, userInfo} from "@/api/user.js";
             this.params.page = val;
             this.index();
         },
+        handleCurrentChange2(val) {
+            //	请求多少页
+            this.logParams.page = val;
+            this.getLogList();
+        },
         handleSizeChange(val) {
             //	每页多少条
             this.params.pageSize = val;
             this.index();
+        },
+        handleSizeChange2(val) {
+            //	每页多少条
+            this.logParams.pageSize = val;
+            this.getLogList();
         },
         search() {
             //  检索
@@ -262,6 +336,7 @@ import { departmentList, getIndex, userInfo} from "@/api/user.js";
             this.params.department_id = "";
             this.index();
         },
+        //用户详情
         async detail(id){
             console.log(id)
             let data = await userInfo({id:id})
@@ -269,7 +344,21 @@ import { departmentList, getIndex, userInfo} from "@/api/user.js";
                 this.userInfo=data.data;
                 this.dialogVisible=true;
             }
+        },
+        //预约记录弹框
+        popLog(id){
+            this.logParams.user_id=id;
+            this.logVisible=true;
+            this.getLogList();
+        },
+        async getLogList(){
+            let data = await getLog(this.logParams);
+            if(data.code === 200){
+                this.logList=data.data.list;
+                this.logCount=data.data.total;
+            }
         }
+
     }
  }
 </script>
