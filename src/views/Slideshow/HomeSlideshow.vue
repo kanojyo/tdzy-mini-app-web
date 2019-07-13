@@ -116,10 +116,10 @@
         <el-form-item label="描述">
           <el-input type="textarea" v-model="formLabelAlign.description" placeholder="描述信息不能超过20字" :maxlength=20></el-input>
         </el-form-item>
-        <!-- <el-form-item label="排序值">
+        <el-form-item label="排序值">
           <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
           <span class="font_12">排序值越高权重越大</span>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="状态">
           <el-switch
             v-model="formLabelAlign.status"

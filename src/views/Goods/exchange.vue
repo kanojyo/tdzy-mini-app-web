@@ -121,12 +121,7 @@
                     <el-table-column align="center" prop="id" label="ID"></el-table-column>
                     <el-table-column align="center" prop="admin_name" label="操作人"></el-table-column>
                     <el-table-column align="center" prop="create_at" label="操作时间" width="200px"></el-table-column>
-                    <el-table-column align="center"  label="操作内容">
-                      <template slot-scope="scope">
-                        <div >
-                            <span v-if="scope.row.type === 1" class="cursor color-f8494c" >兑换成功</span>
-                        </div>
-                        </template>
+                    <el-table-column align="center" prop="log_content" label="操作内容">
                     </el-table-column>
                 </el-table>
             </div>
