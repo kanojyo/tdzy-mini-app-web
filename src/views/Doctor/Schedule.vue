@@ -54,8 +54,7 @@
                     <el-table-column align="center"  label="时间段" width="180px">
                       <template slot-scope="scope">
                         <div>
-                          <span v-if="scope.row.time_slot === 1">上午(9:00-12:00)</span>
-                          <span v-if="scope.row.time_slot === 2">下午(14:00-18:00)</span>
+                          <span>{{scope.row.time_slot|timeSlot}}</span>
                         </div>
                       </template>
                     </el-table-column>
@@ -356,7 +355,7 @@ export default {
                 this.$message({ message: "请选择预约上限", type: "warning" });
                 return;
             }
-           if (this.editData.order_money == "") {
+           if (this.editData.order_money === "") {
                 this.$message({ message: "请选择预约费用", type: "warning" });
                 return;
             }
