@@ -118,7 +118,7 @@
                       <template slot-scope="scope">
                         <div>
                           <el-select v-model="scope.row.time_slot" placeholder="请选择">
-                            <el-option :value="1" label="上午(9:00-12:00)"></el-option>
+                            <el-option :value="1" label="上午(8:00-12:00)"></el-option>
                             <el-option :value="2" label="下午(14:00-18:00)"></el-option>
                           </el-select>
                         </div>
@@ -181,7 +181,7 @@
                 </el-form-item>
                 <el-form-item label="* 预约时间段">
                   <el-select v-model="editData.time_slot" placeholder="请选择">
-                    <el-option :value="1" label="上午(9:00-12:00)"></el-option>
+                    <el-option :value="1" label="上午(8:00-12:00)"></el-option>
                     <el-option :value="2" label="下午(14:00-18:00)"></el-option>
                   </el-select>
                 </el-form-item>
