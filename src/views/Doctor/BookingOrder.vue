@@ -20,13 +20,13 @@
     <div class="operation">
       <div class="pull-left">
         <div class="input">
-          <el-input size="mini" v-model="input" placeholder="请输入预约编号"></el-input>
+          <el-input size="mini" v-model="params.appointment_code" placeholder="请输入预约编号"></el-input>
         </div>
         <div class="input">
-          <el-input size="mini" v-model="input" placeholder="请输入预约人姓名"></el-input>
+          <el-input size="mini" v-model="params.name" placeholder="请输入预约人姓名"></el-input>
         </div>
         <div class="input">
-          <el-input size="mini" v-model="input" placeholder="请输入预约人手机号"></el-input>
+          <el-input size="mini" v-model="params.mobile" placeholder="请输入预约人手机号"></el-input>
         </div>
         <div class="input">
           <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
