@@ -20,7 +20,7 @@
         <div class="operation">
             <div class="pull-left">
               <div class="input">
-                    <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
+                    <el-select v-model="params.order_status" clearable size="mini" placeholder="预约状态">
                         <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
                 </div>
@@ -317,18 +317,18 @@ export default {
           this.addData.scheduling_json.forEach(item=>{
             item.order_max_num=parseInt(item.order_max_num)
           })
-          let data = schedulingSave(this.addData)
+          let data = await schedulingSave(this.addData);
           if(data.code === 200){
             this.$message({ message: "添加成功", type: "success" });
             this.addVisible=false;
             this.index();
-            this.addData.scheduling_json=originData;
+            this.addData.scheduling_json=this.originData;
           }
         },
         //取消添加排班弹框
         cancel(){
           this.addVisible=false;
-          this.addData.scheduling_json=originData;
+          this.addData.scheduling_json=this.originData;
         },
         //修改
         async edit(id){
