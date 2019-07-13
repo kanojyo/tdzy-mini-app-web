@@ -137,6 +137,11 @@
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
                     <span class="font_12">排序值越高权重越大</span>
                 </el-form-item>
+                <el-form-item label="预约状态">
+                    <el-select v-model="formLabelAlign.scheduling_status" clearable size="mini" placeholder="预约状态">
+                        <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="状态">
                     <el-switch v-model="formLabelAlign.status" :active-value="2" :inactive-value="1" active-text="下架" inactive-text="正常" active-color="#e4e4e4" inactive-color="#1ABC9C"></el-switch>
                 </el-form-item>
