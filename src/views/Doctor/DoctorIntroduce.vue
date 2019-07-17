@@ -133,8 +133,23 @@
                 <!-- <el-form-item label="* 医生资料链接">
                     <el-input v-model="formLabelAlign.link_url" placeholder="请输入医生资料链接"></el-input>
                 </el-form-item> -->
-                <el-form-item label="* 内容编辑">
+                <!-- <el-form-item label="* 内容编辑">
                     <Ueditor :defaultMsg="defaultMsg" :id="id" ref="ue"></Ueditor>
+                </el-form-item> -->
+                <el-form-item label="* 上传图片">
+                    <el-upload
+                        :action="uploadUrl"
+                        list-type="picture-card"
+                        :on-preview="handlePictureCardPreview2"
+                        :on-success="handleSuccess2"
+                        :file-list="fileList2"
+                        :beforeUpload="beforeAvatarUpload"
+                        :on-remove="handleRemove2">
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog title="图片查看" :visible.sync="imgVisible" size="tiny">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
                 </el-form-item>
                 <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
@@ -155,11 +170,10 @@
             </span>
         </el-dialog>
         <!-- 文章预览 -->
-        <el-dialog title="文章预览" :visible.sync="previewShow" width="980px">
-            <div class="centens">
-                <!-- <div class="title">{{detailsData.article_title}}</div>
-                <div class="user-time">发稿时间：{{detailsData.created_at}} 来源：{{detailsData.admin_username}}</div> -->
-                <div class="text" v-html="detailsData.doctor_details"></div>
+        <el-dialog title="预览" :visible.sync="previewShow" width="980px">
+            <div class="centens" v-for="(item,index) in previewImgList" v-key="index" >
+                <!-- {{item}} -->
+                <img  :src="item" alt="">
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="previewShow = false">关 闭</el-button>
@@ -209,6 +223,10 @@ export default {
             id: 'DoctorIntroduce', //  编辑器ID
             previewShow:false,
             detailsData:'',
+            fileList2:[],
+            dialogImageUrl:[],
+            picList:[],
+            previewImgList:[],
         };
     },
     components: {
@@ -257,6 +275,26 @@ export default {
                 return false;
             }
         },
+         handleSuccess2(file) {   //  上传附件
+            if(file.code === 200){
+                this.fileList2.push({url: file.data.url});
+                this.picList.push(file.data.url);
+                this.formLabelAlign.doctor_details = this.picList;
+                console.log(this.formLabelAlign.doctor_details)
+            }
+        },
+        handleRemove2(file, fileList2) {
+            var list =[];
+            fileList2.forEach(item=>{
+                list.push(item.url);
+            });
+            this.formLabelAlign.doctor_details =list;
+
+        },
+        handlePictureCardPreview2(file) {
+            this.dialogImageUrl = file.url;
+            this.imgVisible = true;
+        },
         async edit(id) { //  编辑
             this.title = "编辑";
             let data = await doctorInfo({id: id});
@@ -265,8 +303,12 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.avatar}
                 ];
-                this.defaultMsg=this.formLabelAlign.doctor_details;
+                // this.defaultMsg=this.formLabelAlign.doctor_details;
                 this.dialogVisible = true;
+                this.picList= JSON.parse(this.formLabelAlign.doctor_details);
+                this.picList.forEach(item => {
+                    this.fileList2.push({url: item})
+                })
             }
         },
         add() {
@@ -279,7 +321,7 @@ export default {
                 position: '',
                 remark: '',
                 // link_url: '',
-                doctor_details:'',
+                // doctor_details:'',
                 sort: '',
                 status: 1,
             };
@@ -316,11 +358,12 @@ export default {
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
             }
-            this.formLabelAlign.doctor_details = this.$refs.ue.getUEContent();
-            if (this.formLabelAlign.doctor_details == "") {
-                this.$message({ message: "请编辑文章内容", type: "warning" });
+            // this.formLabelAlign.doctor_details = this.$refs.ue.getUEContent();
+            if (this.formLabelAlign.doctor_details.length == 0) {
+                this.$message({ message: "请上传图片", type: "warning" });
                 return;
             }
+            this.formLabelAlign.doctor_details = JSON.stringify(this.formLabelAlign.doctor_details);
             let data = "";
             if (this.title === "添加") {
                 data = await doctorSave(this.formLabelAlign);
@@ -362,6 +405,8 @@ export default {
             if (data.code === 200) {
                 this.detailsData = data.data;
                 this.previewShow = true;
+                this.previewImgList = JSON.parse(this.detailsData.doctor_details);
+                console.log(this.previewImgList)
             }
         },
         search() {

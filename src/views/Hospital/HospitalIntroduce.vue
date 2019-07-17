@@ -18,13 +18,28 @@
             <el-form-item label="跳转链接">
                 <el-input v-model="formParams.link" clearable placeholder="请输入跳转链接"></el-input>
             </el-form-item>
-            <el-form-item label="* 内容编辑">
+            <!-- <el-form-item label="* 内容编辑">
                 <Ueditor :defaultMsg="defaultMsg" :id="id" ref="ue"></Ueditor>
-            </el-form-item>
+            </el-form-item> -->
+             <el-form-item label="* 上传图片">
+                 <el-upload
+                    :action="uploadUrl"
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview2"
+                    :on-success="handleSuccess2"
+                    :file-list="fileList2"
+                    :beforeUpload="beforeAvatarUpload"
+                    :on-remove="handleRemove2">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+             </el-form-item>
         </el-form>
         <div class="primary">
             <el-button type="primary" @click="withdrawChange">提 交</el-button>
         </div>
+        <el-dialog title="图片查看" :visible.sync="dialogVisible" size="tiny" show-close="false">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
     </div>
 </template>
 
@@ -39,12 +54,15 @@ export default {
             formParams: {
                 pic: '',
                 link: '',
-                details:'',
+                details:[],
             },
             uploadUrl: uploadUrl(), //  上传附件地址
             fileList: [],   //  附件容器
+            fileList2: [],   //  附件容器
             defaultMsg: '', //  编辑器内容
             id: 'HospitalIntroduce', //  编辑器ID
+            dialogImageUrl:[],
+            picList:[],
         };
     },
     components: {
@@ -62,7 +80,10 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.pic}
                 ];
-                this.defaultMsg = this.formParams.details;
+                this.picList= JSON.parse(this.formParams.details);
+                this.picList.forEach(item => {
+                    this.fileList2.push({url: item})
+                })
             }
         },
         async withdrawChange(){   //  提交设置
@@ -71,11 +92,11 @@ export default {
                 this.$message({ message: "请上传医院介绍图片", type: "warning" });
                 return;
             }
-            this.formParams.details = this.$refs.ue.getUEContent();
-            if (this.formParams.details == "") {
-                this.$message({ message: "请编辑文章内容", type: "warning" });
+            if (this.formParams.details.length == 0) {
+                this.$message({ message: "请上传图片", type: "warning" });
                 return;
             }
+            this.formParams.details = JSON.stringify(this.formParams.details)
             this.formParams.id = 4;
             let data = await hospitalUpdate(this.formParams);
             if (data.code === 200) {
@@ -103,6 +124,25 @@ export default {
                 return false;
             }
         },
+        handleSuccess2(file) {   //  上传附件
+            if(file.code === 200){
+                this.fileList2.push({url: file.data.url});
+                this.picList.push(file.data.url);
+                this.formParams.details = this.picList;
+            }
+        },
+        handleRemove2(file, fileList2) {
+            var list =[];
+            fileList2.forEach(item=>{
+                list.push(item.url);
+            });
+            this.formParams.details =list;
+
+        },
+        handlePictureCardPreview2(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        }
     }
 };
 </script>
