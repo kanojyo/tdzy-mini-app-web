@@ -25,7 +25,6 @@
                  <el-upload
                     :action="uploadUrl"
                     list-type="picture-card"
-                    :on-preview="handlePictureCardPreview2"
                     :on-success="handleSuccess2"
                     :file-list="fileList2"
                     :beforeUpload="beforeAvatarUpload"
@@ -149,10 +148,10 @@ export default {
             }
             
         },
-        handlePictureCardPreview2(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        }
+        // handlePictureCardPreview2(file) {
+        //     this.dialogImageUrl = file.url;
+        //     this.dialogVisible = true;
+        // }
     }
 };
 </script>

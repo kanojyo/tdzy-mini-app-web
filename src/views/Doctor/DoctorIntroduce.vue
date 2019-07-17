@@ -140,7 +140,6 @@
                     <el-upload
                         :action="uploadUrl"
                         list-type="picture-card"
-                        :on-preview="handlePictureCardPreview2"
                         :on-success="handleSuccess2"
                         :file-list="fileList2"
                         :beforeUpload="beforeAvatarUpload"
@@ -171,8 +170,7 @@
         </el-dialog>
         <!-- 文章预览 -->
         <el-dialog title="预览" :visible.sync="previewShow" width="980px">
-            <div class="centens" v-for="(item,index) in previewImgList" v-key="index" >
-                <!-- {{item}} -->
+            <div class="centens" v-for="(item,index) in previewImgList" v-key="index" style="font-size:0;">
                 <img  :src="item" alt="">
             </div>
             <span slot="footer" class="dialog-footer">
@@ -297,10 +295,10 @@ export default {
                 this.picList =list;
             }
         },
-        handlePictureCardPreview2(file) {
-            this.dialogImageUrl = file.url;
-            this.imgVisible = true;
-        },
+        // handlePictureCardPreview2(file) {
+        //     this.dialogImageUrl = file.url;
+        //     this.imgVisible = true;
+        // },
         async edit(id) { //  编辑
             this.fileList2 = [];
             this.formLabelAlign.doctor_details='';
