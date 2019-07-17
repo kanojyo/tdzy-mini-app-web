@@ -36,9 +36,12 @@
         <div class="primary">
             <el-button type="primary" @click="withdrawChange">提 交</el-button>
         </div>
-        <el-dialog title="图片查看" :visible.sync="dialogVisible" size="tiny" show-close="false">
+        <!-- <el-dialog title="图片查看" :visible.sync="dialogVisible" >
             <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">关 闭</el-button>
+            </span>
+        </el-dialog> -->
     </div>
 </template>
 
