@@ -284,18 +284,25 @@ export default {
             }
         },
         handleRemove2(file, fileList2) {
-            var list =[];
-            fileList2.forEach(item=>{
-                list.push(item.url);
-            });
-            this.formLabelAlign.doctor_details =list;
-
+            if(fileList2.length === 0){
+                this.fileList2 = [];
+                this.formLabelAlign.doctor_details='';
+            }else{
+                var list =[];
+                fileList2.forEach(item=>{
+                    list.push(item.url);
+                });
+                this.fileList2=fileList2;
+                this.formLabelAlign.doctor_details =list;
+                this.picList =list;
+            }
         },
         handlePictureCardPreview2(file) {
             this.dialogImageUrl = file.url;
             this.imgVisible = true;
         },
         async edit(id) { //  编辑
+            this.fileList2 = [];
             this.title = "编辑";
             let data = await doctorInfo({id: id});
             if (data.code === 200) {
@@ -305,10 +312,13 @@ export default {
                 ];
                 // this.defaultMsg=this.formLabelAlign.doctor_details;
                 this.dialogVisible = true;
-                this.picList= JSON.parse(this.formLabelAlign.doctor_details);
-                this.picList.forEach(item => {
-                    this.fileList2.push({url: item})
-                })
+                if(this.formLabelAlign.doctor_details !== ""){
+                    this.picList= JSON.parse(this.formLabelAlign.doctor_details);
+                    this.picList.forEach(item => {
+                        this.fileList2.push({url: item})
+                    })
+                }
+                
             }
         },
         add() {

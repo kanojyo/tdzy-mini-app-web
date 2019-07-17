@@ -80,10 +80,13 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.pic}
                 ];
-                this.picList= JSON.parse(this.formParams.details);
-                this.picList.forEach(item => {
-                    this.fileList2.push({url: item})
-                })
+                if(this.formParams.details !== ""){
+                    this.picList= JSON.parse(this.formParams.details);
+                    this.picList.forEach(item => {
+                        this.fileList2.push({url: item})
+                    })
+                }
+                
             }
         },
         async withdrawChange(){   //  提交设置
@@ -132,12 +135,19 @@ export default {
             }
         },
         handleRemove2(file, fileList2) {
-            var list =[];
-            fileList2.forEach(item=>{
-                list.push(item.url);
-            });
-            this.formParams.details =list;
-
+            if(fileList2.length === 0){
+                this.fileList2 = [];
+                this.formParams.details='';
+            }else{
+                var list =[];
+                this.fileList2=fileList2;
+                this.fileList2.forEach(item=>{
+                    list.push(item.url);
+                });
+                this.picList =list;
+                this.formParams.details =list;
+            }
+            
         },
         handlePictureCardPreview2(file) {
             this.dialogImageUrl = file.url;
