@@ -303,6 +303,7 @@ export default {
         },
         async edit(id) { //  编辑
             this.fileList2 = [];
+            this.formLabelAlign.doctor_details='';
             this.title = "编辑";
             let data = await doctorInfo({id: id});
             if (data.code === 200) {
@@ -331,7 +332,7 @@ export default {
                 position: '',
                 remark: '',
                 // link_url: '',
-                // doctor_details:'',
+                doctor_details:'',
                 sort: '',
                 status: 1,
             };
@@ -419,7 +420,6 @@ export default {
                 if(this.detailsData.doctor_details !==''){
                     this.previewImgList = JSON.parse(this.detailsData.doctor_details);
                 }
-                console.log(this.previewImgList)
             }
         },
         search() {
