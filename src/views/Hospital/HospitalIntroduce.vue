@@ -18,6 +18,9 @@
             <el-form-item label="跳转链接">
                 <el-input v-model="formParams.link" clearable placeholder="请输入跳转链接"></el-input>
             </el-form-item>
+            <el-form-item label="* 内容编辑">
+                <Ueditor :defaultMsg="defaultMsg" :id="id" ref="ue"></Ueditor>
+            </el-form-item>
         </el-form>
         <div class="primary">
             <el-button type="primary" @click="withdrawChange">提 交</el-button>
@@ -28,6 +31,7 @@
 <script type="text/javascript">
 import { hospitalShow, hospitalUpdate } from "@/api/hospital.js";
 import { uploadUrl } from "@/api/imageUrl.js";
+import Ueditor from '@/components/Ueditor.vue';
 
 export default {
     data() {
@@ -35,10 +39,16 @@ export default {
             formParams: {
                 pic: '',
                 link: '',
+                details:'',
             },
             uploadUrl: uploadUrl(), //  上传附件地址
             fileList: [],   //  附件容器
+            defaultMsg: '', //  编辑器内容
+            id: 'HospitalIntroduce', //  编辑器ID
         };
+    },
+    components: {
+        Ueditor,
     },
     mounted() {
         this.index();
@@ -52,14 +62,21 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.pic}
                 ];
+                this.defaultMsg = this.formParams.details;
             }
         },
         async withdrawChange(){   //  提交设置
+            console.log(111)
             if (this.formParams.pic == "") {
                 this.$message({ message: "请上传医院介绍图片", type: "warning" });
                 return;
             }
-            this.formParams.id = 4
+            this.formParams.details = this.$refs.ue.getUEContent();
+            if (this.formParams.details == "") {
+                this.$message({ message: "请编辑文章内容", type: "warning" });
+                return;
+            }
+            this.formParams.id = 4;
             let data = await hospitalUpdate(this.formParams);
             if (data.code === 200) {
                 this.$message({ message: data.data.msg, type: "success" });
@@ -91,9 +108,11 @@ export default {
 </script>
 <style type="text/css" scoped lang="less">
     .centens{
-        width: 600px;
-        padding: 50px;
+        width: 1000px;
+        height: 800px;
+        padding: 20px 50px;
         border: 1px solid #e2e2e2;
+        overflow-y:scroll;
         .primary{
             display: flex;
             justify-content: center;

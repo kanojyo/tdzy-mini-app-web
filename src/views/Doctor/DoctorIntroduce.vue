@@ -71,7 +71,7 @@
                                 <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>&nbsp;
                                 <span class="cursor color-f8494c" v-if="scope.row.status === 2" @click="statusChange(scope.row.id, 1)">上架</span>
                                 <span class="cursor color_red" v-if="scope.row.status === 1" @click="statusChange(scope.row.id, 2)">下架</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="target(scope.row.link_url)">预览</span>
+                                <span class="cursor color-f8494c" @click="preview(scope.row.id)">预览</span>
                                 <span class="cursor color-f8494c" @click="paiban(scope.row.id)">排班设置</span>
                                 <span class="cursor color-f8494c" @click="book(scope.row.id)">预约记录</span>
                             </div>
@@ -95,7 +95,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="'首页医生介绍' + title" :visible.sync="dialogVisible" width="650px">
+        <el-dialog :title="'首页医生介绍' + title" :visible.sync="dialogVisible" width="900px">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 医生头像">
                     <el-upload
@@ -130,8 +130,11 @@
                     <el-input v-model="formLabelAlign.remark" placeholder="请输入医生标签"></el-input>
                     <span class="font_12">每个标签用英文逗号分隔,标签内容为英文,数字或汉字，如：标签a,标签b</span>
                 </el-form-item>
-                <el-form-item label="* 医生资料链接">
+                <!-- <el-form-item label="* 医生资料链接">
                     <el-input v-model="formLabelAlign.link_url" placeholder="请输入医生资料链接"></el-input>
+                </el-form-item> -->
+                <el-form-item label="* 内容编辑">
+                    <Ueditor :defaultMsg="defaultMsg" :id="id" ref="ue"></Ueditor>
                 </el-form-item>
                 <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
@@ -151,6 +154,17 @@
                 <el-button type="primary" @click="handleClose">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 文章预览 -->
+        <el-dialog title="文章预览" :visible.sync="previewShow" width="980px">
+            <div class="centens">
+                <!-- <div class="title">{{detailsData.article_title}}</div>
+                <div class="user-time">发稿时间：{{detailsData.created_at}} 来源：{{detailsData.admin_username}}</div> -->
+                <div class="text" v-html="detailsData.doctor_details"></div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="previewShow = false">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -158,6 +172,7 @@
 import { doctorIndex, doctorSave, doctorUpdate, doctorInfo, doctorStatus, schedulingStatus} from "@/api/doctor.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer } from "@/utils/validate.js";
+import Ueditor from '@/components/Ueditor.vue';
 
 export default {
     data() {
@@ -180,15 +195,24 @@ export default {
                 office: '',
                 position: '',
                 remark: '',
-                link_url: '',
+                // link_url: '',
                 sort: '',
                 status: 1,
+                scheduling_status:'',
+                doctor_details:""  //医生简介内容
             },
             fileList: [],   //  附件容器
             uploadUrl: uploadUrl(), //  上传地址
             status: [{ type: 1, value: "可预约" }, { type: 2, value: "不可预约" }],    //  状态
             timeValue:"",
+            defaultMsg: '', //  编辑器内容
+            id: 'DoctorIntroduce', //  编辑器ID
+            previewShow:false,
+            detailsData:'',
         };
+    },
+    components: {
+        Ueditor,
     },
     mounted() {
         this.index();
@@ -241,6 +265,7 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.avatar}
                 ];
+                this.defaultMsg=this.formLabelAlign.doctor_details;
                 this.dialogVisible = true;
             }
         },
@@ -253,7 +278,8 @@ export default {
                 office: '',
                 position: '',
                 remark: '',
-                link_url: '',
+                // link_url: '',
+                doctor_details:'',
                 sort: '',
                 status: 1,
             };
@@ -282,12 +308,17 @@ export default {
                 this.$message({ message: "请输入医生标签", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.link_url == "") {
-                this.$message({ message: "请输入资料链接", type: "warning" });
-                return;
-            }
+            // if (this.formLabelAlign.link_url == "") {
+            //     this.$message({ message: "请输入资料链接", type: "warning" });
+            //     return;
+            // }
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
+                return;
+            }
+            this.formLabelAlign.doctor_details = this.$refs.ue.getUEContent();
+            if (this.formLabelAlign.doctor_details == "") {
+                this.$message({ message: "请编辑文章内容", type: "warning" });
                 return;
             }
             let data = "";
@@ -326,8 +357,12 @@ export default {
                     this.$message({ type: "info", message: "已取消操作~" });
                 });
         },
-        target(url){    //  打开医生预览
-            window.open(url);
+        async preview(id){    //  打开医生预览
+            let data = await doctorInfo({id: id});
+            if (data.code === 200) {
+                this.detailsData = data.data;
+                this.previewShow = true;
+            }
         },
         search() {
             //  检索
