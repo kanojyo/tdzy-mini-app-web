@@ -411,11 +411,14 @@ export default {
                 });
         },
         async preview(id){    //  打开医生预览
+            this.previewImgList='';
             let data = await doctorInfo({id: id});
             if (data.code === 200) {
                 this.detailsData = data.data;
                 this.previewShow = true;
-                this.previewImgList = JSON.parse(this.detailsData.doctor_details);
+                if(this.detailsData.doctor_details !==''){
+                    this.previewImgList = JSON.parse(this.detailsData.doctor_details);
+                }
                 console.log(this.previewImgList)
             }
         },
