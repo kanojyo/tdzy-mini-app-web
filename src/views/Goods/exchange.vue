@@ -222,6 +222,7 @@ export default {
         },
         empty() {
             //  清空删选条件
+            this.params.exchange_code = "";
             this.params.name = "";
             this.params.mobile = "";
             this.timeValue="";
