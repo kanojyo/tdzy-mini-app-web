@@ -372,7 +372,10 @@ export default {
     },
     empty() {
       //  清空删选条件
-      this.params.order_status = "";
+      this.params.appointment_code = "";
+      this.params.name = "";
+      this.params.mobile = "";
+      this.params.scheduling_status = "";
       this.timeValue = "";
       this.index();
     },
