@@ -29,7 +29,7 @@
           <el-input size="mini" v-model="params.mobile" placeholder="请输入预约人手机号"></el-input>
         </div>
         <div class="input">
-          <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
+          <el-select v-model="params.status" clearable size="mini" placeholder="预约状态">
             <el-option
               v-for="item in status"
               :key="item.type"
@@ -375,7 +375,7 @@ export default {
       this.params.appointment_code = "";
       this.params.name = "";
       this.params.mobile = "";
-      this.params.scheduling_status = "";
+      this.params.status = "";
       this.timeValue="";
       this.params.start_time = "";
       this.params.end_time = "";
