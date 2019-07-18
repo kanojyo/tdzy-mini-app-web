@@ -287,8 +287,10 @@ export default {
         },
         empty() {
             //  清空删选条件
+            this.timeValue="";
             this.params.order_status = "";
-            this.timeValue = "";
+            this.params.start_time = "";
+            this.params.end_time = "";
             this.index();
         },
         //添加

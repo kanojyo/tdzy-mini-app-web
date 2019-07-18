@@ -328,7 +328,9 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
         },
         empty() {
             //  清空删选条件
-            this.timeValue = "";
+            this.timeValue="";
+            this.params.start_time = "";
+            this.params.end_time = "";
             this.params.customer_code = "";
             this.params.account = "";
             this.params.name = "";

@@ -224,6 +224,9 @@ export default {
             //  清空删选条件
             this.params.name = "";
             this.params.mobile = "";
+            this.timeValue="";
+            this.params.start_time="";
+            this.params.end_time="";
             this.index();
         },
         confirm(item){

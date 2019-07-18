@@ -376,7 +376,9 @@ export default {
       this.params.name = "";
       this.params.mobile = "";
       this.params.scheduling_status = "";
-      this.timeValue = "";
+      this.timeValue="";
+      this.params.start_time = "";
+      this.params.end_time = "";
       this.index();
     },
     //取消预约弹框

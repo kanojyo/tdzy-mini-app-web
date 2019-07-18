@@ -430,7 +430,9 @@ export default {
         empty() {
             //  清空删选条件
             this.params.status = "";
-            this.timeValue="",
+            this.timeValue="";
+            this.params.start_time="",
+            this.params.end_time="",
             this.index();
         },
         scheduleChange(id,val){
