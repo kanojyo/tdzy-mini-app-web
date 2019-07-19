@@ -42,8 +42,8 @@
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="name" label="医生姓名"></el-table-column>
-                    <!-- <el-table-column align="center" prop="name" label="科室"></el-table-column>
-                    <el-table-column align="center" prop="name" label="职位"></el-table-column> -->
+                    <el-table-column align="center" prop="office" label="科室"></el-table-column>
+                    <el-table-column align="center" prop="position" label="职位"></el-table-column>
                     <el-table-column align="center" label="预约状态">
                         <template slot-scope="scope">
                             <div>
