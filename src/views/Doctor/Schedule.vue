@@ -14,7 +14,7 @@
             </div>
             <div class="right">
               <p>预约总数量:{{doctorInfo.order_sale_num}}</p>
-              <p>实际预约数:{{doctorInfo.order_use_num}}</p>
+              <!-- <p>实际预约数:{{doctorInfo.order_use_num}}</p> -->
             </div>
         </div>
         <div class="operation">
@@ -58,10 +58,16 @@
                         </div>
                       </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="order_money" label="预约费用"></el-table-column>
+                    <el-table-column align="center"  label="预约费用">
+                      <template slot-scope="scope">
+                        <div>
+                          <span>¥{{scope.row.order_money}}</span>
+                        </div>
+                      </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="order_max_num" label="预约上限人数"></el-table-column>
                     <el-table-column align="center" prop="order_sale_num" label="此次排班预约数"></el-table-column>
-                    <el-table-column align="center" prop="order_use_num" label="此次排班实际预约"></el-table-column>
+                    <!-- <el-table-column align="center" prop="order_use_num" label="此次排班实际预约"></el-table-column> -->
                     <el-table-column align="center"  label="预约状态">
                       <template slot-scope="scope">
                         <div>
@@ -142,7 +148,7 @@
                     <el-table-column align="center" prop="order_max_num" label="预约费用">
                       <template slot-scope="scope">
                         <div>
-                          <el-input v-model="scope.row.order_money" placeholder="请输入预约费用"></el-input>
+                          <el-input v-model="scope.row.order_money" :disabled="true" placeholder="请输入预约费用"></el-input>
                         </div>
                       </template>
                     </el-table-column>
@@ -187,8 +193,8 @@
                 <el-form-item label="* 预约上限/人">
                     <el-input v-model="editData.order_max_num" placeholder="请输入预约上限"></el-input>
                 </el-form-item>
-                <el-form-item label="* 预约费用/元">
-                    <el-input v-model="editData.order_money" placeholder="请输入预约费用"></el-input>
+                <el-form-item label="* 预约费用/元" >
+                    <el-input v-model="editData.order_money" :disabled="true" placeholder="请输入预约费用"></el-input>
                 </el-form-item>
             </el-form>
           <span slot="footer" class="dialog-footer">
@@ -235,10 +241,10 @@ export default {
               scheduling_json:[
                 {
                   order_time:"",
-                  time_slot:"",
-                  order_status:"",
+                  time_slot:1,
+                  order_status:1,
                   order_max_num:"",
-                  order_money:"",
+                  order_money:0,
                 }
               ]
             },
@@ -250,7 +256,7 @@ export default {
                   order_max_num:"",
                   order_money:"",
                 }
-              ]
+            ],
         };
     },
     mounted() {
@@ -296,6 +302,7 @@ export default {
         //添加
         add(){
           this.addVisible=true;
+          
         },
         //复制
         copy(index,item){
@@ -316,7 +323,9 @@ export default {
         //添加排班
         async save(){
           this.addData.scheduling_json.forEach(item=>{
-            item.order_max_num=parseInt(item.order_max_num)
+            if(item.order_max_num !== ''){
+              item.order_max_num=parseInt(item.order_max_num)
+            }
           })
           let data = await schedulingSave(this.addData);
           if(data.code === 200){

@@ -14,8 +14,8 @@
                         v-model="timeValue"
                         type="datetimerange"
                         range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        start-placeholder="创建开始日期"
+                        end-placeholder="创建结束日期"
                         value-format="yyyy-MM-dd HH:mm:ss"
                     ></el-date-picker>
                 </div>
@@ -154,7 +154,7 @@
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
                     <span class="font_12">排序值越高权重越大</span>
                 </el-form-item>
-                <el-form-item label="预约状态">
+                <el-form-item label="* 预约状态">
                     <el-select v-model="formLabelAlign.scheduling_status" clearable size="mini" placeholder="预约状态">
                         <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
@@ -331,6 +331,7 @@ export default {
                 remark: '',
                 // link_url: '',
                 doctor_details:'',
+                scheduling_status:1,
                 sort: '',
                 status: 1,
             };
@@ -365,6 +366,10 @@ export default {
             // }
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
+                return;
+            }
+            if(this.formLabelAlign.scheduling_status == ""){
+                this.$message({ message: "请输入预约状态", type: "warning" });
                 return;
             }
             // this.formLabelAlign.doctor_details = this.$refs.ue.getUEContent();

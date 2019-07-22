@@ -29,7 +29,7 @@
           <el-input size="mini" v-model="params.mobile" placeholder="请输入预约人手机号"></el-input>
         </div>
         <div class="input">
-          <el-select v-model="params.status" clearable size="mini" placeholder="预约状态">
+          <el-select v-model="params.status" clearable size="mini" placeholder="就诊状态">
             <el-option
               v-for="item in status"
               :key="item.type"
@@ -44,8 +44,8 @@
             v-model="timeValue"
             type="datetimerange"
             range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-placeholder="预约开始日期"
+            end-placeholder="预约结束日期"
             value-format="yyyy-MM-dd HH:mm:ss"
           ></el-date-picker>
         </div>
@@ -72,7 +72,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="就诊状态" width="75px">
+          <el-table-column align="center" label="就诊状态" width="95px">
             <template slot-scope="scope">
               <div>
                 <span class="cursor color-f8494c" v-if="scope.row.status === 1">未就诊</span>
@@ -82,7 +82,7 @@
             </template>
           </el-table-column>
           <el-table-column align="center" prop="order_money" label="预约挂号费用" width="75px"></el-table-column>
-          <el-table-column align="center" label="确认就诊时间" width="110px">
+          <!-- <el-table-column align="center" label="确认就诊时间" width="110px">
             <template slot-scope="scope">
               <div>
                 <span
@@ -102,7 +102,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="handle_at" label="操作时间" width="110px"></el-table-column>
+          <el-table-column align="center" prop="handle_at" label="操作时间" width="110px"></el-table-column> -->
           <el-table-column align="center" prop="doctor_name" label="医生姓名"></el-table-column>
           <el-table-column align="center" label="医生头像">
             <template slot-scope="scope">
@@ -154,6 +154,7 @@
             placeholder="请输入备注"
             :maxlength="100"
           ></el-input>
+          <p style="text-align:right;">字数在100字以内</p>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -211,6 +212,7 @@
           <td>* 备注</td>
           <td>
             <el-input type="textarea" v-model="info.remarks" placeholder="请输入备注" :maxlength="100"></el-input>
+            <p style="text-align:right;">字数在100字以内</p>
           </td>
         </tr>
         <tr v-else>

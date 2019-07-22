@@ -23,8 +23,8 @@
                         v-model="timeValue"
                         type="datetimerange"
                         range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        start-placeholder="兑换开始日期"
+                        end-placeholder="兑换结束日期"
                         value-format="yyyy-MM-dd HH-mm-ss"
                     ></el-date-picker>
                 </div>
@@ -224,6 +224,7 @@ export default {
             //  清空删选条件
             this.params.exchange_code = "";
             this.params.name = "";
+            this.params.status = "";
             this.params.mobile = "";
             this.timeValue="";
             this.params.start_time="";

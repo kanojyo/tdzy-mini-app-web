@@ -107,7 +107,7 @@
                     <span class="font_12">1至30字符或汉字</span>
                 </el-form-item>
                 <el-form-item label="* 商品类型">
-                    <el-select v-model="formLabelAlign.goods_type" clearable size="mini" placeholder="请商品类型">
+                    <el-select v-model="formLabelAlign.goods_type" clearable size="mini" placeholder="请选择商品类型">
                         <el-option v-for="item in type" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
                 </el-form-item>
@@ -137,17 +137,18 @@
                     <el-input v-model="formLabelAlign.exchange_max_num" placeholder="请输入兑换上限"></el-input>
                 </el-form-item>
                 <el-form-item class="date" label="* 有效期">
-                    <el-radio v-model="formLabelAlign.valid_type" label="1">
+                    <el-radio v-model="formLabelAlign.valid_type" :label="1">
                         <el-date-picker
                         v-model="timeValue"
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        @change="date()"
                         value-format="yyyy-MM-dd HH:mm:ss">
                         </el-date-picker>
                     </el-radio>
-                    <el-radio v-model="formLabelAlign.valid_type" label="2">
+                    <el-radio v-model="formLabelAlign.valid_type" :label="2">
                         <el-input v-model="formLabelAlign.surplus_days" placeholder="请输入天数"></el-input>
                     </el-radio>
                 </el-form-item>
@@ -155,7 +156,7 @@
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
                     <span class="font_12">排序值越高权重越大</span>
                 </el-form-item>
-                <el-form-item label="状态">
+                <el-form-item label="* 状态">
                     <el-radio-group v-model="formLabelAlign.goods_status">
                         <el-radio v-for="item in status"   :key="item.type" :label="item.type" >{{item.value}}</el-radio>
                     </el-radio-group>
@@ -256,6 +257,15 @@ export default {
             let data = await goodsDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
+                if(this.formLabelAlign.valid_type == 1){
+                    // this.timeValue[0]=this.formLabelAlign.start_time;
+                    // this.timeValue[1]=this.formLabelAlign.end_time
+                    var time =[];
+                    time[0]=this.formLabelAlign.start_time;
+                    time[1]=this.formLabelAlign.end_time;
+                    this.timeValue=time;
+                }
+                
                 this.fileList = [
                     {name: '', url: data.data.pic_url}
                 ];
@@ -264,6 +274,7 @@ export default {
         },
         add() {  //添加
             this.title = "添加";
+            this.timeValue="";
             this.formLabelAlign = {
                 pic_url: '',
                 goods_name: '',
@@ -277,10 +288,20 @@ export default {
                 end_time: '',
                 surplus_days: '',
                 sort: '',
-                goods_status: '',
+                goods_status: 1,
             };
             this.fileList = [];
             this.dialogVisible = true;
+        },
+        //监听添加中的时间控件;
+        date(){
+            console.log(this.timeValue)
+            this.formLabelAlign.start_time=this.timeValue[0];
+            this.formLabelAlign.end_time=this.timeValue[1];
+            if(Date.parse(this.formLabelAlign.start_time)<Date.parse(new Date())){
+                this.$message({ message: "选择的有效期开始时间应该大于当前日期", type: "warning" });
+                return;
+            }
         },
         async handleClose() {
             //  添加/编辑
@@ -289,11 +310,11 @@ export default {
                 return;
             }
             if (this.formLabelAlign.goods_type == "") {
-                this.$message({ message: "请输入商品类型", type: "warning" });
+                this.$message({ message: "请选择商品类型", type: "warning" });
                 return;
             }
             if (this.formLabelAlign.pic_url == "") {
-                this.$message({ message: "请输入商品图片", type: "warning" });
+                this.$message({ message: "请上传商品图片", type: "warning" });
                 return;
             }
             if (this.formLabelAlign.goods_rules == "") {
@@ -303,40 +324,56 @@ export default {
             if (this.formLabelAlign.now_score == "") {
                 this.$message({ message: "请输入兑换所需积分", type: "warning" });
                 return;
+            }else{
+                this.formLabelAlign.now_score=parseInt(this.formLabelAlign.now_score);
             }
             if (this.formLabelAlign.original_score == "") {
                 this.$message({ message: "请输入商品原有积分", type: "warning" });
                 return;
+            }else{
+                this.formLabelAlign.original_score=parseInt(this.formLabelAlign.original_score);
             }
             if (this.formLabelAlign.exchange_max_num == "") {
                 this.$message({ message: "请输入兑换上限", type: "warning" });
                 return;
+            }else{
+                 this.formLabelAlign.exchange_max_num=parseInt(this.formLabelAlign.exchange_max_num);
             }
             if (this.formLabelAlign.valid_type == "") {
                 this.$message({ message: "请输入有效期类型", type: "warning" });
                 return;
+            }else{
+                this.formLabelAlign.valid_type=parseInt(this.formLabelAlign.valid_type);
             }
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
+            }else{
+                this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
             }
             if(this.formLabelAlign.valid_type ==1){
-                this.formLabelAlign.start_time=this.timeValue[0];
-                this.formLabelAlign.end_time=this.timeValue[1];
+                if(this.timeValue == ""){
+                    this.$message({ message: "请选择有效期", type: "warning" });
+                    return;
+                }else{
+                    this.formLabelAlign.start_time=this.timeValue[0];
+                    this.formLabelAlign.end_time=this.timeValue[1];
+                    this.formLabelAlign.surplus_days="";
+                }
             }else{
-                this.formLabelAlign.surplus_days=parseInt(this.formLabelAlign.surplus_days);
-            }
-            //转成int
-            this.formLabelAlign.original_score=parseInt(this.formLabelAlign.original_score);
-            this.formLabelAlign.now_score=parseInt(this.formLabelAlign.now_score);
-            this.formLabelAlign.exchange_max_num=parseInt(this.formLabelAlign.exchange_max_num);
-            this.formLabelAlign.valid_type=parseInt(this.formLabelAlign.valid_type);
-            if(this.formLabelAlign.sort){
-                this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
+                if(this.formLabelAlign.surplus_days == ""){
+                    this.$message({ message: "请输入天数", type: "warning" });
+                    return;
+                }else{
+                    this.formLabelAlign.surplus_days=parseInt(this.formLabelAlign.surplus_days);
+                    this.formLabelAlign.start_time="";
+                    this.formLabelAlign.end_time="";
+                }
             }
             if(this.formLabelAlign.goods_status){
                 this.formLabelAlign.goods_status=parseInt(this.formLabelAlign.goods_status);
             }
+            
             let data;
             if (this.title === "添加") {
                 data = await goodsAdd(this.formLabelAlign);
