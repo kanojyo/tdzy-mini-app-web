@@ -5,7 +5,7 @@
                 <div class="head clearfix">
                     <div class="pull-left">
                         <img src="https://cdn-statis.mangguokandian.com/ajun-web-cdn/ico/tdzyyLogo.png" alt>
-                        <span class="text">泰斗医聊APP后台管理系统</span>
+                        <span class="text">泰斗医聊小程序后台管理系统</span>
                     </div>
                     <div class="pull-right">
                         <div class="avatar">

@@ -187,8 +187,8 @@ export default {
         return {
             params: {
                 goods_name:"",
-                goods_type: "", //  商品类型 1：诊疗类，2：实物类, 3:虚拟类
-                goods_status: "", //  状态 1：正常，2：下架, 3:暂停兑换
+                goods_type: 1, //  商品类型 0:全部 1：诊疗类，2：实物类, 3:虚拟类
+                goods_status: 1, //  状态 1：正常，2：下架, 3:暂停兑换
                 page: 1, //  分页
                 pageSize: 30 //    每页显示条数
             },
@@ -213,7 +213,7 @@ export default {
             },
             fileList: [],   //  附件容器
             uploadUrl: uploadUrl(), //  上传地址
-            type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
+            type:[{type: 0, value: "全部" },{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
         };

@@ -2,7 +2,7 @@
     <div class="login">
         <div class="bg"></div>
         <div class="login-auto">
-            <h1>泰斗医聊APP后台管理系统</h1>
+            <h1>泰斗医聊小程序后台管理系统</h1>
             <p>Business Management System</p>
             <div class="login-input">
                 <div>
