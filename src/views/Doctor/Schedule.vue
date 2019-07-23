@@ -142,7 +142,7 @@
                     <el-table-column align="center" prop="order_money" label="预约上限人数">
                       <template slot-scope="scope">
                         <div>
-                          <el-input v-model="scope.row.order_max_num" placeholder="请输入预约上限"></el-input>
+                          <el-input v-model="scope.row.order_max_num" @change="num(scope.row.order_max_num,scope.$index)" placeholder="请输入预约上限"></el-input>
                         </div>
                       </template>
                     </el-table-column>
@@ -154,7 +154,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column align="center"  label="操作">
-                      <template slot-scope="scope">
+                      <template slot-scope="scope"> 
                         <div>
                           <span class="cursor color-f8494c" @click="copy(scope.$index,scope.row)">复制</span>
                           <span class="cursor color_red" @click="del(scope.$index, scope.row)">删除</span>
@@ -209,6 +209,7 @@
 
 <script type="text/javascript">
 import { schedulingList, schedulingDetail, schedulingUpdate, schedulingSave} from "@/api/doctor.js";
+import {positiveInteger} from "@/utils/validate.js"
 
 export default {
     data() {
@@ -309,7 +310,24 @@ export default {
         //添加
         add(){
           this.addVisible=true;
-          
+          this.addData.scheduling_json=[
+            {
+              order_time:"",
+              time_slot:1,
+              order_status:1,
+              order_max_num:"",
+              order_money:0,
+            }
+          ]
+        },
+        //监听排班设置中数量；
+        num(val,index){
+          if(!positiveInteger(val)){
+            this.$message({ message: "预约上限人数为正整数", type: "warning" });
+            this.addData.scheduling_json[index].order_max_num='';
+            return
+          }
+
         },
         //复制
         copy(index,item){

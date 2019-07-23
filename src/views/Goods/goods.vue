@@ -41,7 +41,14 @@
                     <el-table-column align="center" prop="original_score" label="原兑换所需积分"></el-table-column>
                     <el-table-column align="center" prop="exchange_max_num" label="兑换上限"></el-table-column>
                     <el-table-column align="center" prop="exchange_get_num" label="已兑换数量"></el-table-column>
-                    <el-table-column align="center" prop="surplus_days" label="有效期" width="200px"></el-table-column>
+                    <el-table-column align="center" label="有效期" width="200px">
+                        <template slot-scope="scope">
+                            <div>
+                                <span v-if="scope.row.valid_type ==1">{{scope.row.surplus_days}}</span>
+                                <span v-if="scope.row.valid_type ==2">{{scope.row.surplus_days}}天</span>
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" label="商品类型">
                         <template slot-scope="scope">
                             <div>
