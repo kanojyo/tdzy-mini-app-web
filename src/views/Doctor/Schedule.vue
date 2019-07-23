@@ -66,7 +66,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column align="center" prop="order_max_num" label="预约上限人数"></el-table-column>
-                    <el-table-column align="center" prop="order_sale_num" label="此次排班预约数"></el-table-column>
+                    <el-table-column align="center" prop="order_use_num" label="此次排班预约数"></el-table-column>
                     <!-- <el-table-column align="center" prop="order_use_num" label="此次排班实际预约"></el-table-column> -->
                     <el-table-column align="center"  label="预约状态">
                       <template slot-scope="scope">
@@ -114,6 +114,7 @@
                             v-model="scope.row.order_time"
                             type="date"
                             placeholder="选择日期"
+                            :picker-options="pickerOptions"
                             value-format="yyyy-MM-dd">
                           </el-date-picker>
                         </div>
@@ -176,6 +177,7 @@
                       v-model="editData.order_time"
                       type="date"
                       placeholder="选择日期"
+                      :picker-options="pickerOptions"
                       value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
@@ -257,6 +259,11 @@ export default {
                   order_money:"",
                 }
             ],
+            pickerOptions: {
+              disabledDate(time) {
+                return time.getTime() < Date.now()- 8.64e7;
+              }
+            }
         };
     },
     mounted() {
@@ -347,6 +354,9 @@ export default {
             this.editData= data.data;
             this.editVisible=true;
           }
+        },
+        time(){
+          console.log(111)
         },
         //修改排班
         modify(){

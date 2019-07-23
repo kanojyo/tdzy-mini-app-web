@@ -254,6 +254,7 @@ export default {
         },
         async edit(id) { //  编辑
             this.title = "编辑";
+            this.timeValue='';
             let data = await goodsDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
@@ -348,7 +349,8 @@ export default {
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
-            }else{
+            }
+            if(this.formLabelAlign.sort !== ''){
                 this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
             }
             if(this.formLabelAlign.valid_type ==1){

@@ -322,6 +322,7 @@ export default {
         },
         add() {
             this.title = "添加";
+            this.fileList2=[];
             this.formLabelAlign = {
                 avatar: "",
                 name: '',
