@@ -130,9 +130,11 @@
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
                 </el-form-item>
                 <el-form-item label="* 商品使用规则">
                     <el-input type="textarea" v-model="formLabelAlign.goods_rules" placeholder="请输入商品使用规则" :max-length="500" ></el-input>
+                    <span class="font_12" style="display:block;text-align:right;">500字以内</span>
                 </el-form-item>
                 <el-form-item label="* 兑换所需积分">
                     <el-input v-model="formLabelAlign.now_score" placeholder="请输入兑换所需积分"></el-input>
@@ -213,7 +215,7 @@ export default {
             },
             fileList: [],   //  附件容器
             uploadUrl: uploadUrl(), //  上传地址
-            type:[{type: 0, value: "全部" },{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
+            type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
         };
@@ -253,11 +255,17 @@ export default {
             }
         },
         beforeAvatarUpload(file){   //  限制上传附件大小
-            let size = file.size/1000/1024;
-            if(size > 4){
-                this.$message({ message: '图片大于4M，请重新上传~', type: "warning" });
-                return false;
+            const isJPG = file.type === 'image/jpg';
+            const isJPEG = file.type === 'image/jpeg';
+            const isPNG = file.type === 'image/png';
+            const isLt4M = file.size / 1024 / 1024 <= 4;
+            if (!isJPG && !isJPEG && !isPNG) {
+                this.$message.error('上传头像图片只能是 jpg,png,jpeg 格式!');
+                }
+            if (!isLt4M) {
+                this.$message.error('上传头像图片大小不能超过 4MB!');
             }
+            return (isJPG || isJPEG || isPNG) && isLt4M
         },
         async edit(id) { //  编辑
             this.title = "编辑";
@@ -266,8 +274,6 @@ export default {
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
                 if(this.formLabelAlign.valid_type == 1){
-                    // this.timeValue[0]=this.formLabelAlign.start_time;
-                    // this.timeValue[1]=this.formLabelAlign.end_time
                     var time =[];
                     time[0]=this.formLabelAlign.start_time;
                     time[1]=this.formLabelAlign.end_time;
@@ -287,7 +293,7 @@ export default {
                 pic_url: '',
                 goods_name: '',
                 goods_rules: '',
-                goods_type: '',
+                goods_type: 1,
                 original_score: '',
                 now_score: '',
                 exchange_max_num: '',

@@ -75,34 +75,14 @@
           <el-table-column align="center" label="就诊状态" width="95px">
             <template slot-scope="scope">
               <div>
-                <span class="cursor color-f8494c" v-if="scope.row.status === 1">未就诊</span>
+                <span class="cursor color-f2690e" v-if="scope.row.status === 1">未就诊</span>
                 <span class="cursor color-f8494c" v-if="scope.row.status === 2">已就诊</span>
-                <span class="cursor color_red" v-if="scope.row.status === 3">已取消</span>
+                <span class="cursor color_999" v-if="scope.row.status === 3">已取消</span>
+                <span class="cursor color_999" v-if="scope.row.status === 4">已失效</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column align="center" prop="order_money" label="预约挂号费用" width="75px"></el-table-column>
-          <!-- <el-table-column align="center" label="确认就诊时间" width="110px">
-            <template slot-scope="scope">
-              <div>
-                <span
-                  class="cursor color-f8494c"
-                  v-if="scope.row.status === 2"
-                >{{scope.row.handle_at}}</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="已取消时间" width="110px">
-            <template slot-scope="scope">
-              <div>
-                <span
-                  class="cursor color-f8494c"
-                  v-if="scope.row.status === 3"
-                >{{scope.row.handle_at}}</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="handle_at" label="操作时间" width="110px"></el-table-column> -->
           <el-table-column align="center" prop="doctor_name" label="医生姓名"></el-table-column>
           <el-table-column align="center" label="医生头像">
             <template slot-scope="scope">

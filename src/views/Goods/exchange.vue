@@ -48,9 +48,9 @@
                     <el-table-column align="center" label="状态">
                       <template slot-scope="scope">
                           <div>
-                            <span class="color-f8494c" v-if="scope.row.status === 1">未使用</span>
+                            <span class="color-f2690e" v-if="scope.row.status === 1">未使用</span>
                             <span class="color-f8494c" v-if="scope.row.status === 2">已使用</span>
-                            <span class="color_red" v-if="scope.row.status === 3">已失效</span>
+                            <span class="color_999" v-if="scope.row.status === 3">已失效</span>
                           </div>
                         </template>
                     </el-table-column>
@@ -85,7 +85,7 @@
         </div>
            <!-- 确认兑换 -->
         <el-dialog title="确认使用" :visible.sync="dialogVisible" width="650px">
-            <table border="1" style="width:100%;border-color:#DCDFE6;">
+            <table class="ajun-table">
               <tbody>
                 <tr>
                   <td style="width:150px;">用户姓名</td>
@@ -104,8 +104,11 @@
                   <td>{{dialogData.goods_name}}</td>
                 </tr>
                 <tr>
-                  <td>备注</td>
-                  <td><el-input type="textarea" v-model="remarks" placeholder="请输入备注内容" :maxlength="100"></el-input></td>
+                  <td>* 备注</td>
+                  <td>
+                    <el-input type="textarea" v-model="remarks" placeholder="请输入备注内容" :maxlength="100"></el-input>
+                    <p style="text-align:right;">字数在100字以内</p>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -233,7 +236,7 @@ export default {
         },
         confirm(item){
           //确认兑换弹框
-          console.log(item)
+          // console.log(item)
           this.dialogData=item;
           this.dialogVisible=true;
         },
