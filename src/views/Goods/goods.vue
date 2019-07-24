@@ -284,6 +284,13 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.pic_url}
                 ];
+                this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
+                this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
+                this.formLabelAlign.surplus_days =this.formLabelAlign.surplus_days.toString() ;
+                this.formLabelAlign.exchange_max_num =this.formLabelAlign.exchange_max_num.toString() ;
+                this.formLabelAlign.original_score =this.formLabelAlign.original_score.toString() ;
+                this.formLabelAlign.now_score =this.formLabelAlign.now_score.toString() ;
+                this.formLabelAlign.goods_status =parseFloat(this.formLabelAlign.goods_status);
                 this.dialogVisible = true;
             }
         },
@@ -320,6 +327,12 @@ export default {
         },
         async handleClose() {
             //  添加/编辑
+            console.log(typeof(this.formLabelAlign.valid_type),'valid_type')
+            console.log(typeof(this.formLabelAlign.sort),'sort')
+            console.log(typeof(this.formLabelAlign.surplus_days),'surplus_days')
+            console.log(typeof(this.formLabelAlign.exchange_max_num),'exchange_max_num')
+            console.log(typeof(this.formLabelAlign.original_score),'original_score')
+            console.log(typeof(this.formLabelAlign.goods_status),'goods_status')
             if (this.formLabelAlign.goods_name == "") {
                 this.$message({ message: "请輸入商品名称", type: "warning" });
                 return;
