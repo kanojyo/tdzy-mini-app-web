@@ -90,7 +90,7 @@ export function positiveInteger(str) {
 
 //正则表达式验证1到365的整数
 export function positiveNum365(str) {
-  const reg = /^([1-9]|[1-9]\\d|365)$/
+  const reg = /^([1-9][0-9]{0,1}|365)$/
   return str.match(reg)
 }
 

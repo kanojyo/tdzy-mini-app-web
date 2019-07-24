@@ -278,12 +278,14 @@ export default {
                 this.fileList2.push({url: file.data.url});
                 this.picList.push(file.data.url);
                 this.formLabelAlign.doctor_details = this.picList;
-                console.log(this.formLabelAlign.doctor_details)
+                // console.log(this.formLabelAlign.doctor_details)
             }
         },
         handleRemove2(file, fileList2) {
+            // console.log(fileList2)
             if(fileList2.length === 0){
                 this.fileList2 = [];
+                this.picList=[];
                 this.formLabelAlign.doctor_details='';
             }else{
                 var list =[];
