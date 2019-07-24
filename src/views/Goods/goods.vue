@@ -137,13 +137,13 @@
                     <span class="font_12" style="display:block;text-align:right;">500字以内</span>
                 </el-form-item>
                 <el-form-item label="* 兑换所需积分">
-                    <el-input v-model="formLabelAlign.now_score" placeholder="请输入兑换所需积分"></el-input>
+                    <el-input v-model="formLabelAlign.now_score" placeholder="请输入正整数"></el-input>
                 </el-form-item>
                 <el-form-item label="* 原有积分">
-                    <el-input v-model="formLabelAlign.original_score" placeholder="请输入原有积分"></el-input>
+                    <el-input v-model="formLabelAlign.original_score" placeholder="请输入正整数"></el-input>
                 </el-form-item>
                 <el-form-item label="* 兑换上限">
-                    <el-input v-model="formLabelAlign.exchange_max_num" placeholder="请输入兑换上限"></el-input>
+                    <el-input v-model="formLabelAlign.exchange_max_num" placeholder="请输入正整数 0为不限量"></el-input>
                 </el-form-item>
                 <el-form-item class="date" label="* 有效期">
                     <el-radio v-model="formLabelAlign.valid_type" :label="1">
@@ -159,6 +159,7 @@
                     </el-radio>
                     <el-radio v-model="formLabelAlign.valid_type" :label="2">
                         <el-input v-model="formLabelAlign.surplus_days" placeholder="请输入天数"></el-input>
+                        <span>1至365的整数</span>
                     </el-radio>
                 </el-form-item>
                 <el-form-item label="排序值">
@@ -182,7 +183,7 @@
 <script type="text/javascript">
 import { goodsIndex, changeStatus, goodsAdd, goodsUpdate, goodsDetails} from "@/api/goods.js";
 import { uploadUrl } from "@/api/imageUrl.js";
-import { integer } from "@/utils/validate.js";
+import { integer, positiveInteger, positiveNum365 } from "@/utils/validate.js";
 
 export default {
     data() {
@@ -335,29 +336,21 @@ export default {
                 this.$message({ message: "请输入商品規則", type: "warning" });
                 return;
             }
-            if (this.formLabelAlign.now_score == "") {
-                this.$message({ message: "请输入兑换所需积分", type: "warning" });
+            if(this.formLabelAlign.now_score == "" || !positiveInteger(this.formLabelAlign.now_score)){
+                this.$message({ message: "兑换所需积分只能填写大于0的正整数", type: "warning" });
                 return;
-            }else{
-                this.formLabelAlign.now_score=parseInt(this.formLabelAlign.now_score);
             }
-            if (this.formLabelAlign.original_score == "") {
-                this.$message({ message: "请输入商品原有积分", type: "warning" });
+            if (this.formLabelAlign.original_score == "" || !positiveInteger(this.formLabelAlign.original_score)) {
+                this.$message({ message: "商品原有积分只能填写大于0的正整数", type: "warning" });
                 return;
-            }else{
-                this.formLabelAlign.original_score=parseInt(this.formLabelAlign.original_score);
             }
-            if (this.formLabelAlign.exchange_max_num == "") {
-                this.$message({ message: "请输入兑换上限", type: "warning" });
+            if (this.formLabelAlign.exchange_max_num === "" || !integer(this.formLabelAlign.exchange_max_num)) {
+                this.$message({ message: "兑换上限只能填写的正整数", type: "warning" });
                 return;
-            }else{
-                 this.formLabelAlign.exchange_max_num=parseInt(this.formLabelAlign.exchange_max_num);
             }
             if (this.formLabelAlign.valid_type == "") {
                 this.$message({ message: "请输入有效期类型", type: "warning" });
                 return;
-            }else{
-                this.formLabelAlign.valid_type=parseInt(this.formLabelAlign.valid_type);
             }
             if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
@@ -366,25 +359,36 @@ export default {
             if(this.formLabelAlign.sort !== ''){
                 this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
             }
-            if(this.formLabelAlign.valid_type ==1){
-                if(this.timeValue == ""){
-                    this.$message({ message: "请选择有效期", type: "warning" });
-                    return;
-                }else{
-                    this.formLabelAlign.start_time=this.timeValue[0];
-                    this.formLabelAlign.end_time=this.timeValue[1];
-                    this.formLabelAlign.surplus_days="";
-                }
-            }else{
-                if(this.formLabelAlign.surplus_days == ""){
-                    this.$message({ message: "请输入天数", type: "warning" });
-                    return;
-                }else{
-                    this.formLabelAlign.surplus_days=parseInt(this.formLabelAlign.surplus_days);
-                    this.formLabelAlign.start_time="";
-                    this.formLabelAlign.end_time="";
-                }
+            if(this.formLabelAlign.valid_type ==1 && this.timeValue == ""){
+                this.$message({ message: "请选择有效期", type: "warning" });
+                return;
             }
+            if(this.formLabelAlign.valid_type ==2 && (this.formLabelAlign.surplus_days == "" || !positiveNum365(this.formLabelAlign.surplus_days))){
+                this.$message({ message: "天数为1到365的整数", type: "warning" });
+                return;
+            }
+            if(this.formLabelAlign.valid_type ==1){
+                this.formLabelAlign.surplus_days='';
+                this.formLabelAlign.start_time=this.timeValue[0];
+                this.formLabelAlign.end_time=this.timeValue[1];
+            }else if(this.formLabelAlign.valid_type ==2){
+                this.formLabelAlign.surplus_days=parseInt(this.formLabelAlign.surplus_days);
+                this.formLabelAlign.start_time="";
+                this.formLabelAlign.end_time="";
+            }
+            if(this.formLabelAlign.valid_type){
+                this.formLabelAlign.valid_type=parseInt(this.formLabelAlign.valid_type);
+            }
+            if(this.formLabelAlign.exchange_max_num){
+                this.formLabelAlign.exchange_max_num=parseInt(this.formLabelAlign.exchange_max_num);
+            }
+            if(this.formLabelAlign.original_score){
+                this.formLabelAlign.original_score=parseInt(this.formLabelAlign.original_score);
+            }
+            if(this.formLabelAlign.now_score){
+                this.formLabelAlign.now_score=parseInt(this.formLabelAlign.now_score);
+            }
+            
             if(this.formLabelAlign.goods_status){
                 this.formLabelAlign.goods_status=parseInt(this.formLabelAlign.goods_status);
             }

@@ -21,7 +21,7 @@
             <!-- <el-form-item label="* 内容编辑">
                 <Ueditor :defaultMsg="defaultMsg" :id="id" ref="ue"></Ueditor>
             </el-form-item> -->
-             <el-form-item label="* 上传图片">
+             <!-- <el-form-item label="* 上传图片">
                  <el-upload
                     :action="uploadUrl"
                     list-type="picture-card"
@@ -31,7 +31,7 @@
                     :on-remove="handleRemove2">
                     <i class="el-icon-plus"></i>
                 </el-upload>
-             </el-form-item>
+             </el-form-item> -->
         </el-form>
         <div class="primary">
             <el-button type="primary" @click="withdrawChange">提 交</el-button>

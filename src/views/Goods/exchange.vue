@@ -117,15 +117,15 @@
                 <el-button type="primary" @click="use()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="操作日志" :visible.sync="logVisible" width="650px">
+        <el-dialog title="操作日志" :visible.sync="logVisible" width="850px">
           <div class="table">
             <div class="table-list">
                 <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
                     <el-table-column align="center" prop="id" label="ID"></el-table-column>
                     <el-table-column align="center" prop="admin_name" label="操作人"></el-table-column>
                     <el-table-column align="center" prop="create_at" label="操作时间" width="200px"></el-table-column>
-                    <el-table-column align="center" prop="log_content" label="操作内容">
-                    </el-table-column>
+                    <el-table-column align="center" prop="log_content" label="操作内容"></el-table-column>
+                    <el-table-column align="center" prop="remarks" label="备注"></el-table-column>
                 </el-table>
             </div>
             <div class="table-peg">
@@ -238,6 +238,7 @@ export default {
           //确认兑换弹框
           // console.log(item)
           this.dialogData=item;
+          this.remarks='';
           this.dialogVisible=true;
         },
         async use(){

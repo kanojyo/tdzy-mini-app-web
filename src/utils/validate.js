@@ -82,9 +82,15 @@ export function srcMatch(str) {
   return str.match(reg)
 }
 
-//正则表达式验证包含大于0的正整数
+//正则表达式验证大于0的正整数
 export function positiveInteger(str) {
-  const reg = /^[1-9]\d*$/
+  const reg = /^[0-9]*[1-9][0-9]*$/
+  return str.match(reg)
+}
+
+//正则表达式验证1到365的整数
+export function positiveNum365(str) {
+  const reg = /^([1-9]|[1-9]\\d|365)$/
   return str.match(reg)
 }
 
