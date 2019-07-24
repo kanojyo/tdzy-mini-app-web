@@ -13,7 +13,7 @@
               </div>
             </div>
             <div class="right">
-              <p>预约总数量:{{doctorInfo.order_sale_num}}</p>
+              <p>预约总数量:{{doctorInfo.order_use_num}}</p>
               <!-- <p>实际预约数:{{doctorInfo.order_use_num}}</p> -->
             </div>
         </div>
