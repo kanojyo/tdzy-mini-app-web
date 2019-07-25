@@ -40,6 +40,7 @@
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
                     <el-table-column align="center" prop="id" label="ID"></el-table-column>
+                    <el-table-column align="center" prop="goods_id" label="商品ID"></el-table-column>
                     <el-table-column align="center" prop="exchange_code" label="编号"></el-table-column>
                     <el-table-column align="center" prop="name" label="用户姓名"></el-table-column>
                     <el-table-column align="center" prop="mobile" label="手机号"></el-table-column>

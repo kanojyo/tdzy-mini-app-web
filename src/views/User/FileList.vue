@@ -9,7 +9,7 @@
                     <el-input v-model="params.nickname" clearable size="mini" placeholder="用户昵称"></el-input>
                 </div>
                 <div class="input">
-                    <el-select v-model="params.department_id" clearable size="mini" placeholder="平台">
+                    <el-select v-model="params.department_id" clearable size="mini" placeholder="所属部门">
                         <el-option v-for="item in departList" :key="item.id" :label="item.name" :value="item.id" ></el-option>
                     </el-select>
                 </div>
@@ -49,13 +49,14 @@
                     <el-table-column align="center"  label="用户头像" width="80px">
                         <template slot-scope="scope">
                             <div>
-                                <img :src="scope.row.avatarurl" >
+                                <img v-if="scope.row.avatarurl" :src="scope.row.avatarurl" >
+                                <img v-else src="https://taidouapp.oss-cn-hangzhou.aliyuncs.com/avatar/avatar.png" alt="">
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="nickname" label="用户昵称"></el-table-column>
                     <el-table-column align="center" prop="yz_account" label="绑定医助"></el-table-column>
-                    <el-table-column align="center" prop="yz_department" label="部门"></el-table-column>
+                    <el-table-column align="center" prop="yz_department" label="所属部门"></el-table-column>
                     <el-table-column align="center" prop="name" label="用户姓名"></el-table-column>
                     <el-table-column align="center"  label="性别">
                         <template slot-scope="scope">

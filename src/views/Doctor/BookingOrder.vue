@@ -82,7 +82,13 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="order_money" label="预约挂号费用" width="75px"></el-table-column>
+          <el-table-column align="center" label="预约挂号费用" width="75px">
+            <template slot-scope="scope">
+              <div>
+                <span>¥{{scope.row.order_money}}</span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="doctor_name" label="医生姓名"></el-table-column>
           <el-table-column align="center" label="医生头像">
             <template slot-scope="scope">
