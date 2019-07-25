@@ -378,6 +378,7 @@ export default {
         },
         //修改排班
         modify(){
+          
            if (this.editData.order_time == "") {
                 this.$message({ message: "请选择排班日期", type: "warning" });
                 return;
@@ -394,10 +395,15 @@ export default {
                 this.$message({ message: "请选择预约上限", type: "warning" });
                 return;
             }
+            if(!positiveInteger(this.editData.order_max_num)){
+              this.$message({ message: "预约上限人数为正整数", type: "warning" });
+              return
+            }
            if (this.editData.order_money === "") {
                 this.$message({ message: "请选择预约费用", type: "warning" });
                 return;
             }
+            this.editData.order_max_num=parseInt(this.editData.order_max_num)
             schedulingUpdate(this.editData).then(data=>{
               if(data.code === 200){
                 this.$message({ message: "修改成功", type: "success" });
