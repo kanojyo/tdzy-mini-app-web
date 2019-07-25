@@ -4,6 +4,11 @@
         <div class="operation">
             <div class="pull-left">
                 <div class="input">
+                    <el-select v-model="params.status" clearable size="mini" placeholder="状态">
+                        <el-option v-for="item in status1" :key="item.type" :label="item.value" :value="item.type" ></el-option>
+                    </el-select>
+                </div>
+                <div class="input">
                     <el-select v-model="params.scheduling_status" clearable size="mini" placeholder="预约状态">
                         <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
@@ -190,6 +195,7 @@ export default {
     data() {
         return {
             params: {
+                status:1,
                 scheduling_status: "", //  查询状态 1：可预约，2：不可预约
                 start_time:"",
                 end_time:"",
@@ -216,6 +222,8 @@ export default {
             fileList: [],   //  附件容器
             uploadUrl: uploadUrl(), //  上传地址
             status: [{ type: 1, value: "可预约" }, { type: 2, value: "不可预约" }],    //  状态
+            status1: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }],    //  状态
+            
             timeValue:"",
             defaultMsg: '', //  编辑器内容
             id: 'DoctorIntroduce', //  编辑器ID
@@ -437,6 +445,7 @@ export default {
         },
         empty() {
             //  清空删选条件
+            this.params.status = "";
             this.params.scheduling_status = "";
             this.timeValue="";
             this.params.start_time="",
