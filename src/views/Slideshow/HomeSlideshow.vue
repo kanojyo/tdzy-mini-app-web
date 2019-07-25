@@ -50,8 +50,8 @@
           <el-table-column align="center" label="状态">
             <template slot-scope="scope">
               <div>
-                <span class="color-f8494c" v-if="scope.row.status === 1">展示中</span>
-                <span class="color_red" v-else>未展示</span>
+                <span class="color-f8494c" v-if="scope.row.status === 1">正常</span>
+                <span class="color_red" v-else>下架</span>
               </div>
             </template>
           </el-table-column>
@@ -72,7 +72,7 @@
                   v-if="scope.row.status === 1"
                   @click="statusChange(scope.row.id, 2)"
                 >下架</span>&nbsp;
-                <!-- <span class="cursor color-f8494c" @click="target(scope.row.link)">预览</span> -->
+                <span class="cursor color-f8494c" @click="target(scope.row.link)">预览</span>
               </div>
             </template>
           </el-table-column>
@@ -174,7 +174,7 @@ export default {
       },
       fileList: [], //  附件容器
       uploadUrl: uploadUrl(), //  上传地址
-      status: [{ type: 1, value: "展示中" }, { type: 2, value: "未展示" }], //  状态
+      status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }], //  状态
       timeValue:''
     };
   },
