@@ -370,6 +370,9 @@ export default {
           let data = await schedulingDetail({id:id});
           if(data.code === 200){
             this.editData= data.data;
+            if(this.editData.order_max_num){
+              this.editData.order_max_num=this.editData.order_max_num.toString();
+            }
             this.editVisible=true;
           }
         },
