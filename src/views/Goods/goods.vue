@@ -110,7 +110,7 @@
         <el-dialog :title="'商品' + title" :visible.sync="dialogVisible" width="650px">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 商品名称">
-                    <el-input v-model="formLabelAlign.goods_name" placeholder="请输入商品名称"></el-input>
+                    <el-input v-model="formLabelAlign.goods_name" placeholder="请输入商品名称" :maxlength="30"></el-input>
                     <span class="font_12">1至30字符或汉字</span>
                 </el-form-item>
                 <el-form-item label="* 商品类型">
@@ -133,7 +133,7 @@
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
                 </el-form-item>
                 <el-form-item label="* 商品使用规则">
-                    <el-input type="textarea" v-model="formLabelAlign.goods_rules" placeholder="请输入商品使用规则" :max-length="500" ></el-input>
+                    <el-input type="textarea" v-model="formLabelAlign.goods_rules" placeholder="请输入商品使用规则" :maxlength="500" ></el-input>
                     <span class="font_12" style="display:block;text-align:right;">500字以内</span>
                 </el-form-item>
                 <el-form-item label="* 兑换所需积分">
