@@ -327,12 +327,6 @@ export default {
         },
         async handleClose() {
             //  添加/编辑
-            console.log(typeof(this.formLabelAlign.valid_type),'valid_type')
-            console.log(typeof(this.formLabelAlign.sort),'sort')
-            console.log(typeof(this.formLabelAlign.surplus_days),'surplus_days')
-            console.log(typeof(this.formLabelAlign.exchange_max_num),'exchange_max_num')
-            console.log(typeof(this.formLabelAlign.original_score),'original_score')
-            console.log(typeof(this.formLabelAlign.goods_status),'goods_status')
             if (this.formLabelAlign.goods_name == "") {
                 this.$message({ message: "请輸入商品名称", type: "warning" });
                 return;
@@ -358,7 +352,7 @@ export default {
                 return;
             }
             if (this.formLabelAlign.exchange_max_num === "" || !integer(this.formLabelAlign.exchange_max_num)) {
-                this.$message({ message: "兑换上限只能填写的正整数", type: "warning" });
+                this.$message({ message: "兑换上限只能填写正整数或者0", type: "warning" });
                 return;
             }
             if (this.formLabelAlign.valid_type == "") {
