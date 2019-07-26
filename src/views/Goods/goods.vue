@@ -284,13 +284,27 @@ export default {
                 this.fileList = [
                     {name: '', url: data.data.pic_url}
                 ];
-                this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
-                this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
-                this.formLabelAlign.surplus_days =this.formLabelAlign.surplus_days.toString() ;
-                this.formLabelAlign.exchange_max_num =this.formLabelAlign.exchange_max_num.toString() ;
-                this.formLabelAlign.original_score =this.formLabelAlign.original_score.toString() ;
-                this.formLabelAlign.now_score =this.formLabelAlign.now_score.toString() ;
-                this.formLabelAlign.goods_status =parseFloat(this.formLabelAlign.goods_status);
+                if(this.formLabelAlign.valid_type){
+                    this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
+                }
+                if(this.formLabelAlign.sort){
+                   this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
+                }
+                if(this.formLabelAlign.surplus_days){
+                   this.formLabelAlign.surplus_days =this.formLabelAlign.surplus_days.toString() ;
+                }
+                if(this.formLabelAlign.exchange_max_num){
+                   this.formLabelAlign.exchange_max_num =this.formLabelAlign.exchange_max_num.toString() ;
+                }
+                if(this.formLabelAlign.original_score){
+                   this.formLabelAlign.original_score =this.formLabelAlign.original_score.toString() ;
+                }
+                if(this.formLabelAlign.now_score){
+                   this.formLabelAlign.now_score =this.formLabelAlign.now_score.toString() ;
+                }
+                if(this.formLabelAlign.goods_status){
+                   this.formLabelAlign.goods_status =parseFloat(this.formLabelAlign.goods_status);
+                }
                 this.dialogVisible = true;
             }
         },

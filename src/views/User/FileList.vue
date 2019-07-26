@@ -136,7 +136,8 @@
                         <td style="width: 150px;">用户头像</td>
                         <td>
                             <div style="width:80px;">
-                                <img :src="userInfo.avatarurl" alt="">
+                                <img v-if="userInfo.avatarurl" :src="userInfo.avatarurl" alt="">
+                                <img v-else src="https://taidouapp.oss-cn-hangzhou.aliyuncs.com/avatar/avatar.png" alt="">
                             </div>
                         </td>
                     </tr>
