@@ -125,7 +125,7 @@
                     </tr>
                     <tr>
                         <td>手机号</td>
-                        <td>{{userInfo.account}}</td>
+                        <td>{{userInfo.customer_mobile}}</td>
                     </tr>
                 </table>
             </div>
