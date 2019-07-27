@@ -222,7 +222,7 @@
             <el-table-column align="center" prop="log_content" label="操作内容" width="300px"></el-table-column>
           </el-table>
         </div>
-        <div class="table-peg">
+        <!-- <div class="table-peg">
           <div class="pull-left"></div>
           <div class="pull-right">
             <el-pagination
@@ -235,7 +235,7 @@
               :total="logCount"
             ></el-pagination>
           </div>
-        </div>
+        </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="logVisible = false">取 消</el-button>

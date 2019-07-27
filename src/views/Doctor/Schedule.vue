@@ -377,7 +377,6 @@ export default {
           }
         },
         time(){
-          console.log(111)
         },
         //修改排班
         modify(){
