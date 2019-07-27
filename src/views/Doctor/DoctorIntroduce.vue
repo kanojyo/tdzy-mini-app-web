@@ -311,6 +311,7 @@ export default {
         // },
         async edit(id) { //  编辑
             this.fileList2 = [];
+            this.picList=[];
             this.formLabelAlign.doctor_details='';
             this.title = "编辑";
             let data = await doctorInfo({id: id});
@@ -347,6 +348,7 @@ export default {
                 status: 1,
             };
             this.fileList = [];
+            this.picList=[];
             this.dialogVisible = true;
         },
         async handleClose() {
