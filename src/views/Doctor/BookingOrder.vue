@@ -237,10 +237,10 @@
           </div>
         </div> -->
       </div>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="logVisible = false">取 消</el-button>
         <el-button type="primary" @click="logVisible = false">确 定</el-button>
-      </span>
+      </span> -->
     </el-dialog>
   </div>
 </template>

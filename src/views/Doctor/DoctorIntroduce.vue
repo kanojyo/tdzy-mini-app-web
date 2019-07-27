@@ -390,7 +390,9 @@ export default {
                 this.$message({ message: "请上传图片", type: "warning" });
                 return;
             }
-            this.formLabelAlign.doctor_details = JSON.stringify(this.formLabelAlign.doctor_details);
+            if(typeof(this.formLabelAlign.doctor_details) !== 'string'){
+                this.formLabelAlign.doctor_details = JSON.stringify(this.formLabelAlign.doctor_details);
+            }
             let data = "";
             if (this.title === "添加") {
                 data = await doctorSave(this.formLabelAlign);
