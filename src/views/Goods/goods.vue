@@ -424,6 +424,28 @@ export default {
                 this.dialogVisible = false;
                 this.index(this.params);
                 this.$message({ message: data.data.msg, type: "success" });
+            }else{
+                if(this.formLabelAlign.valid_type){
+                    this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
+                }
+                if(this.formLabelAlign.sort){
+                   this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
+                }
+                if(this.formLabelAlign.surplus_days){
+                   this.formLabelAlign.surplus_days =this.formLabelAlign.surplus_days.toString() ;
+                }
+                if(this.formLabelAlign.exchange_max_num){
+                   this.formLabelAlign.exchange_max_num =this.formLabelAlign.exchange_max_num.toString() ;
+                }
+                if(this.formLabelAlign.original_score){
+                   this.formLabelAlign.original_score =this.formLabelAlign.original_score.toString() ;
+                }
+                if(this.formLabelAlign.now_score){
+                   this.formLabelAlign.now_score =this.formLabelAlign.now_score.toString() ;
+                }
+                if(this.formLabelAlign.goods_status){
+                   this.formLabelAlign.goods_status =parseFloat(this.formLabelAlign.goods_status);
+                }
             }
         },
         statusChange(id, val){ //  上架、下架、暂停兑换
