@@ -7,10 +7,7 @@
                     <el-input size="mini" v-model="params.exchange_code" placeholder="兑换编号"></el-input>
                 </div>
                 <div class="input">
-                    <el-input size="mini" v-model="params.name" placeholder="用户姓名"></el-input>
-                </div>
-                <div class="input">
-                    <el-input size="mini" v-model="params.mobile" placeholder="手机号"></el-input>
+                    <el-input size="mini" v-model="params.customer_code" placeholder="用户档案编号"></el-input>
                 </div>
                 <div class="input">
                     <el-select v-model="params.status" clearable size="mini" placeholder="状态">
@@ -41,9 +38,8 @@
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
                     <el-table-column align="center" prop="id" label="ID"></el-table-column>
                     <el-table-column align="center" prop="goods_id" label="商品ID"></el-table-column>
-                    <el-table-column align="center" prop="exchange_code" label="编号"></el-table-column>
-                    <el-table-column align="center" prop="name" label="用户姓名"></el-table-column>
-                    <el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
+                    <el-table-column align="center" prop="exchange_code" label="兑换编号"></el-table-column>
+                    <el-table-column align="center" prop="customer_code" label="用户档案编号"></el-table-column>
                     <el-table-column align="center" prop="exchange_score" label="兑换积分"></el-table-column>
                     <el-table-column align="center" prop="goods_name" label="商品名称"></el-table-column>
                     <el-table-column align="center" label="状态">
@@ -227,9 +223,8 @@ export default {
         empty() {
             //  清空删选条件
             this.params.exchange_code = "";
-            this.params.name = "";
+            this.params.customer_code = "";
             this.params.status = "";
-            this.params.mobile = "";
             this.timeValue="";
             this.params.start_time="";
             this.params.end_time="";
