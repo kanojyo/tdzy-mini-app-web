@@ -4,10 +4,7 @@
         <div class="operation">
             <div class="pull-left">
                 <div class="input">
-                    <el-input size="mini" v-model="params.name" placeholder="用户姓名"></el-input>
-                </div>
-                <div class="input">
-                    <el-input size="mini" v-model="params.mobile" placeholder="手机号"></el-input>
+                    <el-input size="mini" v-model="params.customer_code" placeholder="用户档案编号"></el-input>
                 </div>
                 <div class="search">
                     <el-button icon="el-icon-search" type="primary" size="mini" @click="search">查询结果</el-button>
@@ -20,9 +17,9 @@
         <div class="table">
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
-                    <el-table-column align="center" prop="id" label="ID"></el-table-column>
-                    <el-table-column align="center" prop="name" label="用户姓名"></el-table-column>
-                    <el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
+                    <el-table-column align="center" prop="id" label="商品ID"></el-table-column>
+                    <el-table-column align="center" prop="customer_code" label="用户档案编号"></el-table-column>
+                    <el-table-column align="center" prop="nickname" label="用户昵称"></el-table-column>
                     <el-table-column align="center" prop="created_at" label="签到时间"></el-table-column>
                     <el-table-column align="center" prop="change_score" label="获得积分"></el-table-column>
                     <el-table-column align="center" prop="score" label="当前积分"></el-table-column>
@@ -53,8 +50,7 @@ export default {
     data() {
         return {
             params: {
-                name:"",
-                mobile: "", 
+                customer_code:"",
                 page: 1, //  分页
                 pageSize: 30 //    每页显示条数
             },
@@ -91,8 +87,7 @@ export default {
         },
         empty() {
             //  清空删选条件
-            this.params.name = "";
-            this.params.mobile = "";
+            this.params.customer_code = "";
             this.index();
         },
     }
