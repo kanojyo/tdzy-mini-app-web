@@ -17,7 +17,7 @@
         <div class="table">
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
-                    <el-table-column align="center" prop="id" label="商品ID"></el-table-column>
+                    <el-table-column align="center" prop="id" label="ID"></el-table-column>
                     <el-table-column align="center" prop="customer_code" label="用户档案编号"></el-table-column>
                     <el-table-column align="center" prop="nickname" label="用户昵称"></el-table-column>
                     <el-table-column align="center" prop="created_at" label="签到时间"></el-table-column>

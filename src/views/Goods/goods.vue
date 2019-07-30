@@ -30,7 +30,7 @@
         <div class="table">
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}">
-                    <el-table-column align="center" prop="id" label="ID"></el-table-column>
+                    <el-table-column align="center" prop="id" label="商品ID"></el-table-column>
                     <el-table-column align="center" label="商品图片">
                         <template slot-scope="scope">
                             <img :src="scope.row.pic_url"  >

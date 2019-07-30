@@ -40,6 +40,7 @@
                     <el-table-column align="center" prop="goods_id" label="商品ID"></el-table-column>
                     <el-table-column align="center" prop="exchange_code" label="兑换编号"></el-table-column>
                     <el-table-column align="center" prop="customer_code" label="用户档案编号"></el-table-column>
+                    <el-table-column align="center" prop="nickname" label="用户昵称"></el-table-column>
                     <el-table-column align="center" prop="exchange_score" label="兑换积分"></el-table-column>
                     <el-table-column align="center" prop="goods_name" label="商品名称"></el-table-column>
                     <el-table-column align="center" label="状态">
