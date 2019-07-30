@@ -7,6 +7,9 @@
                     <el-input v-model="params.admin" clearable size="mini" placeholder="管理员账号"></el-input>
                 </div>
                 <div class="input">
+                    <el-input v-model="params.account" clearable size="mini" placeholder="用户昵称"></el-input>
+                </div>
+                <div class="input">
                     <el-select v-model="params.status" clearable size="mini" placeholder="处理状态">
                         <el-option v-for="item in status" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
@@ -29,7 +32,7 @@
             <div class="table-list">
                 <el-table :data="list" border height="700" :header-cell-style="{background:'#f3f3f3'}">
                     <el-table-column align="center" prop="id" label="投诉编号"></el-table-column>
-                    <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
+                    <el-table-column align="center" prop="account" label="用户昵称"></el-table-column>
                     <el-table-column align="center" prop="status" label="状态">
                         <template slot-scope="scope">
                             <div>
@@ -149,6 +152,7 @@ export default {
             params: {
                 status: "", //  状态值，1处理2待反馈3已反馈4已结束，不传代表查询全部
                 admin: "", //  管理员账号
+                account:"",
                 created_at_begin: "",   //  登记开始时间,举例 2019-03-06 15:36:12
                 created_at_end: "", //  登记结束时间,举例 2019-03-06 15:36:12
                 updated_at_begin: "",   //  处理开始时间,举例 2019-03-06 15:36:12
@@ -291,6 +295,7 @@ export default {
             this.params = {
                 status: "", //  状态值，1处理2待反馈3已反馈4已结束，不传代表查询全部
                 admin: "", //  管理员账号
+                account: "", 
                 created_at_begin: "",   //  登记开始时间,举例 2019-03-06 15:36:12
                 created_at_end: "", //  登记结束时间,举例 2019-03-06 15:36:12
                 updated_at_begin: "",   //  处理开始时间,举例 2019-03-06 15:36:12
