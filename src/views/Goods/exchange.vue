@@ -242,7 +242,7 @@ export default {
           //确认兑换
           let data = await goodsConfirm({exchange_id:this.dialogData.id,remarks:this.remarks});
           if(data.code ===200){
-            this.$message({ message: '兑换成功~', type: "success"});
+            this.$message({ message: '确认使用成功~', type: "success"});
             this.dialogVisible=false;
             this.index();
           }

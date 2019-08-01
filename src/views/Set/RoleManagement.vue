@@ -195,9 +195,12 @@ export default {
             let data = await rolePermission({id: id});
             if (data.code == 200) {
                 this.zthreeData = data.data.roleMenu;
+                console.log(this.zthreeData , id)
+                this.keys=[];
                 this.traverseTree(this.zthreeData);
                 this.permission.id = id;
                 this.permissionShow = true;
+                
             }
         },
         traverseTree(zthree) {
@@ -205,7 +208,7 @@ export default {
             if (!zthree) return;
             if (zthree.length > 0) {
                 zthree.forEach(v => {
-                    if (v.selected) {
+                    if (v.selected === true) {
                         this.keys.push(v.id);
                     }
                     this.traverseTree(v.data);
