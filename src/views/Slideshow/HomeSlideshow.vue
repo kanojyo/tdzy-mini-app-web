@@ -125,8 +125,8 @@
             v-model="formLabelAlign.status"
             :active-value="2"
             :inactive-value="1"
-            active-text="未展示"
-            inactive-text="展示中"
+            active-text="下架"
+            inactive-text="正常"
             active-color="#e4e4e4"
             inactive-color="#1ABC9C"
           ></el-switch>
