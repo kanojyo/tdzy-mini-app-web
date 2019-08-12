@@ -13,6 +13,8 @@ import set from './set';
 import slideshow from './slideshow';
 import hospital from './hospital';
 import goods from './goods';
+import office from './office';
+import  video  from './video';
 
 Vue.use(Router);
 
@@ -51,6 +53,8 @@ export default new Router({
                 ...slideshow,   //  轮播图
                 ...hospital,    //  医院
                 ...goods,
+                ...office,
+                ...video,
             ],
         }
     ]

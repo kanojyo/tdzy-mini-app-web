@@ -24,3 +24,8 @@ export function myInfo(){ return fetch({url: '/v1/myInfo', method: 'GET'}) }
 *   NO:5    用户登录 -- 退出登录
 */
 export function signOut(){ return fetch({url: '/v1/signOut', method: 'POST'}) }
+
+/*
+*   NO:6    用户登录 -- 修改密码
+*/
+export function editPassword(){ return fetch({url: '/v1/edit_password', method: 'POST'}) }

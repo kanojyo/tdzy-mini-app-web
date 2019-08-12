@@ -11,7 +11,20 @@
                         <div class="avatar">
                             <img :src="user.avatar" alt>
                         </div>
-                        <div class="username">{{user.username}}</div>
+                        <el-dropdown>
+                            <span class="el-dropdown-link username">
+                                {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item >
+                                    <span @click="changePassword">修改密码</span>
+                                </el-dropdown-item>
+                                <el-dropdown-item >
+                                    <span @click="exit">退出登录</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                            </el-dropdown>
+                        <!-- <div class="username">{{user.username}}</div>
                         <div>|</div>
                         <div class="icon" @click="headClick(1)">
                             <el-tooltip content="返回上一步" placement="bottom" effect="light">
@@ -29,7 +42,7 @@
                             <el-tooltip content="退出登录" placement="bottom" effect="light">
                                 <i class="icon iconfont icon-tuichu"></i>
                             </el-tooltip>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </el-header>
@@ -47,11 +60,13 @@
                                 <i class="icon iconfont icon-ai-article" v-if="item.name === '文章'"></i>
                                 <!-- <i class="icon iconfont icon-wodeyouhuijuan" v-if="item.name === '优惠劵'"></i> -->
                                 <!-- <i class="icon iconfont icon-banben" v-if="item.name === '版本'"></i> -->
+                                <i class="icon iconfont icon-333" v-if="item.name === '科室'"></i>
                                 <i class="icon iconfont icon-banben" v-if="item.name === '商品'"></i>
                                 <i class="icon iconfont icon-yonghu" v-if="item.name === '用户'"></i>
                                 <i class="icon iconfont icon-yunyingguanli" v-if="item.name === '运营'"></i>
                                 <i class="icon iconfont icon-yisheng" v-if="item.name === '医生'"></i>
                                 <i class="icon iconfont icon-lunbotu" v-if="item.name === '轮播图'"></i>
+                                <i class="icon iconfont icon-lunbotu" v-if="item.name === '视频'"></i>
                                 <i class="icon iconfont icon-333" v-if="item.name === '医院'"></i>
                                 <i class="icon iconfont icon-shezhi" v-if="item.name === '设置'"></i>
                                 &nbsp;{{item.name}}
@@ -79,11 +94,53 @@
                     <router-view v-if="!$route.meta.keepAlive"></router-view>
                 </el-main>
             </el-container>
+            <el-dialog title="修改密码" :visible.sync="dialogVisible" :width="dialogWidth">
+                <el-form :model="params">
+                    <!-- <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <el-input v-model="params.userName" autocomplete="off" disabled></el-input>
+                    </el-form-item> -->
+                    <el-form-item label="旧密码" :label-width="formLabelWidth">
+                    <el-input
+                        size="large"
+                        type="password"
+                        v-model="params.old_password"
+                        placeholder="请输入旧密码"
+                        clearable
+                        show-password
+                    ></el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码" :label-width="formLabelWidth">
+                    <el-input
+                        size="large"
+                        type="password"
+                        v-model="params.newPassword"
+                        placeholder="请输入新密码"
+                        clearable
+                        show-password
+                    ></el-input>
+                    </el-form-item>
+                    <p style="padding-left:120px;">新密码长度6到16位,可以是数字,字母,或者特殊符号组成</p>
+                    <el-form-item label="重复新密码" :label-width="formLabelWidth">
+                    <el-input
+                        size="large"
+                        type="password"
+                        v-model="params.re_new_password"
+                        placeholder="重复新密码"
+                        clearable
+                        show-password
+                    ></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submitForm">提交</el-button>
+                </div>
+            </el-dialog>
         </el-container>
     </div>
 </template>
 <script>
-import { myInfo, signOut } from "@/api/login.js";
+import { myInfo, signOut, editPassword } from "@/api/login.js";
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -94,6 +151,14 @@ export default {
             twoNavList: [], //	子导航数组
             user: '',   //  用户信息
             menu: [],   //  菜单
+            dialogVisible:false,
+            formLabelWidth: "100px",
+            dialogWidth: "30%",
+            params:{
+                old_password:'',
+                new_password:'',
+                re_new_password:'',
+            }
         };
     },
     mounted() {
@@ -133,7 +198,7 @@ export default {
         },
         twoMenuClick(item) {
             //	二级导航
-            console.log(item)
+            // console.log(item)
             sessionStorage.setItem("twoId", item.id); //  存储当前导航菜单ID
             this.isActiveShow = item.id;
             this.$router.push(item.route_web);
@@ -154,7 +219,36 @@ export default {
                 sessionStorage.clear();
                 this.$message({ message: data.data.msg, type: "success" });
             }
-        }
+        },
+        //修改密码弹框
+        changePassword(){
+            this.dialogVisible = true;
+            this.params.password = "";
+            this.params.newPassword = "";
+        },
+        //修改密码
+        async submitForm() {
+            if (this.params.old_password === "") {
+                this.$message({ message: "请输入密码", type: "warning" });
+                return;
+            }
+            if (this.params.new_password === "") {
+                this.$message({ message: "请输入新密码", type: "warning" });
+                return;
+            }
+            if (this.params.re_new_password === "") {
+              this.$message({ message: "请输入重复新密码", type: "warning" });
+              return;
+            }
+            let data = await editPassword(this.params);
+            if (data.code == 200) {
+                this.$message({ message: "密码修改成功", type: "success" });
+                this.dialogVisible=false;
+                // this.$router.push("/");
+                // sessionStorage.clear();
+                // window.location.reload();
+            }
+        },
     }
 };
 </script>
@@ -243,6 +337,11 @@ export default {
             height: 32px;
             img {
                 border-radius: 50%;
+            }
+        }
+        .el-dropdown{
+            .username{
+                color:#fff;
             }
         }
         .icon {

@@ -99,7 +99,7 @@
                         @current-change="handleCurrentChange"
                         :current-page="params.page"
                         :page-sizes="[30, 50, 100]"
-                        :page-size="params.pageSize"
+                        :page-size="params.pagesize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="count"
                     ></el-pagination>
@@ -193,7 +193,7 @@ export default {
                 goods_type: 1, //  商品类型 0:全部 1：诊疗类，2：实物类, 3:虚拟类
                 goods_status: 1, //  状态 1：正常，2：下架, 3:暂停兑换
                 page: 1, //  分页
-                pageSize: 30 //    每页显示条数
+                pagesize: 30 //    每页显示条数
             },
             count: 0, //	总数据
             list: [], //	    列表数据
@@ -240,7 +240,7 @@ export default {
         },
         handleSizeChange(val) {
             //	每页多少条
-            this.params.pageSize = val;
+            this.params.pagesize = val;
             this.index();
         },
         handleSuccess(file) {   //  上传附件

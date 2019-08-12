@@ -74,7 +74,7 @@
                         @current-change="handleCurrentChange"
                         :current-page="params.page"
                         :page-sizes="[30, 50, 100]"
-                        :page-size="params.pageSize"
+                        :page-size="params.pagesize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="count"
                     ></el-pagination>
@@ -134,7 +134,7 @@
                         @current-change="handleCurrentChange2"
                         :current-page="logParams.page"
                         :page-sizes="[30, 50, 100]"
-                        :page-size="logParams.pageSize"
+                        :page-size="logParams.pagesize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="logCount"
                     ></el-pagination>
@@ -206,12 +206,12 @@ export default {
         },
         handleSizeChange(val) {
             //	每页多少条
-            this.params.pageSize = val;
+            this.params.pagesize = val;
             this.index();
         },
         handleSizeChange2(val) {
             //	每页多少条
-            this.logParams.pageSize = val;
+            this.logParams.pagesize = val;
             this.getLogList();
         },
         search() {
