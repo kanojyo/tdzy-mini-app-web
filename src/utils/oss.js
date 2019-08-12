@@ -1,5 +1,6 @@
 'use strict'
 import {dateFormat} from '@/utils/util'
+import ElementUI from 'element-ui';
  
 var OSS = require('ali-oss')
  
@@ -47,7 +48,8 @@ export default {
       const dateTime = dateFormat(new Date(), 'yyyyMMddhhmmss') // 当前时间
       const randomStr = self.randomString(4)//  4位随机字符串
       const extensionName = file.name.substr(file.name.indexOf('.')) // 文件扩展名
-      const fileName = 'tdzy/' + date + '/' + dateTime + '_' + randomStr + extensionName // 文件名字（相对于根目录的路径 + 文件名）
+      const fileName = 'video/' + date + '/' + dateTime + '_' + randomStr + extensionName // 文件名字（相对于根目录的路径 + 文件名）
+      console.log(fileName,1111)
       // 执行上传
       self.createOssClient().then(client => {
         // 异步上传,返回数据
@@ -65,15 +67,16 @@ export default {
             option.onProgress(e);
           }
         }).then((val) => {
-          console.info(val)
           if (val.res.statusCode === 200) {
             option.onSuccess(val)
             return val
           } else {
-            option.onError('上传失败')
+            option.onError('上传失败');
+            ElementUI.Message.error('上传失败');
           }
         }, err => {
           option.onError('上传失败')
+          ElementUI.Message.error('上传失败');
           reject(err)
         })
       })

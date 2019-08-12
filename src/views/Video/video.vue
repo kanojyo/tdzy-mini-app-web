@@ -89,7 +89,7 @@
         <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 视频标题">
-                    <el-input v-model="formLabelAlign.id" placeholder="请输入视频标题" ></el-input>
+                    <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" ></el-input>
                 </el-form-item>
                 <el-form-item label="* 视频主图">
                     <el-upload
@@ -105,32 +105,21 @@
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,建议为690px*480px</span>
                 </el-form-item>
-                <!-- <el-form-item label="* 上传视频">
+                <el-form-item label="* 上传视频">
                     <el-upload  class="upload-demo" action=""
                             :http-request="fnUploadRequest"
                             :show-file-list="true"
+                            :file-list="fileList3"
                             :limit=1
-                            :on-exceed="beyondFile"
                             :on-success="handleVideoSuccess"
-                            :before-upload="beforeUploadVideo">
-                        <div tabindex="0" class="el-upload-video">
+                            :on-remove="videoRemove"
+                            :before-upload="beforeUploadVideo"
+                            list-type="text">
+                        <!-- <div tabindex="0" class="el-upload-video">
                             <i class="el-upload-video-i el-icon-plus avatar-uploader-icon"></i>
-                        </div>
-                        <div class="el-upload__tip" slot="tip">上传视频文件，且不超过500mb</div>
-                    </el-upload>
-                </el-form-item> -->
-                <el-form-item label="上传视频">
-                    <el-upload  class="upload-demo" action=""
-                            :http-request="fnUploadRequest"
-                            :show-file-list="true"
-                            :limit=1
-                            :on-exceed="beyondFile"
-                            :on-success="handleVideoSuccess"
-                            :before-upload="beforeUploadVideo">
-                        <div tabindex="0" class="el-upload-video">
-                            <i class="el-upload-video-i el-icon-plus avatar-uploader-icon"></i>
-                        </div>
-                        <div class="el-upload__tip" slot="tip">上传视频文件，且不超过500mb</div>
+                        </div> -->
+                        <el-button size="mini" type="primary">点击上传</el-button>
+                        <!-- <div class="el-upload__tip" slot="tip">上传视频文件，且不超过500mb</div> -->
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="* 来源头像">
@@ -148,7 +137,7 @@
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
                 </el-form-item>
                 <el-form-item label="* 来源">
-                    <el-input v-model="formLabelAlign.name" placeholder="请输入泰斗中医院" ></el-input>
+                    <el-input v-model="formLabelAlign.source" placeholder="请输入泰斗中医院" ></el-input>
                 </el-form-item>
                 <el-form-item label="* 排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
@@ -165,7 +154,7 @@
             </span>
         </el-dialog>
         <!-- 视频预览 -->
-        <el-dialog title="视频预览" :visible.sync="previewShow" width="980px" :before-close="close">
+        <el-dialog title="视频预览" :visible.sync="previewShow" width="700px" :before-close="close">
             <video :src="previewVideo" style="width:100%;" controls="controls"></video>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="close">关 闭</el-button>
@@ -207,6 +196,7 @@ export default {
             },
             fileList: [],   //  科室图标容器
             fileList2: [],   //  科室图片
+            fileList3:[],//视频
             picList:[],
             uploadUrl: uploadUrl(), //  上传地址
             type:[{type: 1, value: "正常" }, {type: 2, value: "下架" }], //商品类型
@@ -249,7 +239,6 @@ export default {
             this.index();
         },
          async fnUploadRequest(option) {
-            console.log(option)
             oss.ossUploadFile(option)
         },
         // 视频上传
@@ -257,8 +246,19 @@ export default {
             // todo
         },
         // 视频上传成功后
-        handleVideoSuccess(response, file, fileList) {
+        handleVideoSuccess(response, file, fileList3) {
             // todo
+            // console.log(response)
+            if(response && response.res.statusCode === 200){
+                var url=response.res.requestUrls[0]
+                console.log(url);
+                var str1 = url.split("?uploadId")[0];
+                this.formLabelAlign.video=str1;
+            }
+        },
+        //删除视频
+        videoRemove(file, fileList3){
+            this.formLabelAlign.video='';
         },
         handleSuccess(file) {   //  上传附件
             if(file.code === 200){
@@ -300,6 +300,8 @@ export default {
         async edit(id) { //  编辑
             this.title = "编辑";
             this.fileList = [];
+            this.fileList2 = [];
+            this.fileList3 = [];
             let data = await videoDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
@@ -308,6 +310,9 @@ export default {
                 ];
                 this.fileList2 = [
                     {name: '', url: data.data.source_img}
+                ];
+                this.fileList3 = [
+                    {name: '', url: data.data.video}
                 ];
                 this.dialogVisible = true;
             }
@@ -326,6 +331,7 @@ export default {
             };
             this.fileList = [];
             this.fileList2 = [];
+            this.fileList3 = [];
             this.dialogVisible = true;
         },
         async handleClose() {
@@ -334,10 +340,6 @@ export default {
                 this.$message({ message: "请輸入视频标题", type: "warning" });
                 return;
             }
-            // if (this.formLabelAlign.name == "") {
-            //     this.$message({ message: "请选择科室名称", type: "warning" });
-            //     return;
-            // }
             if (this.formLabelAlign.cover_img == "") {
                 this.$message({ message: "请上传视频主图", type: "warning" });
                 return;
@@ -360,9 +362,9 @@ export default {
             }
             let data;
             if (this.title === "添加") {
-                data = await officeUpdate(this.formLabelAlign);
+                data = await videoUpdate(this.formLabelAlign);
             } else {
-                data = await officeUpdate(this.formLabelAlign);
+                data = await videoUpdate(this.formLabelAlign);
             }
             if (data.code === 200) {
                 this.dialogVisible = false;
