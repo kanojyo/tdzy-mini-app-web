@@ -83,7 +83,7 @@
                     <el-input v-model="formLabelAlign.id" placeholder="请输入ID" ></el-input>
                 </el-form-item> -->
                 <el-form-item label="* 科室">
-                    <el-input v-model="formLabelAlign.name" placeholder="请输入科室" ></el-input>
+                    <el-input v-model="formLabelAlign.name" placeholder="请输入科室" :maxlength="10"></el-input>
                 </el-form-item>
                 <el-form-item label="* 科室图标">
                     <el-upload

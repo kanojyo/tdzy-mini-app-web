@@ -149,10 +149,11 @@
       </span>
     </el-dialog>
     <!-- 确认就诊or预约详情 -->
-    <el-dialog :title="title" :visible.sync="editVisible" width="650px">
+    <el-dialog :title="title" :visible.sync="editVisible" width="850px">
+      <div class="title" v-if="title == '预约详情'"><p>预约信息</p></div>
       <table class="ajun-table">
         <tr>
-          <td>预约编号</td>
+          <td style="width:320px;">预约编号</td>
           <td>{{info.appointment_code}}</td>
         </tr>
         <tr>
@@ -206,6 +207,28 @@
           <td>{{info.remarks}}</td>
         </tr>
       </table>
+      <div class="title" v-if="title == '预约详情'"><p>支付信息</p></div>
+      <table class="ajun-table" v-if="title == '预约详情'">
+        <tr>
+          <td style="width:320px;">支付时间</td>
+          <td>{{info.pay_time}}</td>
+        </tr>
+        <tr>
+          <td>支付状态</td>
+          <td>{{info.pay_status||payStatus}}</td>
+        </tr>
+      </table>
+      <div class="title" v-if="title == '预约详情'"><p>日志信息</p></div>
+      <div class="table" v-if="title == '预约详情'">
+        <div class="table-list">
+          <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
+            <el-table-column align="center" prop="id" label="ID"></el-table-column>
+            <el-table-column align="center" prop="admin_name" label="操作人"></el-table-column>
+            <el-table-column align="center" prop="admin_at" label="操作时间" width="200px"></el-table-column>
+            <el-table-column align="center" prop="log_content" label="操作内容" width="300px"></el-table-column>
+          </el-table>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer" v-if="title == '确认就诊'">
         <el-button @click="editVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
@@ -425,6 +448,7 @@ export default {
           this.info = data.data;
         }
       });
+      this.getLogList();
     },
     //操作日志弹框
     logPop(id) {
@@ -468,6 +492,13 @@ export default {
     p {
       line-height: 25px;
     }
+  }
+}
+.el-dialog{
+  .title{
+    padding:10px 0;
+    font-weight: bold;
+    font-size: 20px;
   }
 }
 </style>

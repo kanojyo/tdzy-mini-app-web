@@ -149,7 +149,7 @@
                     <el-table-column align="center" prop="order_max_num" label="预约费用">
                       <template slot-scope="scope">
                         <div>
-                          <el-input v-model="scope.row.order_money" :disabled="true" placeholder="请输入预约费用"></el-input>
+                          <el-input v-model="scope.row.order_money"  @change="val=>money(val,scope.$index)" placeholder="请输入预约费用"></el-input>
                         </div>
                       </template>
                     </el-table-column>
@@ -196,7 +196,7 @@
                     <el-input v-model="editData.order_max_num" placeholder="请输入预约上限"></el-input>
                 </el-form-item>
                 <el-form-item label="* 预约费用/元" >
-                    <el-input v-model="editData.order_money" :disabled="true" placeholder="请输入预约费用"></el-input>
+                    <el-input v-model="editData.order_money" @change="editMoney(editData.order_money)"  placeholder="请输入预约费用"></el-input>
                 </el-form-item>
             </el-form>
           <span slot="footer" class="dialog-footer">
@@ -209,7 +209,7 @@
 
 <script type="text/javascript">
 import { schedulingList, schedulingDetail, schedulingUpdate, schedulingSave} from "@/api/doctor.js";
-import {positiveInteger} from "@/utils/validate.js"
+import {positiveInteger, positiveFloatNum2} from "@/utils/validate.js"
 
 export default {
     data() {
@@ -327,7 +327,22 @@ export default {
             this.addData.scheduling_json[index].order_max_num='';
             return
           }
-
+        },
+        //监听排班设置中金额
+        money(val,index){
+          // console.log(val)
+          if(!(positiveFloatNum2(val) || val ==0)){
+            this.$message({ message: "预约费用为正数，保留2位小数！", type: "warning" });
+            this.addData.scheduling_json[index].order_money='';
+            return
+          }
+        },
+        editMoney(val){
+          if(!(positiveFloatNum2(val) || val ==0)){
+            this.$message({ message: "预约费用为正数，保留2位小数！", type: "warning" });
+            this.editData.order_money='';
+            return
+          }
         },
         //复制
         copy(index,item){

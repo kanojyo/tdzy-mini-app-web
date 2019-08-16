@@ -93,6 +93,11 @@ export function positiveNum365(str) {
   const reg = /^([1-9][0-9]{0,1}|365)$/
   return str.match(reg)
 }
+//正则表达式验证正数且保留2位有效小数点
+export function positiveFloatNum2(str) {
+  const reg = /^\+?(\d*\.\d{2})$/
+  return str.match(reg)
+}
 
 
 

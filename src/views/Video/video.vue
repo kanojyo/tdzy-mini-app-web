@@ -89,7 +89,7 @@
         <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 视频标题">
-                    <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" ></el-input>
+                    <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" :maxlength="10"></el-input>
                 </el-form-item>
                 <el-form-item label="* 视频主图">
                     <el-upload
@@ -115,12 +115,13 @@
                             :on-remove="videoRemove"
                             :before-upload="beforeUploadVideo"
                             list-type="text">
-                        <!-- <div tabindex="0" class="el-upload-video">
-                            <i class="el-upload-video-i el-icon-plus avatar-uploader-icon"></i>
-                        </div> -->
                         <el-button size="mini" type="primary">点击上传</el-button>
                         <!-- <div class="el-upload__tip" slot="tip">上传视频文件，且不超过500mb</div> -->
                     </el-upload>
+                </el-form-item>
+                <el-form-item label="* 视频时长">
+                    <el-input v-model="formLabelAlign.video_length" placeholder="请输入视频时长" ></el-input>
+                    <span class="font_12">视频时长为秒做单位</span>
                 </el-form-item>
                 <el-form-item label="* 来源头像">
                     <el-upload
@@ -137,7 +138,7 @@
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
                 </el-form-item>
                 <el-form-item label="* 来源">
-                    <el-input v-model="formLabelAlign.source" placeholder="请输入泰斗中医院" ></el-input>
+                    <el-input v-model="formLabelAlign.source" placeholder="请输入泰斗中医院" :maxlength="10"></el-input>
                 </el-form-item>
                 <el-form-item label="* 排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
@@ -251,7 +252,6 @@ export default {
             // console.log(response)
             if(response && response.res.statusCode === 200){
                 var url=response.res.requestUrls[0]
-                console.log(url);
                 var str1 = url.split("?uploadId")[0];
                 this.formLabelAlign.video=str1;
             }
@@ -360,20 +360,11 @@ export default {
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
             }
-            let data;
-            if (this.title === "添加") {
-                data = await videoUpdate(this.formLabelAlign);
-            } else {
-                data = await videoUpdate(this.formLabelAlign);
-            }
+            let data = await videoUpdate(this.formLabelAlign);
             if (data.code === 200) {
                 this.dialogVisible = false;
                 this.index(this.params);
                 this.$message({ message: data.data.msg, type: "success" });
-            }else{
-                // if(this.formLabelAlign.sort){
-                //    this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
-                // }
             }
         },
         statusChange(id, val){ //  上架、下架、暂停兑换

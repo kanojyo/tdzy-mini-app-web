@@ -118,7 +118,7 @@
                         <el-option v-for="item in type" :key="item.type" :label="item.value" :value="item.type" ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="* 商品图片">
+                <el-form-item label="* 商品主图">
                     <el-upload
                         class="upload-demo"
                         :action="uploadUrl"
@@ -129,6 +129,32 @@
                         limit="1"
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
+                    </el-upload>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                </el-form-item>
+                <el-form-item label="* 商品轮播图">
+                    <el-upload
+                        class="upload-demo"
+                        :action="uploadUrl"
+                        :on-success="handleSuccess1"
+                        :on-remove="handleRemove1"
+                        :file-list="fileList1"
+                        :beforeUpload="beforeAvatarUpload"
+                        list-type="picture-card">
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                </el-form-item>
+                <el-form-item label="* 商品详情图">
+                    <el-upload
+                        class="upload-demo"
+                        :action="uploadUrl"
+                        :on-success="handleSuccess2"
+                        :on-remove="handleRemove2"
+                        :file-list="fileList2"
+                        :beforeUpload="beforeAvatarUpload"
+                        list-type="picture-card">
+                        <i class="el-icon-plus"></i>
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
                 </el-form-item>
@@ -200,7 +226,9 @@ export default {
             title: "", //  添加/编辑
             dialogVisible: false, //	添加/编辑公司 弹框
             formLabelAlign: {   //  添加/编辑
-                pic_url: '',
+                pic_url: '', //商品主图
+                goods_loop: '', //商品轮播图
+                goods_details: '', //商品详情图
                 goods_name: '',
                 goods_rules: '',
                 goods_type: '',
@@ -214,11 +242,15 @@ export default {
                 sort: '',
                 goods_status: '',
             },
-            fileList: [],   //  附件容器
+            fileList: [],   //  主图附件容器
+            fileList1: [],   //  轮播图附件容器
+            fileList2: [],   //  详情图附件容器
             uploadUrl: uploadUrl(), //  上传地址
             type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
+            imgList1:[],
+            imgList2:[],
         };
     },
     mounted() {
@@ -255,6 +287,49 @@ export default {
                 this.formLabelAlign.pic_url = '';
             }
         },
+        handleSuccess1(file) {   //  上传附件
+            if(file.code === 200){
+                this.fileList1.push({name: file.data.originName, url: file.data.url});
+                this.imgList1.push(file.data.url);
+                this.formLabelAlign.goods_loop=this.imgList1;
+            }
+        },
+        handleRemove1(file, fileList1) {  // 移除附件
+            if(fileList1.length === 0){
+                this.fileList1 = [];
+                this.imgList1=[];
+                this.formLabelAlign.goods_loop = '';
+            }else{
+                var list=[];
+                fileList1.forEach(item=>{
+                    list.push(item.url);
+                });
+                this.imgList1 = list
+                this.formLabelAlign.goods_loop =list;
+            }
+        },
+        handleSuccess2(file) {   //  上传附件
+            if(file.code === 200){
+                this.fileList2.push({name: file.data.originName, url: file.data.url});
+                this.imgList2.push(file.data.url);
+                this.formLabelAlign.goods_details=this.imgList2;
+                // this.formLabelAlign.goods_details = file.data.url;
+            }
+        },
+        handleRemove2(file, fileList2) {  // 移除附件
+            if(fileList2.length === 0){
+                this.fileList2 = [];
+                this.imgList2=[];
+                this.formLabelAlign.goods_details = '';
+            }else{
+                var list=[];
+                fileList2.forEach(item=>{
+                    list.push(item.url);
+                });
+                this.imgList2 = list
+                this.formLabelAlign.goods_details =list;
+            }
+        },
         beforeAvatarUpload(file){   //  限制上传附件大小
             const isJPG = file.type === 'image/jpg';
             const isJPEG = file.type === 'image/jpeg';
@@ -271,6 +346,11 @@ export default {
         async edit(id) { //  编辑
             this.title = "编辑";
             this.timeValue='';
+            this.fileList = [];
+            this.fileList1 = [];
+            this.fileList2 = [];
+            this.imgList1=[];
+            this.imgList2=[];
             let data = await goodsDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
@@ -280,10 +360,25 @@ export default {
                     time[1]=this.formLabelAlign.end_time;
                     this.timeValue=time;
                 }
-                
                 this.fileList = [
                     {name: '', url: data.data.pic_url}
                 ];
+                if(this.formLabelAlign.goods_loop !== ""){
+                    let List1= JSON.parse(this.formLabelAlign.goods_loop);
+                    // let List1= this.formLabelAlign.goods_loop;
+                    // this.fileList1 = {url:List1}
+                    List1.forEach(item => {
+                        this.fileList1.push({url: item})
+                    })
+                }
+                if(this.formLabelAlign.goods_details !== ""){
+                    let list2= JSON.parse(this.formLabelAlign.goods_details);
+                    // let list2= this.formLabelAlign.goods_details;
+                    // this.fileList1 = {url:list2}
+                    list2.forEach(item => {
+                        this.fileList2.push({url: item})
+                    })
+                }
                 if(this.formLabelAlign.valid_type){
                     this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
                 }
@@ -312,10 +407,12 @@ export default {
             this.title = "添加";
             this.timeValue="";
             this.formLabelAlign = {
-                pic_url: '',
+                pic_url: '', //商品主图
+                goods_loop: '', //商品轮播图
+                goods_details: '', //商品详情图
                 goods_name: '',
                 goods_rules: '',
-                goods_type: 1,
+                goods_type: '',
                 original_score: '',
                 now_score: '',
                 exchange_max_num: '',
@@ -327,6 +424,10 @@ export default {
                 goods_status: 1,
             };
             this.fileList = [];
+            this.fileList1 = [];
+            this.fileList2 = [];
+            this.imgList1=[];
+            this.imgList2=[];
             this.dialogVisible = true;
         },
         //监听添加中的时间控件;
@@ -353,6 +454,20 @@ export default {
                 this.$message({ message: "请上传商品图片", type: "warning" });
                 return;
             }
+            if (this.formLabelAlign.goods_loop.length == 0) {
+                this.$message({ message: "请上传商品轮播图", type: "warning" });
+                return;
+            }
+            // if(typeof(this.formLabelAlign.goods_loop) !== 'string'){
+                this.formLabelAlign.goods_loop = JSON.stringify(this.formLabelAlign.goods_loop);
+            // }
+            if (this.formLabelAlign.goods_details.length == 0) {
+                this.$message({ message: "请上传商品详情图", type: "warning" });
+                return;
+            }
+            // if(typeof(this.formLabelAlign.goods_details) !== 'string'){
+                this.formLabelAlign.goods_details = JSON.stringify(this.formLabelAlign.goods_details);
+            // }
             if (this.formLabelAlign.goods_rules == "") {
                 this.$message({ message: "请输入商品規則", type: "warning" });
                 return;
