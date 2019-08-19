@@ -15,5 +15,10 @@ Vue.filter('payStatus', val => {
     if (val == 3) return "支付成功";
     if (val == 4) return "支付失败";
     if (val == 5) return "支付超时";
+    if (val == 6) return "支付成功";
+    if (val == 7) return "退款中";
+    if (val == 8) return "已退款";
+    if (val == 9) return "退款失败";
+    if (val == 10) return "部分退款";
 })
 

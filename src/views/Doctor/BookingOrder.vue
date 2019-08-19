@@ -61,11 +61,11 @@
       <div class="table-list">
         <el-table :data="list" border height="650" :header-cell-style="{background:'#f3f3f3'}">
           <el-table-column align="center" prop="id" label="ID" width="50px"></el-table-column>
-          <el-table-column align="center" prop="appointment_code" label="预约编号"></el-table-column>
-          <el-table-column align="center" prop="name" label="预约人姓名"></el-table-column>
-          <el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
+          <el-table-column align="center" prop="appointment_code" label="预约编号" width="150px"></el-table-column>
+          <el-table-column align="center" prop="name" label="预约人姓名" width="120px"></el-table-column>
+          <el-table-column align="center" prop="mobile" label="手机号" width="150px"></el-table-column>
           <el-table-column align="center" prop="order_time" label="预约日期" width="110px"></el-table-column>
-          <el-table-column align="center" label="时间段" width="150px">
+          <el-table-column align="center" label="时间段" width="180px">
             <template slot-scope="scope">
               <div>
                 <span>{{scope.row.time_slot|timeSlot}}</span>
@@ -89,27 +89,29 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="doctor_name" label="医生姓名"></el-table-column>
-          <el-table-column align="center" label="医生头像">
+          <el-table-column align="center" prop="doctor_name" label="医生姓名" width="80px"></el-table-column>
+          <el-table-column align="center" label="医生头像" width="80px">
             <template slot-scope="scope">
               <div style="width:60px;">
                 <img :src="scope.row.avatar" alt>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="office" label="科室"></el-table-column>
-          <el-table-column align="center" prop="created_at" label="创建时间" width="110px"></el-table-column>
-          <el-table-column align="center" label="操作" width="150px">
+          <el-table-column align="center" prop="office" label="科室" width="100px"></el-table-column>
+          <el-table-column align="center" prop="created_at" label="创建时间" width="180px"></el-table-column>
+          <el-table-column align="center" label="操作" >
             <template slot-scope="scope">
               <div v-if="scope.row.status ===1">
                 <span class="cursor color-f8494c" @click="confirmPop(scope.row)">确认就诊</span>
                 <span class="cursor color_red" @click="cancelPop(scope.row.id)">取消预约</span>
                 <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
                 <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span>
+                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
               </div>
               <div v-else>
                 <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
                 <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span>
+                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
               </div>
             </template>
           </el-table-column>
@@ -149,7 +151,7 @@
       </span>
     </el-dialog>
     <!-- 确认就诊or预约详情 -->
-    <el-dialog :title="title" :visible.sync="editVisible" width="850px">
+    <el-dialog :title="title" :visible.sync="editVisible" width="700px">
       <div class="title" v-if="title == '预约详情'"><p>预约信息</p></div>
       <table class="ajun-table">
         <tr>
@@ -217,15 +219,18 @@
           <td>支付状态</td>
           <td>{{info.pay_status||payStatus}}</td>
         </tr>
+        <tr v-if="info.pay_status==8">
+          <td>退款时间</td>
+          <td>{{info.refund_time}}</td>
+        </tr>
       </table>
       <div class="title" v-if="title == '预约详情'"><p>日志信息</p></div>
       <div class="table" v-if="title == '预约详情'">
         <div class="table-list">
           <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
-            <el-table-column align="center" prop="id" label="ID"></el-table-column>
-            <el-table-column align="center" prop="admin_name" label="操作人"></el-table-column>
+            <el-table-column align="center" prop="id" label="ID" width="80px"></el-table-column>
             <el-table-column align="center" prop="admin_at" label="操作时间" width="200px"></el-table-column>
-            <el-table-column align="center" prop="log_content" label="操作内容" width="300px"></el-table-column>
+            <el-table-column align="left" prop="log_content" label="操作内容" ></el-table-column>
           </el-table>
         </div>
       </div>
@@ -274,7 +279,8 @@ import {
   appointmentConfirm,
   appointmentCancel,
   appointmentInfo,
-  appointmentLog
+  appointmentLog,
+  refund
 } from "@/api/doctor.js";
 import router from "@/router";
 export default {
@@ -411,6 +417,25 @@ export default {
         this.cancelParams.remarks = "";
         this.index();
       }
+    },
+    // 申请退款
+    refund(id){
+      this.$confirm("此操作将申请退款, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    refund({id: id}).then(data => {
+                        if (data.code === 200) {
+                            this.$message({ message: "退款成功", type: "success" });
+                            this.index();
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message({ type: "info", message: "已取消操作~" });
+                });
     },
     //确认就诊弹框
     confirmPop(item) {

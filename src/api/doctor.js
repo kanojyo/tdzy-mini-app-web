@@ -76,3 +76,8 @@ export function schedulingUpdate(params){ return fetch({url: '/v1/scheduling/upd
 */
 export function schedulingDetail(params){ return fetch({url: '/v1/scheduling/info?id=' + params.id , method: 'GET'}) }
 
+/*
+*   NO:16    医生 -- 申请退款
+*/
+export function refund(params){ return fetch({url: '/v1/appointment/refund?id=' + params.id , method: 'GET'}) }
+

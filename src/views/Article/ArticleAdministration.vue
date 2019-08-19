@@ -111,7 +111,7 @@
                     </el-form-item>
                     <el-form-item label="* 文章标签">
                         <el-select v-model="label" multiple clearable size="mini" placeholder="请选择文章标签(多选)">
-                            <el-option v-for="item in labelData" :key="item.id" :label="item.name" :value="item.name" ></el-option>
+                            <el-option v-for="item in tagData" :key="item.id" :label="item.name" :value="item.name" ></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="* 文章标题">
@@ -207,7 +207,7 @@
 <script type="text/javascript">
 import { mapState, mapActions } from 'vuex';
 import Ueditor from '@/components/Ueditor.vue';
-import { article, articleStore, articleUpdate, articleShow } from "@/api/article.js";
+import { article, articleStore, articleUpdate, articleShow, articleTag } from "@/api/article.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 
 export default {
@@ -244,6 +244,7 @@ export default {
             label: [],  //  文章标签
             detailsShow: false, //  显示文章详情
             previewShow: false, //  文章预览
+            tagData:[],//tag标签
         };
     },
     computed: mapState({
@@ -253,6 +254,7 @@ export default {
     mounted() {
         this.index();
         this.getLaboratory();
+        this.articleTagGet();
         this.getCategory({status: 0});
     },
     methods: {
@@ -266,6 +268,13 @@ export default {
             if (data.code === 200) {
                 this.list = data.data.data;
                 this.count = data.data.total;
+            }
+        },
+        //文章标签
+        async articleTagGet(){
+            let data = await articleTag();
+            if(data.code ===200){
+                this.tagData=data.data;
             }
         },
         handleCurrentChange(val) {
