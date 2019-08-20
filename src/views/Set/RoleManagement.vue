@@ -40,7 +40,7 @@
             </div>
         </div>
         <!-- 编辑/添加 -->
-        <el-dialog :title="title + '角色'" :visible.sync="dialogVisible" width="450px">
+        <el-dialog :title="title + '角色'" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="formLabelAlign">
                 <el-form-item label="* 角色名称">
                     <el-input v-model="formLabelAlign.name" placeholder="请输入角色名称"></el-input>
@@ -58,7 +58,7 @@
             </span>
         </el-dialog>
         <!-- 权限设置 -->
-        <el-dialog title="权限设置" :visible.sync="permissionShow" width="650px">
+        <el-dialog title="权限设置" :visible.sync="permissionShow" width="650px" :close-on-click-modal="false">
             <div class="permission">
                 <el-tree
                         :data="zthreeData"

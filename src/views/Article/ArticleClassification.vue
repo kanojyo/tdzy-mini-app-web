@@ -65,7 +65,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="title + '文章分类'" :visible.sync="dialogVisible" width="450px">
+        <el-dialog :title="title + '文章分类'" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="formLabelAlign">
                 <el-form-item label="* 分类名称">
                     <el-input v-model="formLabelAlign.category_name" placeholder="请输入分类名称" maxlength="10"></el-input>

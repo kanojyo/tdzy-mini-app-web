@@ -73,7 +73,7 @@
             </div>
         </div>
         <!-- 投诉记录/处理 -->
-        <el-dialog :title="'投诉' + title" :visible.sync="dialogVisible" width="1080px">
+        <el-dialog :title="'投诉' + title" :visible.sync="dialogVisible" width="1080px" :close-on-click-modal="false">
             <div class="details">
                 <div class="title">基本信息</div>
                 <table class="ajun-table">

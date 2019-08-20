@@ -103,7 +103,7 @@
             </div>
         </div>
         <!-- "添加排班 -->
-        <el-dialog title="添加排班" :visible.sync="addVisible" width="1050px">
+        <el-dialog title="添加排班" :visible.sync="addVisible" width="1050px" :close-on-click-modal="false">
           <div class="table">
             <div class="table-list">
                 <el-table :data="addData.scheduling_json" border height="750" :header-cell-style="{background:'#f3f3f3'}">
@@ -170,7 +170,7 @@
           </span>
         </el-dialog>
         <!-- 修改排班 -->
-        <el-dialog title="修改排班" :visible.sync="editVisible" width="650px">
+        <el-dialog title="修改排班" :visible.sync="editVisible" width="650px" :close-on-click-modal="false">
            <el-form label-width="120px" :model="editData">
                 <el-form-item label="* 排班日期">
                     <el-date-picker

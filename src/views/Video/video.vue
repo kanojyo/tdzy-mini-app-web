@@ -86,7 +86,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px">
+        <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 视频标题">
                     <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" :maxlength="10"></el-input>
@@ -155,7 +155,7 @@
             </span>
         </el-dialog>
         <!-- 视频预览 -->
-        <el-dialog title="视频预览" :visible.sync="previewShow" width="700px" :before-close="close">
+        <el-dialog title="视频预览" :visible.sync="previewShow" width="700px" :before-close="close" :close-on-click-modal="false">
             <video :src="previewVideo" style="width:100%;" controls="controls"></video>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="close">关 闭</el-button>

@@ -94,7 +94,7 @@
       </div>
     </div>
     <!-- 添加/编辑 -->
-    <el-dialog :title="'首页轮播图' + title" :visible.sync="dialogVisible" width="450px">
+    <el-dialog :title="'首页轮播图' + title" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
       <el-form label-width="100px" :model="formLabelAlign">
         <el-form-item label="* 轮播图图片">
           <el-upload

@@ -34,7 +34,7 @@
             </div>
         </div>
         <!-- 编辑 -->
-        <el-dialog title="编辑帐号" :visible.sync="dialogVisible" width="450px">
+        <el-dialog title="编辑帐号" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="form">
                 <el-form-item label="* 角色">
                     <el-select clearable v-model="form.role_id" placeholder="请选择角色">

@@ -107,7 +107,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="'商品' + title" :visible.sync="dialogVisible" width="650px">
+        <el-dialog :title="'商品' + title" :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 商品名称">
                     <el-input v-model="formLabelAlign.goods_name" placeholder="请输入商品名称" :maxlength="30"></el-input>

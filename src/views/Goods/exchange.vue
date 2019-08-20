@@ -82,7 +82,7 @@
             </div>
         </div>
            <!-- 确认兑换 -->
-        <el-dialog title="确认使用" :visible.sync="dialogVisible" width="650px">
+        <el-dialog title="确认使用" :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <table class="ajun-table">
               <tbody>
                 <tr>
@@ -115,7 +115,7 @@
                 <el-button type="primary" @click="use()">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog title="操作日志" :visible.sync="logVisible" width="850px">
+        <el-dialog title="操作日志" :visible.sync="logVisible" width="850px" :close-on-click-modal="false">
           <div class="table">
             <div class="table-list">
                 <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">

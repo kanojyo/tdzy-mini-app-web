@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- 添加菜单 -->
-        <el-dialog :title="title" :visible.sync="dialogVisible" width="450px">
+        <el-dialog :title="title" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="formLabelAlign">
                 <el-form-item label="菜单名">
                     <el-input v-model="formLabelAlign.name" placeholder="请输入菜单名"></el-input>

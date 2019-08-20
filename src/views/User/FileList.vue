@@ -95,7 +95,7 @@
             </div>
         </div>
         <!-- 用户个人信息 -->
-        <el-dialog title="用户个人信息" :visible.sync="dialogVisible" width="650px">
+        <el-dialog title="用户个人信息" :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <div class="user">
                 <div class="title">档案信息</div>
                 <table class="ajun-table">
@@ -181,7 +181,7 @@
             </div>
         </el-dialog>
         <!-- 预约记录 -->
-        <el-dialog title="预约记录" :visible.sync="logVisible" width="1250px">
+        <el-dialog title="预约记录" :visible.sync="logVisible" width="1250px" :close-on-click-modal="false">
           <div class="table">
             <div class="table-list">
                 <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">

@@ -77,7 +77,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px">
+        <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <el-form label-width="120px" :model="formLabelAlign">
                 <!-- <el-form-item label="* ID">
                     <el-input v-model="formLabelAlign.id" placeholder="请输入ID" ></el-input>
@@ -128,7 +128,7 @@
             </span>
         </el-dialog>
         <!-- 文章预览 -->
-        <el-dialog title="预览" :visible.sync="previewShow" width="980px">
+        <el-dialog title="预览" :visible.sync="previewShow" width="980px" :close-on-click-modal="false">
             <div class="centens" v-for="(item,index) in  " v-key="index" style="font-size:0;">
                 <img  :src="item" alt="">
             </div>

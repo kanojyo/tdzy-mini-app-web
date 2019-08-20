@@ -142,7 +142,7 @@
         </transition>
         <!-- </el-dialog> -->
         <!-- 文章详情 -->
-        <el-dialog title="文章详情" :visible.sync="detailsShow" width="980px">
+        <el-dialog title="文章详情" :visible.sync="detailsShow" width="980px" :close-on-click-modal="false">
             <table class="ajun-table">
                 <tr>
                     <td>文章分类</td>
@@ -191,7 +191,7 @@
             </table>
         </el-dialog>
         <!-- 文章预览 -->
-        <el-dialog title="文章预览" :visible.sync="previewShow" width="980px">
+        <el-dialog title="文章预览" :visible.sync="previewShow" width="980px" :close-on-click-modal="false">
             <div class="centens">
                 <div class="title">{{detailsData.article_title}}</div>
                 <div class="user-time">发稿时间：{{detailsData.created_at}} 来源：{{detailsData.admin_username}}</div>

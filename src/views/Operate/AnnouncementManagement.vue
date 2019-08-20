@@ -65,7 +65,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="title" :visible.sync="dialogVisible" width="450px">
+        <el-dialog :title="title" :visible.sync="dialogVisible" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="formLabelAlign">
                 <el-form-item label="* 公告封面">
                     <el-upload
@@ -99,7 +99,7 @@
             </span>
         </el-dialog>
         <!-- 撤回 -->
-        <el-dialog title="撤回" :visible.sync="withdrawShow" width="450px">
+        <el-dialog title="撤回" :visible.sync="withdrawShow" width="450px" :close-on-click-modal="false">
             <el-form label-width="100px" :model="formLabelAlign">
                 <el-form-item label="* 撤回原因">
                     <el-input v-model="withdrawFrom.withdraw_reason" clearable placeholder="请输入撤回原因"></el-input>
@@ -111,7 +111,7 @@
             </span>
         </el-dialog>
         <!-- 查看详情 -->
-        <el-dialog title="公告详情" :visible.sync="detailsShow" width="980px">
+        <el-dialog title="公告详情" :visible.sync="detailsShow" width="980px" :close-on-click-modal="false">
             <table class="ajun-table">
                 <tr>
                     <td>公告标题</td>

@@ -133,7 +133,7 @@
       </div>
     </div>
     <!-- 取消预约 -->
-    <el-dialog title="确认取消" :visible.sync="cancelVisible" width="650px">
+    <el-dialog title="确认取消" :visible.sync="cancelVisible" width="650px" :close-on-click-modal="false">
       <el-form label-width="60px">
         <el-form-item label="* 备注">
           <el-input
@@ -151,7 +151,7 @@
       </span>
     </el-dialog>
     <!-- 确认就诊or预约详情 -->
-    <el-dialog :title="title" :visible.sync="editVisible" width="700px">
+    <el-dialog :title="title" :visible.sync="editVisible" width="700px" :close-on-click-modal="false">
       <div class="title" v-if="title == '预约详情'"><p>预约信息</p></div>
       <table class="ajun-table">
         <tr>
@@ -240,7 +240,7 @@
       </span>
     </el-dialog>
     <!-- 预约操作日志列表 -->
-    <el-dialog title="操作日志" :visible.sync="logVisible" width="850px">
+    <el-dialog title="操作日志" :visible.sync="logVisible" width="850px" :close-on-click-modal="false">
       <div class="table">
         <div class="table-list">
           <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
