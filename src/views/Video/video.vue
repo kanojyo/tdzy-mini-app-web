@@ -176,7 +176,7 @@ export default {
         return {
             params: {
                 source:"",
-                status: '', //   1:正常 2：下架
+                status: 1, //   1:正常 2：下架
                 title:'',
                 page: 1, //  分页
                 pagesize: 30 //    每页显示条数
