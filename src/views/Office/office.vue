@@ -150,7 +150,7 @@ export default {
         return {
             params: {
                 name:"",
-                state: '', //   1:正常 2：下架
+                state: 1, //   1:正常 2：下架
                 page: 1, //  分页
                 pagesize: 30 //    每页显示条数
             },
