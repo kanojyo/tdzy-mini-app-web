@@ -86,7 +86,7 @@
             </div>
         </div>
         <!-- 添加/编辑 -->
-        <el-dialog :title="title+'科室' " :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
+        <el-dialog :title="title+'视频' " :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 视频标题">
                     <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" :maxlength="10"></el-input>
@@ -100,13 +100,14 @@
                         :on-remove="handleRemove"
                         :file-list="fileList"
                         :beforeUpload="beforeAvatarUpload"
+                        :on-change="aaa"
                         limit="1"
                         list-type="picture">
-                        <el-button size="mini" type="primary" v-if="fileList.length ==0">点击上传</el-button>
+                        <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,<span class="color_red">建议为690px*480px</span></span>
                 </el-form-item>
-                <el-form-item label="* 上传视频">
+                <el-form-item label="* 视频科普">
                     <el-upload  class="upload-demo" action=""
                             :http-request="fnUploadRequest"
                             :show-file-list="true"
@@ -134,7 +135,7 @@
                         :beforeUpload="beforeAvatarUpload"
                         limit="1"
                         list-type="picture">
-                        <el-button size="mini" type="primary" v-if="fileList2.length ==0">点击上传</el-button>
+                        <el-button size="mini" type="primary" >点击上传</el-button>
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M</span>
                 </el-form-item>
