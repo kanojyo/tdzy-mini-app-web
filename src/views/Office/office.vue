@@ -84,6 +84,7 @@
                 </el-form-item> -->
                 <el-form-item label="* 科室">
                     <el-input v-model="formLabelAlign.name" placeholder="请输入科室" :maxlength="10"></el-input>
+                    <span class="font_12">长度限制：1-10英文，数字或汉字</span>
                 </el-form-item>
                 <el-form-item label="* 科室图标">
                     <el-upload
@@ -97,7 +98,7 @@
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
-                    <span class="font_12">只可上传1个图标,上传图标格式只能为PNG,大小小于4M，建议为44*44px</span>
+                    <span class="font_12">只可上传1个图标,上传图标格式只能为PNG,最大为4M，<span class="color_red">建议为44*44px</span></span>
                 </el-form-item>
                 <el-form-item label="* 上传图片">
                     <el-upload
@@ -109,12 +110,14 @@
                         :on-remove="handleRemove2">
                         <i class="el-icon-plus"></i>
                     </el-upload>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,<span class="color_red">建议为690px*454px</span></span>
                     <el-dialog title="图片查看" :visible.sync="imgVisible" size="tiny">
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
-                <el-form-item label="* 排序值">
+                <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
+                    <span class="font_12">排序值越大权重越大</span>
                 </el-form-item>
                 <el-form-item label="* 状态">
                     <el-radio-group v-model="formLabelAlign.state">
@@ -318,10 +321,10 @@ export default {
                 this.$message({ message: "请上传科室图片", type: "warning" });
                 return;
             }
-            if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
-                this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
-                return;
-            }
+            // if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
+            //     this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
+            //     return;
+            // }
             // if(this.formLabelAlign.sort !== ''){
             //     this.formLabelAlign.sort=parseInt(this.formLabelAlign.sort);
             // }

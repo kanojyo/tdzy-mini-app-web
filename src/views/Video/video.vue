@@ -90,6 +90,7 @@
             <el-form label-width="120px" :model="formLabelAlign">
                 <el-form-item label="* 视频标题">
                     <el-input v-model="formLabelAlign.title" placeholder="请输入视频标题" :maxlength="10"></el-input>
+                    <span class="font_12">长度限制：1-10英文，数字或汉字</span>
                 </el-form-item>
                 <el-form-item label="* 视频主图">
                     <el-upload
@@ -103,7 +104,7 @@
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
-                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,建议为690px*480px</span>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,<span class="color_red">建议为690px*480px</span></span>
                 </el-form-item>
                 <el-form-item label="* 上传视频">
                     <el-upload  class="upload-demo" action=""
@@ -135,13 +136,14 @@
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
-                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M</span>
                 </el-form-item>
                 <el-form-item label="* 来源">
                     <el-input v-model="formLabelAlign.source" placeholder="请输入泰斗中医院" :maxlength="10"></el-input>
                 </el-form-item>
-                <el-form-item label="* 排序值">
+                <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
+                    <span class="font_12">排序值越大权重越大</span>
                 </el-form-item>
                 <el-form-item label="* 状态">
                     <el-radio-group v-model="formLabelAlign.status">
@@ -361,10 +363,10 @@ export default {
                 this.$message({ message: "请输入来源", type: "warning" });
                 return;
             }
-            if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
-                this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
-                return;
-            }
+            // if(this.formLabelAlign.sort !== '' && !integer(this.formLabelAlign.sort)){
+            //     this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
+            //     return;
+            // }
             this.formLabelAlign.video_length = parseInt(this.formLabelAlign.video_length);
             let data = await videoUpdate(this.formLabelAlign);
             if (data.code === 200) {
