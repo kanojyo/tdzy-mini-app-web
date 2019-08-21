@@ -100,7 +100,7 @@
                     </el-upload>
                     <span class="font_12">只可上传1个图标,上传图标格式只能为PNG,最大为4M，<span class="color_red">建议为44*44px</span></span>
                 </el-form-item>
-                <el-form-item label="* 上传图片">
+                <el-form-item label="* 科室图片">
                     <el-upload
                         :action="uploadUrl"
                         list-type="picture-card"
@@ -301,6 +301,8 @@ export default {
                 state: 1,
             };
             this.fileList = [];
+            this.fileList2 = [];
+            this.picList = [];
             this.dialogVisible = true;
         },
         async handleClose() {
