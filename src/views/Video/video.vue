@@ -102,7 +102,7 @@
                         :beforeUpload="beforeAvatarUpload"
                         limit="1"
                         list-type="picture">
-                        <el-button size="mini" type="primary">点击上传</el-button>
+                        <el-button size="mini" type="primary" v-if="fileList.length ==0">点击上传</el-button>
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,<span class="color_red">建议为690px*480px</span></span>
                 </el-form-item>
@@ -134,7 +134,7 @@
                         :beforeUpload="beforeAvatarUpload"
                         limit="1"
                         list-type="picture">
-                        <el-button size="mini" type="primary">点击上传</el-button>
+                        <el-button size="mini" type="primary" v-if="fileList2.length ==0">点击上传</el-button>
                     </el-upload>
                     <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M</span>
                 </el-form-item>
