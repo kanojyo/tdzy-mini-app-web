@@ -348,6 +348,10 @@ export default {
                 this.$message({ message: "请上传视频", type: "warning" });
                 return;
             }
+            if (this.formLabelAlign.video_length == "") {
+                this.$message({ message: "请输入视频时长", type: "warning" });
+                return;
+            }
             if (this.formLabelAlign.source_img == "") {
                 this.$message({ message: "请上传来源头像", type: "warning" });
                 return;
