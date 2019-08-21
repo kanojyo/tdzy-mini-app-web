@@ -131,8 +131,8 @@
             </span>
         </el-dialog>
         <!-- 文章预览 -->
-        <el-dialog title="预览" :visible.sync="previewShow" width="980px" :close-on-click-modal="false">
-            <div class="centens" v-for="(item,index) in  " v-key="index" style="font-size:0;">
+        <el-dialog title="预览" :visible.sync="previewShow" width="600px" :close-on-click-modal="false">
+            <div class="centens" v-for="(item,index) in previewImgList " v-key="index" style="font-size:0;">
                 <img  :src="item" alt="">
             </div>
             <span slot="footer" class="dialog-footer">
