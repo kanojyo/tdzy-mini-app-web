@@ -315,6 +315,7 @@ export default {
                     {name: '', url: data.data.video}
                 ];
                 this.dialogVisible = true;
+                this.formLabelAlign.video_length = this.formLabelAlign.video_length.toString();
             }
         },
         add() {  //添加
@@ -364,11 +365,14 @@ export default {
                 this.$message({ message: "排序值请输入正整数或0~", type: "warning" });
                 return;
             }
+            this.formLabelAlign.video_length = parseInt(this.formLabelAlign.video_length);
             let data = await videoUpdate(this.formLabelAlign);
             if (data.code === 200) {
                 this.dialogVisible = false;
                 this.index(this.params);
                 this.$message({ message: data.data.msg, type: "success" });
+            }else{
+                this.formLabelAlign.video_length = this.formLabelAlign.video_length.toString();
             }
         },
         statusChange(id, val){ //  上架、下架、暂停兑换
