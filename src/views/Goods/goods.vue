@@ -354,6 +354,7 @@ export default {
             let data = await goodsDetails({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
+                console.log(this.formLabelAlign)
                 if(this.formLabelAlign.valid_type == 1){
                     var time =[];
                     time[0]=this.formLabelAlign.start_time;
@@ -365,19 +366,23 @@ export default {
                 ];
                 if(this.formLabelAlign.goods_loop !== ""){
                     let List1= JSON.parse(this.formLabelAlign.goods_loop);
+                    console.log(List1,'goods_loop')
                     // let List1= this.formLabelAlign.goods_loop;
                     // this.fileList1 = {url:List1}
                     List1.forEach(item => {
                         this.fileList1.push({url: item})
                     })
+                    console.log(this.fileList1)
                 }
                 if(this.formLabelAlign.goods_details !== ""){
                     let list2= JSON.parse(this.formLabelAlign.goods_details);
+                    console.log(list2,'goods_details')
                     // let list2= this.formLabelAlign.goods_details;
                     // this.fileList1 = {url:list2}
                     list2.forEach(item => {
                         this.fileList2.push({url: item})
                     })
+                    console.log(this.fileList2)
                 }
                 if(this.formLabelAlign.valid_type){
                     this.formLabelAlign.valid_type =parseFloat(this.formLabelAlign.valid_type);
@@ -458,16 +463,16 @@ export default {
                 this.$message({ message: "请上传商品轮播图", type: "warning" });
                 return;
             }
-            // if(typeof(this.formLabelAlign.goods_loop) !== 'string'){
+            if(typeof(this.formLabelAlign.goods_loop) !== 'string'){
                 this.formLabelAlign.goods_loop = JSON.stringify(this.formLabelAlign.goods_loop);
-            // }
+            }
             if (this.formLabelAlign.goods_details.length == 0) {
                 this.$message({ message: "请上传商品详情图", type: "warning" });
                 return;
             }
-            // if(typeof(this.formLabelAlign.goods_details) !== 'string'){
+            if(typeof(this.formLabelAlign.goods_details) !== 'string'){
                 this.formLabelAlign.goods_details = JSON.stringify(this.formLabelAlign.goods_details);
-            // }
+            }
             if (this.formLabelAlign.goods_rules == "") {
                 this.$message({ message: "请输入商品規則", type: "warning" });
                 return;
