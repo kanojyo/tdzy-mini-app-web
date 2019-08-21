@@ -360,6 +360,10 @@ export default {
                 this.$message({ message: "请输入视频时长", type: "warning" });
                 return;
             }
+            if(!positiveInteger(this.formLabelAlign.video_length)){
+              this.$message({ message: "视频时长必须为大于0的正整数", type: "warning" });
+              return
+            }
             if (this.formLabelAlign.source_img == "") {
                 this.$message({ message: "请上传来源头像", type: "warning" });
                 return;
