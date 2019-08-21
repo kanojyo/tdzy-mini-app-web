@@ -247,7 +247,11 @@ export default {
         },
         // 视频上传
         beforeUploadVideo(file) {
-            // todo
+            const isMP4 = file.type === 'video/mp4';
+            if (!isMP4) {
+                this.$message.error('上传的视频只能是Mp4格式!');
+            }
+            return isMP4
         },
         // 视频上传成功后
         handleVideoSuccess(response, file, fileList3) {
