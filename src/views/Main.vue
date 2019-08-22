@@ -113,7 +113,7 @@
                     <el-input
                         size="large"
                         type="password"
-                        v-model="params.newPassword"
+                        v-model="params.new_password"
                         placeholder="请输入新密码"
                         clearable
                         show-password
@@ -228,15 +228,15 @@ export default {
         },
         //修改密码
         async submitForm() {
-            if (this.params.old_password === "") {
-                this.$message({ message: "请输入密码", type: "warning" });
+            if (this.params.old_password == "") {
+                this.$message({ message: "请输入旧密码", type: "warning" });
                 return;
             }
-            if (this.params.new_password === "") {
+            if (this.params.new_password == "") {
                 this.$message({ message: "请输入新密码", type: "warning" });
                 return;
             }
-            if (this.params.re_new_password === "") {
+            if (this.params.re_new_password == "") {
               this.$message({ message: "请输入重复新密码", type: "warning" });
               return;
             }
