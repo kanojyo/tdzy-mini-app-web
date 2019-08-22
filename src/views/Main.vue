@@ -99,12 +99,12 @@
                     <!-- <el-form-item label="用户名" :label-width="formLabelWidth">
                     <el-input v-model="params.userName" autocomplete="off" disabled></el-input>
                     </el-form-item> -->
-                    <el-form-item label="旧密码" :label-width="formLabelWidth">
+                    <el-form-item label="原密码" :label-width="formLabelWidth">
                     <el-input
                         size="large"
                         type="password"
                         v-model="params.old_password"
-                        placeholder="请输入旧密码"
+                        placeholder="请输入原密码"
                         clearable
                         show-password
                     ></el-input>
@@ -142,6 +142,7 @@
 <script>
 import { myInfo, signOut, editPassword } from "@/api/login.js";
 import { mapState, mapActions } from 'vuex';
+import {isvalidPassword} from '@/utils/validate.js'
 
 export default {
     data() {
@@ -229,16 +230,28 @@ export default {
         //修改密码
         async submitForm() {
             if (this.params.old_password == "") {
-                this.$message({ message: "请输入旧密码", type: "warning" });
+                this.$message({ message: "请输入原密码", type: "warning" });
+                return;
+            }
+            if (!isvalidPassword(this.params.old_password)) {
+                this.$message({ message: "原密码格式错误", type: "warning" });
                 return;
             }
             if (this.params.new_password == "") {
                 this.$message({ message: "请输入新密码", type: "warning" });
                 return;
             }
+            if (!isvalidPassword(this.params.new_password)) {
+                this.$message({ message: "新密码格式错误", type: "warning" });
+                return;
+            }
             if (this.params.re_new_password == "") {
               this.$message({ message: "请输入重复新密码", type: "warning" });
               return;
+            }
+            if (!isvalidPassword(this.params.re_new_password)) {
+                this.$message({ message: "重复新密码格式错误", type: "warning" });
+                return;
             }
             let data = await editPassword(this.params);
             if (data.code == 200) {

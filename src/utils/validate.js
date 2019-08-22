@@ -11,9 +11,9 @@ export function isvalidUsername(str) {
   return reg.test(str)
 }
 
-/* 数字和26个英文字母组成的6~18字符串*/
+/* 数字和26个英文字母组成的6~16字符串*/
 export function isvalidPassword(str) {
-  const reg =  /^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{6,18}$/
+  const reg =  /^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{6,16}$/
   return reg.test(str)
 }
 
