@@ -141,6 +141,7 @@
                 </el-form-item>
                 <el-form-item label="* 来源">
                     <el-input v-model="formLabelAlign.source" placeholder="请输入泰斗中医院" :maxlength="10"></el-input>
+                    <span class="font_12">长度限制：1-10英文，数字或汉字</span>
                 </el-form-item>
                 <el-form-item label="排序值">
                     <el-input v-model="formLabelAlign.sort" placeholder="请输入排序值"></el-input>
