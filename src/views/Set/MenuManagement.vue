@@ -16,7 +16,7 @@
                         <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span>{{ node.label }}</span>
                             <span>
-                                <el-button type="text" size="mini" @click="() => append(data)">添加子级</el-button>
+                                <el-button type="text" size="mini" v-if="data.type !== 3" @click="() => append(data)">添加子级</el-button>
                             </span>
                             <span>
                                 <el-button type="text" size="mini" @click="() => edit(data)">编辑当前</el-button>
@@ -98,9 +98,11 @@ export default {
             let data = await menuIndex();
             if (data.code == 200) {
                 this.zthreeData = data.data.menu;
+                console.log(this.zthreeData)
             }
         },
          append(val) {
+            //  console.log(val)
             this.title = "添加菜单";
             this.formLabelAlign = {
                 parent_id: val.id,

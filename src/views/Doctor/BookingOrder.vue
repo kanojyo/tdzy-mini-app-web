@@ -234,14 +234,14 @@
         </tr>
       </table>
       <div class="title" v-if="title == '预约详情' && info.order_money !== 0"><p>支付信息</p></div>
-      <table class="ajun-table" v-if="title == '预约详情'">
+      <table class="ajun-table" v-if="title == '预约详情' && info.order_money !== 0">
         <tr>
           <td style="width:320px;">支付时间</td>
           <td>{{info.pay_time}}</td>
         </tr>
         <tr>
           <td>支付状态</td>
-          <td>{{info.pay_status||payStatus}}</td>
+          <td>{{info.pay_status|payStatus}}</td>
         </tr>
         <tr v-if="info.pay_status==8">
           <td>退款时间</td>
