@@ -39,6 +39,16 @@
           </el-select>
         </div>
         <div class="input">
+          <el-select v-model="params.pay_status" clearable size="mini" placeholder="支付状态">
+            <el-option
+              v-for="item in payStatus"
+              :key="item.type"
+              :label="item.value"
+              :value="item.type"
+            ></el-option>
+          </el-select>
+        </div>
+        <div class="input">
           <el-date-picker
             size="mini"
             v-model="timeValue"
@@ -64,14 +74,21 @@
           <el-table-column align="center" prop="appointment_code" label="预约编号" width="150px"></el-table-column>
           <el-table-column align="center" prop="name" label="预约人姓名" width="120px"></el-table-column>
           <el-table-column align="center" prop="mobile" label="手机号" width="150px"></el-table-column>
-          <el-table-column align="center" prop="order_time" label="预约日期" width="110px"></el-table-column>
-          <el-table-column align="center" label="时间段" width="180px">
+          <el-table-column align="center" prop="order_time" label="预约日期" width="180px">
+            <template slot-scope="scope">
+              <div>
+                <span>{{scope.row.order_time}}</span><br>
+                <span>{{scope.row.time_slot|timeSlot}}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column align="center" label="时间段" width="180px">
             <template slot-scope="scope">
               <div>
                 <span>{{scope.row.time_slot|timeSlot}}</span>
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column align="center" label="就诊状态" width="95px">
             <template slot-scope="scope">
               <div>
@@ -79,6 +96,13 @@
                 <span class="cursor color-f8494c" v-if="scope.row.status === 2">已就诊</span>
                 <span class="cursor color_999" v-if="scope.row.status === 3">已取消</span>
                 <span class="cursor color_999" v-if="scope.row.status === 4">已失效</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="支付状态" width="95px">
+            <template slot-scope="scope">
+              <div>
+                <span>{{scope.row.pay_status|payStatus}}</span>
               </div>
             </template>
           </el-table-column>
@@ -105,12 +129,12 @@
                 <span class="cursor color-f8494c" @click="confirmPop(scope.row)">确认就诊</span>
                 <span class="cursor color_red" @click="cancelPop(scope.row.id)">取消预约</span>
                 <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
-                <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span>
+                <!-- <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span> -->
                 <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
               </div>
               <div v-else>
                 <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
-                <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span>
+                <!-- <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span> -->
                 <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
               </div>
             </template>
@@ -209,7 +233,7 @@
           <td>{{info.remarks}}</td>
         </tr>
       </table>
-      <div class="title" v-if="title == '预约详情'"><p>支付信息</p></div>
+      <div class="title" v-if="title == '预约详情' && info.order_money !== 0"><p>支付信息</p></div>
       <table class="ajun-table" v-if="title == '预约详情'">
         <tr>
           <td style="width:320px;">支付时间</td>
@@ -290,6 +314,7 @@ export default {
         doctor_id: "",
         user_id: "",
         status: "",
+        pay_status:"",
         name: "",
         start_time: "",
         end_time: "",
@@ -306,6 +331,12 @@ export default {
         { type: 3, value: "已取消" },
         { type: 4, value: "已失效" }
       ], //  状态
+      payStatus:[
+        { type: 3, value: "已支付" },
+        { type: 7, value: "退款中" },
+        { type: 8, value: "已退款" },
+        { type: 9, value: "退款失败" }
+      ], //  支付状态
       timeValue: "",
       doctorInfo: {},
       info: {},
@@ -393,6 +424,7 @@ export default {
       this.params.name = "";
       this.params.mobile = "";
       this.params.status = "";
+      this.params.pay_status = "";
       this.timeValue="";
       this.params.start_time = "";
       this.params.end_time = "";
@@ -473,6 +505,7 @@ export default {
           this.info = data.data;
         }
       });
+      this.logParams.appointment_id = id;
       this.getLogList();
     },
     //操作日志弹框

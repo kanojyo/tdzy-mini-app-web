@@ -12,7 +12,7 @@ Vue.filter('timeSlot', val => {
 Vue.filter('payStatus', val => {
     if (val == 1) return "无需支付";
     if (val == 2) return "待支付";
-    if (val == 3) return "支付成功";
+    if (val == 3) return "已支付";
     if (val == 4) return "支付失败";
     if (val == 5) return "支付超时";
     if (val == 6) return "支付成功";

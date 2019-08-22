@@ -28,7 +28,7 @@
         <div class="table">
             <div class="table-list">
                 <el-table :data="list" border height="750" :header-cell-style="{background:'#f3f3f3'}" fit>
-                    <el-table-column align="center" prop="id" label="ID" width="150px"></el-table-column>
+                    <el-table-column align="center" prop="id" label="ID" width="80px"></el-table-column>
                     <el-table-column align="center" prop="source" label="来源" width="150px"></el-table-column>
                     <el-table-column align="center" label="来源头像" width="100px">
                         <template slot-scope="scope">
@@ -41,10 +41,9 @@
                             <img :src="scope.row.cover_img"  >
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="look_num" label="浏览数量" width="150px"></el-table-column>
-                    <el-table-column align="center" prop="admin" label="创建人" width="150px"></el-table-column>
-                    <el-table-column align="center" prop="ctime" :formatter="formatDate" label="创建时间" width="300px"></el-table-column>
-                    <el-table-column align="center"  label="状态" width="150px">
+                    <el-table-column align="center" prop="look_num" label="浏览数量" width="80px"></el-table-column>
+                    <el-table-column align="center" prop="sort" label="排序值" width="100px"></el-table-column>
+                    <el-table-column align="center"  label="状态" width="80px">
                         <template slot-scope="scope">
                             <div v-if="scope.row.status ==1">
                                 <span class="cursor color-f8494c">正常</span>
@@ -54,6 +53,9 @@
                             </div>
                         </template>
                     </el-table-column>
+                    <el-table-column align="center" prop="admin" label="创建人" width="150px"></el-table-column>
+                    <el-table-column align="center" prop="ctime" :formatter="formatDate" label="创建时间" width="200px"></el-table-column>
+                    
                     <el-table-column align="center" label="操作" >
                         <template slot-scope="scope">
                             <div v-if="scope.row.status === 2">
