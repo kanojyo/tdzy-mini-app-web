@@ -300,10 +300,10 @@ export default {
             const isPNG = file.type === 'image/png';
             const isLt4M = file.size / 1024 / 1024 <= 4;
             if (!isJPG && !isJPEG && !isPNG) {
-                this.$message.error('上传头像图片只能是 jpg,png,jpeg 格式!');
+                this.$message.error('上传图片只能是 jpg,png,jpeg 格式!');
             }
             if (!isLt4M) {
-                this.$message.error('上传头像图片大小不能超过 4MB!');
+                this.$message.error('上传图片大小不能超过 4MB!');
             }
             return (isJPG || isJPEG || isPNG) && isLt4M
         },

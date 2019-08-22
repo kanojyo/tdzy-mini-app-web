@@ -140,6 +140,7 @@
                         :on-remove="handleRemove1"
                         :file-list="fileList1"
                         :beforeUpload="beforeAvatarUpload"
+                        limit="10"
                         list-type="picture-card">
                         <i class="el-icon-plus"></i>
                     </el-upload>
@@ -153,6 +154,7 @@
                         :on-remove="handleRemove2"
                         :file-list="fileList2"
                         :beforeUpload="beforeAvatarUpload"
+                        limit="20"
                         list-type="picture-card">
                         <i class="el-icon-plus"></i>
                     </el-upload>
@@ -336,10 +338,10 @@ export default {
             const isPNG = file.type === 'image/png';
             const isLt4M = file.size / 1024 / 1024 <= 4;
             if (!isJPG && !isJPEG && !isPNG) {
-                this.$message.error('上传头像图片只能是 jpg,png,jpeg 格式!');
+                this.$message.error('上传图片只能是 jpg,png,jpeg 格式!');
                 }
             if (!isLt4M) {
-                this.$message.error('上传头像图片大小不能超过 4MB!');
+                this.$message.error('上传图片大小不能超过 4MB!');
             }
             return (isJPG || isJPEG || isPNG) && isLt4M
         },

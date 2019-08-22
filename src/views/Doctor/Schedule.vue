@@ -417,7 +417,7 @@ export default {
               return
             }
            if (this.editData.order_money === "") {
-                this.$message({ message: "请选择预约费用", type: "warning" });
+                this.$message({ message: "预约费用为正数，保留2位小数！", type: "warning" });
                 return;
             }
             this.editData.order_max_num=parseInt(this.editData.order_max_num)
