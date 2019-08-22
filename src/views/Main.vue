@@ -94,7 +94,7 @@
                     <router-view v-if="!$route.meta.keepAlive"></router-view>
                 </el-main>
             </el-container>
-            <el-dialog title="修改密码" :visible.sync="dialogVisible" :width="dialogWidth">
+            <el-dialog title="修改密码" :visible.sync="dialogVisible" :width="dialogWidth" :close-on-click-modal="false">
                 <el-form :model="params">
                     <!-- <el-form-item label="用户名" :label-width="formLabelWidth">
                     <el-input v-model="params.userName" autocomplete="off" disabled></el-input>

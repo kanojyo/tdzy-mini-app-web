@@ -10,7 +10,7 @@ Vue.filter('timeSlot', val => {
 //泰斗后台的支付状态
 
 Vue.filter('payStatus', val => {
-    if (val == 1) return "无需支付";
+    if (val == 1) return " ";
     if (val == 2) return "待支付";
     if (val == 3) return "已支付";
     if (val == 4) return "支付失败";

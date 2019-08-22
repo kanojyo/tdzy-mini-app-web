@@ -197,12 +197,12 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="order_time" label="预约日期" ></el-table-column>
+                    <!-- <el-table-column align="center" prop="order_time" label="预约日期" ></el-table-column> -->
                     <el-table-column align="center" label="预约时间" >
                         <template slot-scope="scope">
                             <div>
-                                <span v-if="scope.row.time_slot == 1">上午(9:00-12:00)</span>
-                                <span v-if="scope.row.time_slot == 2">下午(14:00-18:00)</span>
+                                <span>{{scope.row.order_time}}</span><br>
+                                <span >{{scope.row.time_slot|timeSlot}}</span>
                             </div>
                         </template>
                     </el-table-column>
