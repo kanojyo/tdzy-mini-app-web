@@ -28,4 +28,4 @@ export function signOut(){ return fetch({url: '/v1/signOut', method: 'POST'}) }
 /*
 *   NO:6    用户登录 -- 修改密码
 */
-export function editPassword(){ return fetch({url: '/v1/edit_password', method: 'POST'}) }
+export function editPassword(){ return fetch({url: '/v1/edit_password', method: 'POST',data: params}) }
