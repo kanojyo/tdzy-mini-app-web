@@ -233,26 +233,26 @@ export default {
                 this.$message({ message: "请输入原密码", type: "warning" });
                 return;
             }
-            if (!isvalidPassword(this.params.old_password)) {
-                this.$message({ message: "原密码格式错误", type: "warning" });
-                return;
-            }
+            // if (!isvalidPassword(this.params.old_password)) {
+            //     this.$message({ message: "原密码格式错误", type: "warning" });
+            //     return;
+            // }
             if (this.params.new_password == "") {
                 this.$message({ message: "请输入新密码", type: "warning" });
                 return;
             }
-            if (!isvalidPassword(this.params.new_password)) {
-                this.$message({ message: "新密码格式错误", type: "warning" });
-                return;
-            }
+            // if (!isvalidPassword(this.params.new_password)) {
+            //     this.$message({ message: "新密码格式错误", type: "warning" });
+            //     return;
+            // }
             if (this.params.re_new_password == "") {
               this.$message({ message: "请输入重复新密码", type: "warning" });
               return;
             }
-            if (!isvalidPassword(this.params.re_new_password)) {
-                this.$message({ message: "重复新密码格式错误", type: "warning" });
-                return;
-            }
+            // if (!isvalidPassword(this.params.re_new_password)) {
+            //     this.$message({ message: "重复新密码格式错误", type: "warning" });
+            //     return;
+            // }
             let data = await editPassword(this.params);
             if (data.code == 200) {
                 this.$message({ message: "密码修改成功", type: "success" });
