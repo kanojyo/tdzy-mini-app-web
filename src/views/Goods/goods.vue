@@ -130,7 +130,7 @@
                         list-type="picture">
                         <el-button size="mini" type="primary">点击上传</el-button>
                     </el-upload>
-                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M<span class="color_red">建义尺寸750px*680px</span></span>
                 </el-form-item>
                 <el-form-item label="* 商品轮播图">
                     <el-upload
@@ -143,7 +143,7 @@
                         list-type="picture-card">
                         <i class="el-icon-plus"></i>
                     </el-upload>
-                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M<span class="color_red">建义尺寸750px*680px</span></span>
                 </el-form-item>
                 <el-form-item label="* 商品详情图">
                     <el-upload
@@ -156,7 +156,7 @@
                         list-type="picture-card">
                         <i class="el-icon-plus"></i>
                     </el-upload>
-                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,大小为4M</span>
+                    <span class="font_12">上传图片格式只能为JPG、PNG、JPEG,最大为4M<span class="color_red">建义尺寸750px*680px</span></span>
                 </el-form-item>
                 <el-form-item label="* 商品使用规则">
                     <el-input type="textarea" v-model="formLabelAlign.goods_rules" placeholder="请输入商品使用规则" :maxlength="500" ></el-input>
