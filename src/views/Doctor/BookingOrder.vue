@@ -176,86 +176,97 @@
     </el-dialog>
     <!-- 确认就诊or预约详情 -->
     <el-dialog :title="title" :visible.sync="editVisible" width="700px" :close-on-click-modal="false">
-      <div class="title" v-if="title == '预约详情'"><p>预约信息</p></div>
-      <table class="ajun-table">
-        <tr>
-          <td style="width:320px;">预约编号</td>
-          <td>{{info.appointment_code}}</td>
-        </tr>
-        <tr>
-          <td>预约人姓名</td>
-          <td>{{info.name}}</td>
-        </tr>
-        <tr>
-          <td>手机号</td>
-          <td>{{info.mobile}}</td>
-        </tr>
-        <tr v-if="title == '确认就诊'">
-          <td>预约就诊时间</td>
-          <td>{{info.order_time}} {{info.time_slot|timeSlot}}</td>
-        </tr>
-        <!-- <tr v-else>
-						<td>预约就诊时间</td>
-                        <td>{{info.created_at}} </td>
-        </tr>-->
-        <tr v-if="title == '确认就诊'">
-          <td>确认就诊时间</td>
-          <td>
-            <el-date-picker
-              v-model="info.handle_at"
-              type="datetime"
-              placeholder="选择日期时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
-            ></el-date-picker>
-          </td>
-        </tr>
-        <tr v-if="info.status == 2">
-          <td>确认就诊时间</td>
-          <td>{{info.handle_at}}</td>
-        </tr>
-        <tr v-if="info.status == 3">
-          <td>已取消时间</td>
-          <td>{{info.handle_at}}</td>
-        </tr>
-        <tr v-if="info.status == 4">
-          <td>已失效时间</td>
-          <td>{{info.handle_at}}</td>
-        </tr>
-        <tr v-if="title == '确认就诊'">
-          <td>* 备注</td>
-          <td>
-            <el-input type="textarea" v-model="info.remarks" placeholder="请输入备注" :maxlength="100"></el-input>
-            <p style="text-align:right;">字数在100字以内</p>
-          </td>
-        </tr>
-        <tr v-else>
-          <td>备注</td>
-          <td>{{info.remarks}}</td>
-        </tr>
-      </table>
-      <div class="title" v-if="title == '预约详情' && info.order_money !== 0"><p>支付信息</p></div>
-      <table class="ajun-table" v-if="title == '预约详情' && info.order_money !== 0">
-        <tr>
-          <td style="width:320px;">支付时间</td>
-          <td>{{info.pay_time}}</td>
-        </tr>
-        <tr>
-          <td>支付状态</td>
-          <td>{{info.pay_status|payStatus}}</td>
-        </tr>
-        <tr v-if="info.pay_status==8">
-          <td>退款时间</td>
-          <td>{{info.refund_time}}</td>
-        </tr>
-      </table>
-      <div class="title" v-if="title == '预约详情'"><p>日志信息</p></div>
-      <div class="table" v-if="title == '预约详情'">
-        <div class="table-list">
-          <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
-            <el-table-column align="center" prop="id" label="ID" width="80px"></el-table-column>
-            <el-table-column align="center" prop="admin_at" label="操作时间" width="200px"></el-table-column>
-            <el-table-column align="left" prop="log_content" label="操作内容" ></el-table-column>
-          </el-table>
+      <div class="anchor">
+        <div class="left" v-if="title == '预约详情'">
+            <el-steps direction="vertical"  :space="60">
+                <el-step title="预约信息" :status="OrderStatus" @click.native="returnOrder"></el-step>
+                <el-step title="支付信息" v-if="info.order_money !== 0" :status="PayStatus" @click.native="returnPay"></el-step>
+                <el-step title="日志信息" :status="LogStatus" @click.native="returnLog"></el-step>
+            </el-steps>
+        </div>
+        <div class="right">
+            <div class="title" id="order" v-if="title == '预约详情'"><p>预约信息</p></div>
+            <table class="ajun-table">
+              <tr>
+                <td style="width:140px;">预约编号</td>
+                <td>{{info.appointment_code}}</td>
+              </tr>
+              <tr>
+                <td>预约人姓名</td>
+                <td>{{info.name}}</td>
+              </tr>
+              <tr>
+                <td>手机号</td>
+                <td>{{info.mobile}}</td>
+              </tr>
+              <tr v-if="title == '确认就诊'">
+                <td>预约就诊时间</td>
+                <td>{{info.order_time}} {{info.time_slot|timeSlot}}</td>
+              </tr>
+              <!-- <tr v-else>
+                  <td>预约就诊时间</td>
+                              <td>{{info.created_at}} </td>
+              </tr>-->
+              <tr v-if="title == '确认就诊'">
+                <td>确认就诊时间</td>
+                <td>
+                  <el-date-picker
+                    v-model="info.handle_at"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                  ></el-date-picker>
+                </td>
+              </tr>
+              <tr v-if="info.status == 2">
+                <td>确认就诊时间</td>
+                <td>{{info.handle_at}}</td>
+              </tr>
+              <tr v-if="info.status == 3">
+                <td>已取消时间</td>
+                <td>{{info.handle_at}}</td>
+              </tr>
+              <tr v-if="info.status == 4">
+                <td>已失效时间</td>
+                <td>{{info.handle_at}}</td>
+              </tr>
+              <tr v-if="title == '确认就诊'">
+                <td>* 备注</td>
+                <td>
+                  <el-input type="textarea" v-model="info.remarks" placeholder="请输入备注" :maxlength="100"></el-input>
+                  <p style="text-align:right;">字数在100字以内</p>
+                </td>
+              </tr>
+              <tr v-else>
+                <td>备注</td>
+                <td>{{info.remarks}}</td>
+              </tr>
+            </table>
+            <div class="title" id="pay" v-if="title == '预约详情' && info.order_money !== 0"><p>支付信息</p></div>
+            <table class="ajun-table" v-if="title == '预约详情' && info.order_money !== 0">
+              <tr>
+                <td style="width:140px;">支付时间</td>
+                <td>{{info.pay_time}}</td>
+              </tr>
+              <tr>
+                <td>支付状态</td>
+                <td>{{info.pay_status|payStatus}}</td>
+              </tr>
+              <tr v-if="info.pay_status==8">
+                <td>退款时间</td>
+                <td>{{info.refund_time}}</td>
+              </tr>
+            </table>
+            <div class="title" id="log" v-if="title == '预约详情'"><p>日志信息</p></div>
+            <div class="table" v-if="title == '预约详情'">
+              <div class="table-list">
+                <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
+                  <el-table-column align="center" prop="id" label="ID" width="80px"></el-table-column>
+                  <el-table-column align="center" prop="admin_at" label="操作时间" width="200px"></el-table-column>
+                  <el-table-column align="left" prop="log_content" label="操作内容" ></el-table-column>
+                </el-table>
+              </div>
+            </div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer" v-if="title == '确认就诊'">
@@ -354,7 +365,10 @@ export default {
         appointment_id: "",
         page: 1,
         pagesize: 30
-      }
+      },
+      OrderStatus:'process',
+      PayStatus:'wait',
+      LogStatus:'wait',
     };
   },
   mounted() {
@@ -520,7 +534,37 @@ export default {
         this.logList = data.data.list;
         this.logCount = data.data.total;
       }
-    }
+    },
+    //锚点跳转到预约信息
+    returnOrder(){
+      this.OrderStatus='process';
+      this.PayStatus='wait';
+      this.LogStatus='wait';
+      const returnEle = document.querySelector("#order");
+        if (!!returnEle) {
+        returnEle.scrollIntoView(true);
+        }
+    },
+    //锚点跳转到支付信息
+    returnPay(){
+      this.OrderStatus='wait';
+      this.PayStatus='process';
+      this.LogStatus='wait';
+      const returnEle = document.querySelector("#pay");
+        if (!!returnEle) {
+        returnEle.scrollIntoView(true);
+        }
+    },
+    //锚点跳转到日志信息
+    returnLog(){
+      this.OrderStatus='wait';
+      this.PayStatus='wait';
+      this.LogStatus='process';
+      const returnEle = document.querySelector("#log");
+        if (!!returnEle) {
+        returnEle.scrollIntoView(true);
+        }
+    },
   }
 };
 </script>

@@ -368,6 +368,7 @@ export default {
                 ];
                 if(this.formLabelAlign.goods_loop !== ""){
                     let List1= JSON.parse(this.formLabelAlign.goods_loop);
+                    this.imgList1 =List1;
                     console.log(List1,'goods_loop')
                     // let List1= this.formLabelAlign.goods_loop;
                     // this.fileList1 = {url:List1}
@@ -378,6 +379,7 @@ export default {
                 }
                 if(this.formLabelAlign.goods_details !== ""){
                     let list2= JSON.parse(this.formLabelAlign.goods_details);
+                    this.imgList2 =list2;
                     console.log(list2,'goods_details')
                     // let list2= this.formLabelAlign.goods_details;
                     // this.fileList1 = {url:list2}

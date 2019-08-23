@@ -96,88 +96,98 @@
         </div>
         <!-- 用户个人信息 -->
         <el-dialog title="用户个人信息" :visible.sync="dialogVisible" width="650px" :close-on-click-modal="false">
-            <div class="user">
-                <div class="title">档案信息</div>
-                <table class="ajun-table">
-                    <tr>
-                        <td style="width: 150px;">档案编号</td>
-                        <td>{{userInfo.customer_code}}</td>
-                    </tr>
-                    <tr>
-                        <td>绑定医助</td>
-                        <td>{{userInfo.yz_account}}</td>
-                    </tr>
-                    <tr>
-                        <td>所属部门</td>
-                        <td>{{userInfo.yz_department}}</td>
-                    </tr>
-                    <tr>
-                        <td>用户姓名</td>
-                        <td>{{userInfo.customer_name}}</td>
-                    </tr>
-                    <tr>
-                        <td>性别</td>
-                        <td>{{userInfo.customer_sex|filterSex}}</td>
-                    </tr>
-                    <tr>
-                        <td>年龄</td>
-                        <td>{{userInfo.customer_age}}</td>
-                    </tr>
-                    <tr>
-                        <td>手机号</td>
-                        <td>{{userInfo.customer_mobile}}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="user">
-                <div class="title">用户信息</div>
-                <table class="ajun-table">
-                    <tr>
-                        <td style="width: 150px;">用户头像</td>
-                        <td>
-                            <div style="width:80px;">
-                                <img v-if="userInfo.avatarurl" :src="userInfo.avatarurl" alt="">
-                                <img v-else src="https://taidouapp.oss-cn-hangzhou.aliyuncs.com/avatar/avatar.png" alt="">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>昵称</td>
-                        <td>{{userInfo.nickname}}</td>
-                    </tr>
-                    <tr>
-                        <td>用户姓名</td>
-                        <td>{{userInfo.name}}</td>
-                    </tr>
-                    <tr>
-                        <td>性别</td>
-                        <td>{{userInfo.gender|filterSex}}</td>
-                    </tr>
-                    <tr>
-                        <td>年龄</td>
-                        <td>{{userInfo.age}}</td>
-                    </tr>
-                    <tr>
-                        <td>手机号</td>
-                        <td>{{userInfo.account}}</td>
-                    </tr>
-                    <tr>
-                        <td>累计签到天数</td>
-                        <td>{{userInfo.sum_sign_day}}</td>
-                    </tr>
-                    <tr>
-                        <td>累计获取积分</td>
-                        <td>{{userInfo.get_score_num}}</td>
-                    </tr>
-                    <tr>
-                        <td>累计使用积分</td>
-                        <td>{{userInfo.use_score_num}}</td>
-                    </tr>
-                    <tr>
-                        <td>当前积分</td>
-                        <td>{{userInfo.score}}</td>
-                    </tr>
-                </table>
+            <div class="anchor">
+                <div class="left">
+                    <el-steps direction="vertical"  :space="60">
+                        <el-step title="档案信息" :status="FileStatus" @click.native="returnFile"></el-step>
+                        <el-step title="用户信息" :status="UserInfoStatus" @click.native="returnUserInfo"></el-step>
+                    </el-steps>
+                </div>
+                <div class="right">
+                    <div class="user">
+                        <div class="title" id="File">档案信息</div>
+                        <table class="ajun-table">
+                            <tr>
+                                <td style="width: 150px;">档案编号</td>
+                                <td>{{userInfo.customer_code}}</td>
+                            </tr>
+                            <tr>
+                                <td>绑定医助</td>
+                                <td>{{userInfo.yz_account}}</td>
+                            </tr>
+                            <tr>
+                                <td>所属部门</td>
+                                <td>{{userInfo.yz_department}}</td>
+                            </tr>
+                            <tr>
+                                <td>用户姓名</td>
+                                <td>{{userInfo.customer_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>性别</td>
+                                <td>{{userInfo.customer_sex|filterSex}}</td>
+                            </tr>
+                            <tr>
+                                <td>年龄</td>
+                                <td>{{userInfo.customer_age}}</td>
+                            </tr>
+                            <tr>
+                                <td>手机号</td>
+                                <td>{{userInfo.customer_mobile}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="user">
+                        <div class="title" id="userInfo">用户信息</div>
+                        <table class="ajun-table">
+                            <tr>
+                                <td style="width: 150px;">用户头像</td>
+                                <td>
+                                    <div style="width:80px;">
+                                        <img v-if="userInfo.avatarurl" :src="userInfo.avatarurl" alt="">
+                                        <img v-else src="https://taidouapp.oss-cn-hangzhou.aliyuncs.com/avatar/avatar.png" alt="">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>昵称</td>
+                                <td>{{userInfo.nickname}}</td>
+                            </tr>
+                            <tr>
+                                <td>用户姓名</td>
+                                <td>{{userInfo.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>性别</td>
+                                <td>{{userInfo.gender|filterSex}}</td>
+                            </tr>
+                            <tr>
+                                <td>年龄</td>
+                                <td>{{userInfo.age}}</td>
+                            </tr>
+                            <tr>
+                                <td>手机号</td>
+                                <td>{{userInfo.account}}</td>
+                            </tr>
+                            <tr>
+                                <td>累计签到天数</td>
+                                <td>{{userInfo.sum_sign_day}}</td>
+                            </tr>
+                            <tr>
+                                <td>累计获取积分</td>
+                                <td>{{userInfo.get_score_num}}</td>
+                            </tr>
+                            <tr>
+                                <td>累计使用积分</td>
+                                <td>{{userInfo.use_score_num}}</td>
+                            </tr>
+                            <tr>
+                                <td>当前积分</td>
+                                <td>{{userInfo.score}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </el-dialog>
         <!-- 预约记录 -->
@@ -270,6 +280,8 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
             logList:[], //预约记录列表数据
             logCount:0,
             logVisible:false, //预约记录状态
+            FileStatus:'process',
+            UserInfoStatus:'wait',
         };
    },
    filters:{
@@ -361,7 +373,25 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
                 this.logList=data.data.list;
                 this.logCount=data.data.total;
             }
-        }
+        },
+        //锚点跳转档案信息
+        returnFile(){
+            this.FileStatus='process';
+            this.UserInfoStatus='wait';
+            const returnEle = document.querySelector("#File");
+            if (!!returnEle) {
+            returnEle.scrollIntoView(true);
+            }
+        },
+        //锚点跳转档案信息
+        returnUserInfo(){
+            this.FileStatus='wait';
+            this.UserInfoStatus='process';
+            const returnEle = document.querySelector("#userInfo");
+            if (!!returnEle) {
+            returnEle.scrollIntoView(true);
+            }
+        },
 
     }
  }
@@ -370,5 +400,8 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
 <style type="text/css" scoped lang="less">
 .ajun-table{
     margin:20px 0;
+}
+.info{
+    display:flex;
 }
 </style>
