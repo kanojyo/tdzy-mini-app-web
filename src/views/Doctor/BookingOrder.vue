@@ -175,7 +175,7 @@
       </span>
     </el-dialog>
     <!-- 确认就诊or预约详情 -->
-    <el-dialog :title="title" :visible.sync="editVisible" width="700px" :close-on-click-modal="false">
+    <el-dialog :title="title" :visible.sync="editVisible" width="800px" :close-on-click-modal="false">
       <div class="anchor">
         <div class="left" v-if="title == '预约详情'">
             <el-steps direction="vertical"  :space="60">
@@ -199,7 +199,11 @@
                 <td>手机号</td>
                 <td>{{info.mobile}}</td>
               </tr>
-              <tr v-if="title == '确认就诊'">
+              <tr>
+                <td>预约挂号费用</td>
+                <td>¥{{info.order_money}}</td>
+              </tr>
+              <tr >
                 <td>预约就诊时间</td>
                 <td>{{info.order_time}} {{info.time_slot|timeSlot}}</td>
               </tr>
@@ -262,7 +266,7 @@
               <div class="table-list">
                 <el-table :data="logList" border height="550" :header-cell-style="{background:'#f3f3f3'}">
                   <el-table-column align="center" prop="id" label="ID" width="80px"></el-table-column>
-                  <el-table-column align="center" prop="admin_at" label="操作时间" width="200px"></el-table-column>
+                  <el-table-column align="center" prop="admin_at" label="记录时间" width="200px"></el-table-column>
                   <el-table-column align="left" prop="log_content" label="操作内容" ></el-table-column>
                 </el-table>
               </div>
