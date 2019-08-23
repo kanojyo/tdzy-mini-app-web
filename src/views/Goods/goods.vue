@@ -76,16 +76,19 @@
                                 <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
                                 <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
                                 <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 1">
                                 <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
                                 <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
                                 <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 3">
                                 <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
                                 <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
                                 <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -205,6 +208,61 @@
                 <el-button type="primary" @click="handleClose">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 商品详情 -->
+        <el-dialog title="商品详情" :visible.sync="detailVisible" width="800px" :close-on-click-modal="false">
+            <table class="ajun-table">
+                <tr>
+                    <td style="width:100px;">商品名称</td>
+                    <td>{{detailData.goods_name}}</td>
+                </tr>
+                <tr>
+                    <td>商品主图</td>
+                    <td>
+                        <img :src="detailData.pic_url" alt="" style="width:60%;margin:0 auto;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>商品轮播图</td>
+                    <td>
+                        <p style="display:block;">
+                            <img v-for="(item,index) in detailData.goods_loop" :src="item" alt="" style="width:150px;margin-right:10px;">
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>商品详情图</td>
+                    <td>
+                        <p style="display:block;">
+                            <img v-for="(item,index) in detailData.goods_details" :src="item" alt="" style="width:150px;margin-right:10px;">
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>商品详情说明</td>
+                    <td>{{detailData.goods_rules}}</td>
+                </tr>
+                <tr>
+                    <td>兑换所需积分</td>
+                    <td>{{detailData.now_score}}</td>
+                </tr>
+                <tr>
+                    <td>原有积分</td>
+                    <td>{{detailData.original_score}}</td>
+                </tr>
+                <tr>
+                    <td>排序值</td>
+                    <td>{{detailData.sort}}</td>
+                </tr>
+                <tr>
+                    <td>状态</td>
+                    <td>{{detailData.goods_status|goodsStatus}}</td>
+                </tr>
+                <tr>
+                    <td>创建时间</td>
+                    <td>{{detailData.created_at}}</td>
+                </tr>
+            </table>
+        </el-dialog>
     </div>
 </template>
 
@@ -227,6 +285,7 @@ export default {
             list: [], //	    列表数据
             title: "", //  添加/编辑
             dialogVisible: false, //	添加/编辑公司 弹框
+            detailVisible: false, //	商品详情 弹框
             formLabelAlign: {   //  添加/编辑
                 pic_url: '', //商品主图
                 goods_loop: '', //商品轮播图
@@ -253,6 +312,7 @@ export default {
             timeValue:"",
             imgList1:[],
             imgList2:[],
+            detailData:[],
         };
     },
     mounted() {
@@ -613,6 +673,21 @@ export default {
             this.params.goods_status = "";
             this.index();
         },
+        async detail(id){
+            this.detailData =[];
+            let data =await goodsDetails({id:id});
+            if(data.code ==200){
+                console.log(data.data);
+                this.detailData = data.data;
+                if(this.detailData.goods_loop !== ""){
+                    this.detailData.goods_loop= JSON.parse(this.detailData.goods_loop);
+                }
+                if(this.detailData.goods_details !== ""){
+                    this.detailData.goods_details= JSON.parse(this.detailData.goods_details);
+                }
+                this.detailVisible= true;
+            }
+        }
     }
 };
 </script>

@@ -7,6 +7,12 @@ Vue.filter('timeSlot', val => {
     if (val == 1) return "上午(08:00-12:00)";
     if (val == 2) return "下午(14:00-18:00)";
 })
+//泰斗后台的商品状态
+Vue.filter('goodsStatus', val => {
+    if (val == 1) return "正常";
+    if (val == 2) return "下架";
+    if (val == 3) return "暂停兑换";
+})
 //泰斗后台的支付状态
 
 Vue.filter('payStatus', val => {
