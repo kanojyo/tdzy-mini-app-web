@@ -289,7 +289,7 @@ export default {
                 this.formLabelAlign.pic_url = '';
             }
         },
-        handleSuccess1(file) {   //  上传附件
+        handleSuccess1(file,fileList1) {   //  上传附件
             if(file.code === 200){
                 this.fileList1.push({name: file.data.originName, url: file.data.url});
                 this.imgList1.push(file.data.url);
@@ -303,6 +303,7 @@ export default {
                 this.formLabelAlign.goods_loop = '';
             }else{
                 var list=[];
+                this.fileList1= fileList1;
                 fileList1.forEach(item=>{
                     list.push(item.url);
                 });
@@ -325,6 +326,7 @@ export default {
                 this.formLabelAlign.goods_details = '';
             }else{
                 var list=[];
+                this.fileList2= fileList2;
                 fileList2.forEach(item=>{
                     list.push(item.url);
                 });
