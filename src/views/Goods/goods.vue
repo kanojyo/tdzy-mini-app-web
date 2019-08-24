@@ -270,7 +270,6 @@
 import { goodsIndex, changeStatus, goodsAdd, goodsUpdate, goodsDetails} from "@/api/goods.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer, positiveInteger, positiveNum365 } from "@/utils/validate.js";
-
 export default {
     data() {
         return {

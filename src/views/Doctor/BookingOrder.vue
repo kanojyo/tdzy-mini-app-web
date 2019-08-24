@@ -462,7 +462,7 @@ export default {
       }
       let data = await appointmentCancel(this.cancelParams);
       if (data.code === 200) {
-        this.$message({ message: "取消预约成功", type: "success" });
+        this.$message({ message: data.data.msg, type: "success" });
         this.cancelVisible = false;
         this.cancelParams.remarks = "";
         this.index();
