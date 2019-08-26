@@ -168,6 +168,7 @@ export default {
     methods: {
         ...mapActions({
             getRandom: 'getRandom', //  验证随机码
+            getMenu:'getMenu'
         }),
         async index() {
             //  用户信息
@@ -175,6 +176,7 @@ export default {
             if (data.code == 200) {
                 this.menu = data.data.menu;
                 this.user = data.data.user;
+                this.getMenu(data.data.menu);
                 if(sessionStorage.getItem("oneId") && sessionStorage.getItem("twoId")){
                     this.isActive = Number(sessionStorage.getItem("oneId"));
                     this.isActiveShow = Number(sessionStorage.getItem("twoId"));

@@ -52,6 +52,9 @@
                 <el-form-item label="链接网址" v-if="formLabelAlign.type == 2">
                     <el-input v-model="formLabelAlign.route_web" placeholder="请输入链接网址"></el-input>
                 </el-form-item>
+                <el-form-item label="别名" >
+                    <el-input v-model="formLabelAlign.alias" placeholder="请输入别名"></el-input>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -80,7 +83,8 @@ export default {
                 seq_order: "", //  排序
                 route_api: "", //  服务端路由
                 name: "",   //  菜单名称
-                route_web: ""   //  web端路由
+                route_web: "",   //  web端路由
+                alias:""
             },
             type: [
                 { type: 1, val: "目录" },
@@ -109,7 +113,8 @@ export default {
                 type: '',
                 seq_order: "",
                 route_api: "",
-                name: ""
+                name: "",
+                alias:""
             };
             this.levelGet(val.id);
         },

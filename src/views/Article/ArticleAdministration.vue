@@ -250,17 +250,20 @@ export default {
     computed: mapState({
         labelData: (state) => state.selector.laboratory,   //   科室
         category: (state) => state.selector.category,   //   文章分类
+        menu:(state) => state.login.menu,
     }),
     mounted() {
         this.index();
         this.getLaboratory();
         this.articleTagGet();
         this.getCategory({status: 0});
+        console.log(this.menu)
     },
     methods: {
         ...mapActions({ 
             getLaboratory: 'getLaboratory',  //  科室
             getCategory: 'getCategory', //  文章分类
+            getMenu:'getMenu'
         }),
         async index() {
             //  主页列表数据

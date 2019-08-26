@@ -6,6 +6,7 @@ const states = {
         token: sessionStorage.getItem('token') || 0,    //  token
         device: localStorage.getItem('device') || 0,    //  device
         random: '',  //  验证随机码
+        menu: JSON.parse(sessionStorage.getItem('menu')) || '' //menu权限
     },
     mutations: {
         GET_ADMIN (state, action) {     //   登录保存user所有信息
@@ -19,6 +20,9 @@ const states = {
         },
         GET_RANDOM (state) {     //  验证随机码
             state.random = Math.random()
+        },
+        GET_MENU (state, action) {     //  device
+            state.menu = action
         },
     },
     actions: {
@@ -36,6 +40,10 @@ const states = {
         },
         getRandom({ commit }, res){      //  验证随机码
             commit('GET_RANDOM', res)
+        },
+        getMenu({ commit }, res){      //  menu权限
+            sessionStorage.setItem('menu', JSON.stringify(res))
+            commit('GET_MENU', res)
         },
     }
 }
