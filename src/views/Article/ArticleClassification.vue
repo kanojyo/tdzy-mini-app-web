@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -41,9 +41,9 @@
                     <el-table-column align="center" prop="address" label="操作" width="250px">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" @click="edit(scope.row)">编辑</span>&nbsp;
-                                <span class="cursor color_red" v-if="scope.row.status === 1" @click="undercarriage(scope.row.id, 2)">下架</span>
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 2" @click="undercarriage(scope.row.id, 1)">上架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.add" @click="edit(scope.row)">编辑</span>&nbsp;
+                                <span class="cursor color_red" v-if="scope.row.status === 1 && menuData.stop" @click="undercarriage(scope.row.id, 2)">下架</span>
+                                <span class="cursor color-f8494c" v-if="scope.row.status === 2 && menuData.start" @click="undercarriage(scope.row.id, 1)">上架</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -111,16 +111,34 @@ export default {
                 sort: '',
                 status: 1,
             },
-            state: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }]
+            state: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }],
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
         ...mapActions({ 
             getCategory: 'getCategory', //  文章分类
+            getMenu:'getMenu'
         }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='文章'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Article/ArticleClassification'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await articleCategory(this.params);

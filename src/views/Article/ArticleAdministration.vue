@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -57,11 +57,11 @@
                     <el-table-column align="center" fixed="right" label="操作" width="180px">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" @click="edit(scope.row)">编辑</span>&nbsp;
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 2" @click="undercarriage(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" v-if="scope.row.status === 1" @click="undercarriage(scope.row.id, 2)">下架</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="details(scope.row.id)">详情</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="previewChange(scope.row.id)">预览</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row)">编辑</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="scope.row.status === 2 && menuData.start" @click="undercarriage(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="scope.row.status === 1 && menuData.stop" @click="undercarriage(scope.row.id, 2)">下架</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="menuData.details " @click="details(scope.row.id)">详情</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="menuData.review" @click="previewChange(scope.row.id)">预览</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -245,6 +245,7 @@ export default {
             detailsShow: false, //  显示文章详情
             previewShow: false, //  文章预览
             tagData:[],//tag标签
+            menuData:[], //权限控制Data
         };
     },
     computed: mapState({
@@ -257,7 +258,7 @@ export default {
         this.getLaboratory();
         this.articleTagGet();
         this.getCategory({status: 0});
-        console.log(this.menu)
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
         ...mapActions({ 
@@ -265,6 +266,18 @@ export default {
             getCategory: 'getCategory', //  文章分类
             getMenu:'getMenu'
         }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='文章'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Article/ArticleAdministration'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await article(this.params);

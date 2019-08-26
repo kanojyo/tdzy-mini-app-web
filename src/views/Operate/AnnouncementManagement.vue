@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -41,9 +41,9 @@
                     <el-table-column align="center" label="操作" width="250px">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 1" @click="edit(scope.row)">编辑</span>&nbsp;
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 1" @click="withdraw(scope.row.id)">撤回</span>&nbsp;
-                                <span class="cursor color-f8494c" @click="details(scope.row)">详情</span>
+                                <span class="cursor color-f8494c" v-if="scope.row.status === 1 && menuData.edit" @click="edit(scope.row)">编辑</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="scope.row.status === 1 && menuData.back" @click="withdraw(scope.row.id)">撤回</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="menuData.details" @click="details(scope.row)">详情</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -165,6 +165,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { announcementIndex, announcementInfo, authenticateUpdate, authenticateAdd, authenticateWithdraw } from "@/api/operate.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 
@@ -204,12 +205,32 @@ export default {
             withdrawShow: false,    //  撤回显示隐藏
             detailsShow: false, //  查看详情
             detailsData: '',    //  详情数据
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:(state) => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='运营'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Operate/AnnouncementManagement'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await announcementIndex(this.params);

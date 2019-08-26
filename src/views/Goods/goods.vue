@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -73,22 +73,22 @@
                     <el-table-column align="center" label="操作" width="150px">
                         <template slot-scope="scope">
                             <div v-if="scope.row.goods_status === 2">
-                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
-                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="menuData.pause" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 1">
-                                <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
-                                <span class="cursor color_red" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
-                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
+                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color_red" v-if="menuData.pause" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 3">
-                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
-                                <span class="cursor color-f8494c" @click="detail(scope.row.id)">商品详情</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -267,6 +267,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { goodsIndex, changeStatus, goodsAdd, goodsUpdate, goodsDetails} from "@/api/goods.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer, positiveInteger, positiveNum365 } from "@/utils/validate.js";
@@ -312,12 +313,32 @@ export default {
             imgList1:[],
             imgList2:[],
             detailData:[],
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='商品'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Goods/goods'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await goodsIndex(this.params);

@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -59,14 +59,14 @@
                     <el-table-column align="center" label="操作" >
                         <template slot-scope="scope">
                             <div v-if="scope.row.status === 2">
-                                <span class="cursor color-f8494c" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color-f8494c" @click="preview(scope.row.video)">查看视频</span>
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.look" @click="preview(scope.row.video)">查看视频</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                             </div>
                             <div v-if="scope.row.status === 1">
-                                <span class="cursor color_red" @click="statusChange(scope.row.id, 2)">下架</span>
-                                <span class="cursor color-f8494c" @click="preview(scope.row.video)">查看视频</span>
-                                <span class="cursor color-f8494c" @click="edit(scope.row.id)">编辑</span>
+                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.look" @click="preview(scope.row.video)">查看视频</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -171,6 +171,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import oss from '@/utils/oss.js'
 import { video, videoStatus, videoDetails, videoUpdate} from "@/api/video.js";
 import { uploadUrl } from "@/api/imageUrl.js";
@@ -210,12 +211,32 @@ export default {
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }],    //  状态
             previewShow:false,
             previewVideo:'',
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='视频'){
+                item.data.forEach(it=>{
+                    if(it.route_web =='/Video/video'){
+                        this.menuData = it.role_arr;
+                    }
+                })
+                }
+            })
+        },
         //时间戳转时间
         formatDate(row, column) {
             let date = new Date(parseInt(row.ctime) * 1000);

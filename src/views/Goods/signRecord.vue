@@ -44,6 +44,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { signList} from "@/api/goods.js";
 
 export default {
@@ -56,12 +57,32 @@ export default {
             },
             count: 0, //	总数据
             list: [], //	    列表数据
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='商品'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Goods/signRecord'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await signList(this.params);

@@ -72,8 +72,8 @@
                     <el-table-column align="center" label="操作" width="180px">
                         <template slot-scope="scope">
                             <div >
-                                <span class="cursor color-f8494c" @click="popLog(scope.row.user_id)">预约记录</span>
-                                <span class="cursor color-f8494c" @click="detail(scope.row.user_id)">用户详情</span>
+                                <span class="cursor color-f8494c" v-if="menuData.appointment_record " @click="popLog(scope.row.user_id)">预约记录</span>
+                                <span class="cursor color-f8494c" v-if="menuData.details " @click="detail(scope.row.user_id)">用户详情</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -243,6 +243,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
  export default {
    data () {
@@ -282,6 +283,7 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
             logVisible:false, //预约记录状态
             FileStatus:'process',
             UserInfoStatus:'wait',
+            menuData:[], //权限控制Data
         };
    },
    filters:{
@@ -290,14 +292,35 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
            if(val === 2) return '女'
        }
    },
+   computed: mapState({
+        menu:(state) => state.login.menu,
+    }),
    components: {
 
    },
    mounted() {
         this.index();
         this.getDepartment();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getLaboratory: 'getLaboratory',  //  科室
+            getCategory: 'getCategory', //  文章分类
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='用户'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/User/FileList'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async getDepartment(){
             let data = await departmentList();
             if(data.code ===200){

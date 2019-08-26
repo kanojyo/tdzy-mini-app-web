@@ -83,7 +83,7 @@
                                 :class="{active: isActiveShow === item.id}"
                                 v-for="(item, index) in twoNavList"
                                 :key="index"
-                            >• {{item.name}}</li>
+                            > <span v-if="item.type !== 1">• {{item.name}}</span></li>
                         </ul>
                     </div>
                 </el-aside>

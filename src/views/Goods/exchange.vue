@@ -56,11 +56,11 @@
                      <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div  v-if="scope.row.status === 1">
-                                <span class="cursor color-f8494c" @click="confirm(scope.row)">确认使用</span>
-                                <span class="cursor color-f8494c" @click="log(scope.row.id)">操作日志</span>
+                                <span class="cursor color-f8494c" v-if="menuData.confirm" @click="confirm(scope.row)">确认使用</span>
+                                <span class="cursor color-f8494c" v-if="menuData.log" @click="log(scope.row.id)">操作日志</span>
                             </div>
                             <div v-else>
-                              <span class="cursor color-f8494c" @click="log(scope.row.id)">操作日志</span>
+                              <span class="cursor color-f8494c" v-if="menuData.log" @click="log(scope.row.id)">操作日志</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -150,6 +150,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { exchangeList, exchangeLogList, goodsConfirm} from "@/api/goods.js";
 
 export default {
@@ -180,12 +181,32 @@ export default {
             dialogVisible:false,
             remarks:"",
             logVisible:false, //操作日志状态
+            menuData:[], //权限控制Data
         };
     },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        ...mapActions({ 
+            getMenu:'getMenu'
+        }),
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='商品'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Goods/exchange'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await exchangeList(this.params);

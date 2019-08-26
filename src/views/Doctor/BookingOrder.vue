@@ -126,16 +126,16 @@
           <el-table-column align="center" label="操作" >
             <template slot-scope="scope">
               <div v-if="scope.row.status ===1">
-                <span class="cursor color-f8494c" @click="confirmPop(scope.row)">确认就诊</span>
-                <span class="cursor color_red" @click="cancelPop(scope.row.id)">取消预约</span>
-                <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
+                <span class="cursor color-f8494c" v-if="menuData.confirm_use" @click="confirmPop(scope.row)">确认就诊</span>
+                <span class="cursor color_red" v-if="menuData.cancel" @click="cancelPop(scope.row.id)">取消预约</span>
+                <span class="cursor color-f8494c" v-if="menuData.details" @click="detailPop(scope.row.id)">预约详情</span>
                 <!-- <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span> -->
-                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
+                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9 && menuData.refund" @click="refund(scope.row.id)">申请退款</span>
               </div>
               <div v-else>
-                <span class="cursor color-f8494c" @click="detailPop(scope.row.id)">预约详情</span>
+                <span class="cursor color-f8494c" v-if="menuData.details" @click="detailPop(scope.row.id)">预约详情</span>
                 <!-- <span class="cursor color-f8494c" @click="logPop(scope.row.id)">操作日志</span> -->
-                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9" @click="refund(scope.row.id)">申请退款</span>
+                <span class="cursor color-f8494c" v-if="scope.row.pay_status==9 && menuData.refund" @click="refund(scope.row.id)">申请退款</span>
               </div>
             </template>
           </el-table-column>
@@ -313,6 +313,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import {
   appointmentList,
   appointmentConfirm,
@@ -373,12 +374,32 @@ export default {
       OrderStatus:'process',
       PayStatus:'wait',
       LogStatus:'wait',
+      menuData:[], //权限控制Data
     };
   },
+  computed: mapState({
+    menu:(state) => state.login.menu,
+  }),
   mounted() {
     this.index();
+    this.menuGet();
   },
   methods: {
+    ...mapActions({ 
+      getMenu:'getMenu'
+    }),
+    //权限控制
+    menuGet(){
+      this.menu.forEach(item=>{
+        if(item.name =='医生'){
+          item.data.forEach(it=>{
+            if(it.route_web =='/Doctor/BookingOrder'){
+              this.menuData = it.role_arr;
+            }
+          })
+        }
+      })
+    },
     async index() {
       router.beforeEach((to, from, next) => {
         if (from.path == to.path && from.query !== to.query) {
