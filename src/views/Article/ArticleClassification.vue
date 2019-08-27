@@ -41,7 +41,7 @@
                     <el-table-column align="center" prop="address" label="操作" width="250px">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" v-if="menuData.add" @click="edit(scope.row)">编辑</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row)">编辑</span>&nbsp;
                                 <span class="cursor color_red" v-if="scope.row.status === 1 && menuData.stop" @click="undercarriage(scope.row.id, 2)">下架</span>
                                 <span class="cursor color-f8494c" v-if="scope.row.status === 2 && menuData.start" @click="undercarriage(scope.row.id, 1)">上架</span>
                             </div>

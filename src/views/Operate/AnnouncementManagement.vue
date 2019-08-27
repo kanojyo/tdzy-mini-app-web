@@ -270,11 +270,11 @@ export default {
                 return false;
             }
         },
-        edit(row) {
+        async edit(row) {
             //  编辑
             this.title = "编辑";
             this.announcementGet(row.id);
-            this.dialogVisible = true;
+            // this.dialogVisible = true;
         },
         add() {
             //  添加
@@ -329,7 +329,7 @@ export default {
                 this.fileList = [
                         {name: '', url: data.data.cover}
                     ];
-                
+                this.dialogVisible = true;
             }
         },
         withdraw(id){   //  撤回显示
@@ -362,7 +362,7 @@ export default {
         },
         details(row){    //  查看详情
             this.announcementGet(row.id);
-            this.detailsShow = true;
+            // this.detailsShow = true;
         },
         search() {
             //  检索
