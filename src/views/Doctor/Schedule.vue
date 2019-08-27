@@ -456,7 +456,6 @@ export default {
         this.editVisible = true;
       }
     },
-    time() {},
     //修改排班
     modify() {
       if (this.editData.order_time == "") {
@@ -492,6 +491,8 @@ export default {
           this.$message({ message: "修改成功", type: "success" });
           this.editVisible = false;
           this.index();
+        }else{
+          this.editData.order_max_num = this.editData.order_max_num.toString();
         }
       });
     }

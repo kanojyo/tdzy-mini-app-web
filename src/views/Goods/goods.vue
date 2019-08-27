@@ -451,7 +451,6 @@ export default {
                 if(this.formLabelAlign.goods_loop !== ""){
                     let List1= JSON.parse(this.formLabelAlign.goods_loop);
                     this.imgList1 =List1;
-                    console.log(List1,'goods_loop')
                     // let List1= this.formLabelAlign.goods_loop;
                     // this.fileList1 = {url:List1}
                     List1.forEach(item => {

@@ -487,8 +487,6 @@ export default {
         this.cancelVisible = false;
         this.cancelParams.remarks = "";
         this.index();
-      }else{
-        this.index();
       }
     },
     // 申请退款
