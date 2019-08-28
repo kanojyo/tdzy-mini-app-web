@@ -3,7 +3,7 @@
     <div class>
         <div class="operation">
             <div class="pull-right">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" size="mini" @click="add">添加</el-button>
+                <el-button icon="el-icon-circle-plus-outline" v-if="menuData.add" type="primary" size="mini" @click="add">添加</el-button>
             </div>
         </div>
         <div class="table">
@@ -16,9 +16,9 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" @click="edit(scope.row)">编辑</span>
-                                <span class="cursor color-f8494c" @click="remove(scope.row.id)">删除</span>
-                                <span class="cursor color-f8494c" @click="permissionSetting(scope.row.id)">权限设置</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.delete" @click="remove(scope.row.id)">删除</span>
+                                <span class="cursor color-f8494c" v-if="menuData.auth" @click="permissionSetting(scope.row.id)">权限设置</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -82,6 +82,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { roleIndex, rolePost, roleUpdate, roleDelete, rolePermission } from "@/api/set.js";
 
 export default {
@@ -113,12 +114,36 @@ export default {
                 id: '',
                 menu_ids: [],
             },
+            menuData:[], //权限控制Data
         };
+    },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
+    watch: {
+        '$store.state.login.menu': function () {
+            this.$nextTick(()=>{
+                this.menuGet(); //权限控制页面按钮
+            })
+        }
     },
     mounted() {
         this.index();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='设置'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Set/RoleManagement'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await roleIndex(this.params);

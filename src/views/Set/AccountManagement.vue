@@ -12,7 +12,7 @@
                     <el-table-column align="center" prop="address" label="操作">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" @click="edit(scope.row)">编辑</span>
+                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row)">编辑</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -51,6 +51,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapState, mapActions } from 'vuex';
 import { userIndex, userUpdate, roleSelect } from "@/api/set.js";
 
 export default {
@@ -68,13 +69,37 @@ export default {
                 role_id: '',    //  角色ID
             },
             roleList: [],   //  角色列表
+            menuData:[], //权限控制Data
         };
+    },
+    computed: mapState({
+        menu:state => state.login.menu,
+    }),
+    watch: {
+        '$store.state.login.menu': function () {
+            this.$nextTick(()=>{
+                this.menuGet(); //权限控制页面按钮
+            })
+        }
     },
     mounted() {
         this.index();
         this.selectGet();
+        this.menuGet(); //权限控制页面按钮
     },
     methods: {
+        //权限控制
+        menuGet(){
+            this.menu.forEach(item=>{
+                if(item.name =='设置'){
+                    item.data.forEach(it=>{
+                        if(it.route_web =='/Set/AccountManagement'){
+                            this.menuData = it.role_arr;
+                        }
+                    })
+                }
+            })
+        },
         async index() {
             //  主页列表数据
             let data = await userIndex(this.params);
