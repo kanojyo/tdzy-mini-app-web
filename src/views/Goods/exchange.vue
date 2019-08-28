@@ -187,6 +187,13 @@ export default {
     computed: mapState({
         menu:state => state.login.menu,
     }),
+    watch: {
+        '$store.state.login.menu': function () {
+            this.$nextTick(()=>{
+                this.menuGet(); //权限控制页面按钮
+            })
+        }
+    },
     mounted() {
         this.index();
         this.menuGet(); //权限控制页面按钮
@@ -272,13 +279,13 @@ export default {
         log(id){
           this.logParams.exchange_id=id;
           this.getLogList();
-          this.logVisible=true;
         },
         async getLogList(){
           let data = await exchangeLogList(this.logParams);
           if(data.code===200){
             this.logList=data.data.list;
             this.logCount = data.data.total;
+            this.logVisible=true;
           }
         }
     }

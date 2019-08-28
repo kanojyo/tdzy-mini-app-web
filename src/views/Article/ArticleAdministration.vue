@@ -253,6 +253,13 @@ export default {
         category: (state) => state.selector.category,   //   文章分类
         menu:(state) => state.login.menu,
     }),
+    watch: {
+        '$store.state.login.menu': function () {
+            this.$nextTick(()=>{
+                this.menuGet(); //权限控制页面按钮
+            })
+        }
+    },
     mounted() {
         this.index();
         this.getLaboratory();

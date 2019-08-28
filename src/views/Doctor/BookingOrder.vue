@@ -380,6 +380,13 @@ export default {
   computed: mapState({
     menu:(state) => state.login.menu,
   }),
+  watch: {
+    '$store.state.login.menu': function () {
+        this.$nextTick(()=>{
+            this.menuGet(); //权限控制页面按钮
+        })
+    }
+  },
   mounted() {
     this.index();
     this.menuGet();
@@ -538,10 +545,10 @@ export default {
     //预约详情弹框
     detailPop(id) {
       this.title = "预约详情";
-      this.editVisible = true;
       appointmentInfo({ id: id }).then(data => {
         if (data.code === 200) {
           this.info = data.data;
+          this.editVisible = true;
         }
       });
       this.logParams.appointment_id = id;
@@ -550,7 +557,6 @@ export default {
     //操作日志弹框
     logPop(id) {
       this.logParams.appointment_id = id;
-      this.logVisible = true;
       this.getLogList();
     },
     async getLogList() {
@@ -558,6 +564,7 @@ export default {
       if (data.code === 200) {
         this.logList = data.data.list;
         this.logCount = data.data.total;
+        this.logVisible = true;
       }
     },
     //锚点跳转到预约信息

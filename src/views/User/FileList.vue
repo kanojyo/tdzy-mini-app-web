@@ -295,6 +295,13 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
    computed: mapState({
         menu:(state) => state.login.menu,
     }),
+    watch: {
+        '$store.state.login.menu': function () {
+            this.$nextTick(()=>{
+                this.menuGet(); //权限控制页面按钮
+            })
+        }
+    },
    components: {
 
    },

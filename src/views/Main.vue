@@ -177,8 +177,8 @@ export default {
                 this.menu = data.data.menu;
                 this.user = data.data.user;
                 this.getMenu(data.data.menu);
-                console.log(111)
-                console.log(data.data.menu,'menu')
+                // console.log(111)
+                // console.log(data.data.menu,'menu')
                 if(sessionStorage.getItem("oneId") && sessionStorage.getItem("twoId")){
                     this.isActive = Number(sessionStorage.getItem("oneId"));
                     this.isActiveShow = Number(sessionStorage.getItem("twoId"));
