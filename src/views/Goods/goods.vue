@@ -307,7 +307,7 @@ export default {
             fileList1: [],   //  轮播图附件容器
             fileList2: [],   //  详情图附件容器
             uploadUrl: uploadUrl(), //  上传地址
-            type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类" }], //商品类型
+            type:[{type: 0, value: "全部"},{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类"}], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
             imgList1:[],
@@ -337,7 +337,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='商品'){
+                if(item.name =='积分商品'){
                     item.data.forEach(it=>{
                         if(it.route_web =='/Goods/goods'){
                             this.menuData = it.role_arr;

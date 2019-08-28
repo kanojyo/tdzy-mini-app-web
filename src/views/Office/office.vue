@@ -411,7 +411,7 @@ export default {
                     this.previewImgList=JSON.parse(this.previewImgList);
                 }
                 this.previewShow=true;
-            }
+            }z
         },
         search() {
             //  检索

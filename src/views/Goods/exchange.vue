@@ -205,7 +205,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='商品'){
+                if(item.name =='积分商品'){
                     item.data.forEach(it=>{
                         if(it.route_web =='/Goods/exchange'){
                             this.menuData = it.role_arr;
