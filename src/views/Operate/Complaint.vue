@@ -331,6 +331,7 @@ export default {
       if (data.code === 200) {
         this.detailsData = data.data;
         this.content = data.data.content;
+        this.dialogVisible = true;
       }
     },
     detailsChange(id, val) {
@@ -345,7 +346,7 @@ export default {
       this.formLabelAlign.image = [];
       this.fileList = [];
       this.complaintGet(id);
-      this.dialogVisible = true;
+      // this.dialogVisible = true;
     },
     async handleClose() {
       //  提交反馈问题
