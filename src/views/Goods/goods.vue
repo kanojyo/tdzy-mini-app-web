@@ -73,20 +73,20 @@
                     <el-table-column align="center" label="操作" width="150px">
                         <template slot-scope="scope">
                             <div v-if="scope.row.goods_status === 2">
-                                <span class="cursor color-f8494c" v-if="menuData.start" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" v-if="menuData.pause" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
                                 <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                                 <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 1">
-                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
-                                <span class="cursor color_red" v-if="menuData.pause" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
+                                <span class="cursor color_red" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color_red" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 3)">暂停兑换</span>
                                 <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                                 <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>
                             <div v-if="scope.row.goods_status === 3">
-                                <span class="cursor color-f8494c" v-if="menuData.start" @click="statusChange(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 2)">下架</span>
                                 <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                                 <span class="cursor color-f8494c" v-if="menuData.details" @click="detail(scope.row.id)">商品详情</span>
                             </div>

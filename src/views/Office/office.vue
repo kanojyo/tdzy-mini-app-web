@@ -48,12 +48,12 @@
                     <el-table-column align="center" label="操作" >
                         <template slot-scope="scope">
                             <div v-if="scope.row.state === 2">
-                                <span class="cursor color-f8494c" v-if="menuData.start " @click="statusChange(scope.row.id, 1)">上架</span>
+                                <span class="cursor color-f8494c" v-if="menuData.start_stop " @click="statusChange(scope.row.id, 1)">上架</span>
                                 <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                                 <span class="cursor color-f8494c" v-if="menuData.review" @click="preview(scope.row.office_details)">科室预览</span>
                             </div>
                             <div v-if="scope.row.state === 1">
-                                <span class="cursor color_red" v-if="menuData.stop" @click="statusChange(scope.row.id, 2)">下架</span>
+                                <span class="cursor color_red" v-if="menuData.start_stop" @click="statusChange(scope.row.id, 2)">下架</span>
                                 <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row.id)">编辑</span>
                                 <span class="cursor color-f8494c" v-if="menuData.review" @click="preview(scope.row.office_details)">科室预览</span>
                             </div>

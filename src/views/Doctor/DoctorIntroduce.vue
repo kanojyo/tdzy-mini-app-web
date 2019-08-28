@@ -89,12 +89,12 @@
               <div>
                 <span
                   class="cursor color-f8494c"
-                  v-if="scope.row.scheduling_status === 2 && menuData.start_appointment "
+                  v-if="scope.row.scheduling_status === 2 && menuData.start_stop_appointment  "
                   @click="scheduleChange(scope.row.id, 1)"
                 >开启预约</span>
                 <span
                   class="cursor color_red"
-                  v-if="scope.row.scheduling_status === 1 && menuData.stop_appointment"
+                  v-if="scope.row.scheduling_status === 1 && menuData.start_stop_appointment "
                   @click="scheduleChange(scope.row.id, 2)"
                 >关闭预约</span>&nbsp;
                 <span
@@ -104,12 +104,12 @@
                 >编辑</span>&nbsp;
                 <span
                   class="cursor color-f8494c"
-                  v-if="scope.row.status === 2 && menuData.start "
+                  v-if="scope.row.status === 2 && menuData.start_stop "
                   @click="statusChange(scope.row.id, 1)"
                 >上架</span>
                 <span
                   class="cursor color_red"
-                  v-if="scope.row.status === 1 && menuData.stop"
+                  v-if="scope.row.status === 1 && menuData.start_stop"
                   @click="statusChange(scope.row.id, 2)"
                 >下架</span>&nbsp;
                 <span
