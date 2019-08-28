@@ -72,7 +72,7 @@
                   v-if="scope.row.status === 1 && menuData.start_stop"
                   @click="statusChange(scope.row.id, 2)"
                 >下架</span>&nbsp;
-                <span class="cursor color-f8494c" v-if="menuData.details" @click="target(scope.row.link)">预览</span>
+                <span class="cursor color-f8494c" v-if="menuData.details" @click="target(scope.row.id)">预览</span>
               </div>
             </template>
           </el-table-column>
@@ -322,9 +322,13 @@ export default {
           this.$message({ type: "info", message: "已取消操作~" });
         });
     },
-    target(url) {
+    async target(val) {
       //  打开轮播图
-      window.open(url);
+      let data = await slideShow({ id: val });
+      if(data.code == 200){
+        let url=data.data.link;
+        window.open(url);
+      }
     },
     search() {
       //  检索
