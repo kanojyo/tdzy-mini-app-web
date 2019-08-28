@@ -558,13 +558,13 @@ export default {
     logPop(id) {
       this.logParams.appointment_id = id;
       this.getLogList();
+      this.logVisible = true;
     },
     async getLogList() {
       let data = await appointmentLog(this.logParams);
       if (data.code === 200) {
         this.logList = data.data.list;
         this.logCount = data.data.total;
-        this.logVisible = true;
       }
     },
     //锚点跳转到预约信息
