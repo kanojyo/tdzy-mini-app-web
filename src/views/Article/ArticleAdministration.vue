@@ -57,11 +57,11 @@
                     <el-table-column align="center" fixed="right" label="操作" width="180px">
                         <template slot-scope="scope">
                             <div>
-                                <span class="cursor color-f8494c" v-if="menuData.edit" @click="edit(scope.row)">编辑</span>&nbsp;
-                                <span class="cursor color-f8494c" v-if="scope.row.status === 2 && menuData.start" @click="undercarriage(scope.row.id, 1)">上架</span>
-                                <span class="cursor color_red" v-if="scope.row.status === 1 && menuData.stop" @click="undercarriage(scope.row.id, 2)">下架</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="menuData.start_stop" @click="edit(scope.row)">编辑</span>&nbsp;
+                                <span class="cursor color-f8494c" v-if="scope.row.status === 2 && menuData.start_stop" @click="undercarriage(scope.row.id, 1)">上架</span>
+                                <span class="cursor color_red" v-if="scope.row.status === 1 && menuData.start_stop" @click="undercarriage(scope.row.id, 2)">下架</span>&nbsp;
                                 <span class="cursor color-f8494c" v-if="menuData.details " @click="details(scope.row.id)">详情</span>&nbsp;
-                                <span class="cursor color-f8494c" v-if="menuData.review" @click="previewChange(scope.row.id)">预览</span>
+                                <span class="cursor color-f8494c" v-if="menuData.details" @click="previewChange(scope.row.id)">预览</span>
                             </div>
                         </template>
                     </el-table-column>
