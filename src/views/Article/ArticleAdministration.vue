@@ -271,7 +271,6 @@ export default {
         ...mapActions({ 
             getLaboratory: 'getLaboratory',  //  科室
             getCategory: 'getCategory', //  文章分类
-            getMenu:'getMenu'
         }),
         //权限控制
         menuGet(){

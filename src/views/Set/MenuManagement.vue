@@ -183,7 +183,8 @@ export default {
         }
     }
     .zthree {
-        /*overflow-y: scroll; */
+        height: 700px;
+        overflow-y: scroll; 
         border: 1px solid #e4e4e4;
         border-top: none;
         padding: 50px;
