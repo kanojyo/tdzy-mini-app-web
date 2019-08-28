@@ -349,17 +349,16 @@ export default {
                 ];
                 this.defaultMsg = data.data.article_content;
                 this.label = data.data.article_tag.split(",");
+                this.dialogVisible = true;
             }
         },
         previewChange(id){    //  文章预览
-            this.previewShow = true;
             this.detailsGet(id);
         },
         edit(row) {
             //  编辑
             this.title = "编辑";
             this.detailsGet(row.id);
-            this.dialogVisible = true;
             this.getCategory({status: 1});
         },
         add() {

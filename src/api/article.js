@@ -37,6 +37,11 @@ export function articleUpdate(params){ return fetch({url: '/v1/article/update/' 
 export function articleShow(params){ return fetch({url: '/v1/article/show/' + params.id, method: 'GET'}) }
 
 /*
-*   NO:7    文章分类 -- 文章标签
+*   NO:8    文章分类 -- 文章标签
 */
 export function articleTag(params){ return fetch({url: '/v1/article/tag', method: 'GET'}) }
+
+/*
+*   NO:9    文章分类 -- 文章分类详情
+*/
+export function articleCategoryShow(params){ return fetch({url: '/v1/article/category/show/' + params.id, method: 'GET'}) }

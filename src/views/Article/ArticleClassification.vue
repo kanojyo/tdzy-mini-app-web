@@ -89,7 +89,7 @@
 
 <script type="text/javascript">
 import { mapState, mapActions } from 'vuex';
-import { articleCategory, categoryStore, categoryUpdate } from "@/api/article.js";
+import { articleCategory, categoryStore, categoryUpdate, articleCategoryShow } from "@/api/article.js";
 import { integer } from "@/utils/validate.js";
 
 export default {
@@ -191,11 +191,17 @@ export default {
         edit(row) {
             //  编辑
             this.title = "编辑";
-            this.formLabelAlign.id = row.id;
-            this.formLabelAlign.category_name = row.category_name;
-            this.formLabelAlign.sort = row.sort;
-            this.formLabelAlign.status = row.status;
-            this.dialogVisible = true;
+            articleCategoryShow({id:row.id}).then(data=>{
+                if(data.code == 200){
+                    this.formLabelAlign = data.data;
+                    this.dialogVisible = true;
+                }
+            })
+            // this.formLabelAlign.id = row.id;
+            // this.formLabelAlign.category_name = row.category_name;
+            // this.formLabelAlign.sort = row.sort;
+            // this.formLabelAlign.status = row.status;
+            
         },
         add() {
             this.title = "添加";
