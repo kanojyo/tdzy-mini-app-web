@@ -331,7 +331,7 @@ export default {
             }
         },
         details(id){  //  文章详情显示
-            this.detailsShow = true;
+            // this.detailsShow = true;
             this.detailsGet(id);
         },
         async detailsGet(id){   //  文章详情
