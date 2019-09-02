@@ -328,7 +328,7 @@ export default {
     //权限控制
     menuGet() {
       this.menu.forEach(item => {
-        if (item.name == "医生") {
+        if (item.id == 18) {
           item.data.forEach(it => {
             if (it.name == "排班列表") {
               this.menuData = it.role_arr;

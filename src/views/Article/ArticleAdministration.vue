@@ -275,7 +275,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='文章'){
+                if(item.id == 5){
                     item.data.forEach(it=>{
                         if(it.route_web =='/Article/ArticleAdministration'){
                             this.menuData = it.role_arr;

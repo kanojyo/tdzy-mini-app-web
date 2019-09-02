@@ -135,7 +135,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='设置'){
+                if(item.id == 1){
                     item.data.forEach(it=>{
                         if(it.route_web =='/Set/RoleManagement'){
                             this.menuData = it.role_arr;

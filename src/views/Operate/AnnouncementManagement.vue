@@ -229,7 +229,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='运营'){
+                if(item.id == 14){
                     item.data.forEach(it=>{
                         if(it.route_web =='/Operate/AnnouncementManagement'){
                             this.menuData = it.role_arr;

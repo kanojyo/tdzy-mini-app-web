@@ -319,7 +319,7 @@ import { departmentList, getIndex, userInfo, getLog} from "@/api/user.js";
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='用户'){
+                if(item.id == 12){
                     item.data.forEach(it=>{
                         if(it.route_web =='/User/FileList'){
                             this.menuData = it.role_arr;

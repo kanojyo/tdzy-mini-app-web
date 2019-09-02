@@ -201,7 +201,7 @@ export default {
     //权限控制
     menuGet(){
       this.menu.forEach(item=>{
-        if(item.name =='轮播图'){
+        if(item.id == 21){
           item.data.forEach(it=>{
             if(it.route_web =='/Slideshow/HomeSlideshow'){
                 this.menuData = it.role_arr;

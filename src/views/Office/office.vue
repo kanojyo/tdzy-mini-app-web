@@ -202,7 +202,7 @@ export default {
         //权限控制
         menuGet(){
             this.menu.forEach(item=>{
-                if(item.name =='科室'){
+                if(item.id == 39){
                 item.data.forEach(it=>{
                     if(it.route_web =='/Office/office'){
                         this.menuData = it.role_arr;
