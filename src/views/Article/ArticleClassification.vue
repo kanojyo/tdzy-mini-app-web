@@ -38,7 +38,7 @@
                     <el-table-column align="center" prop="sort" label="排序值"></el-table-column>
                     <el-table-column align="center" prop="admin_username" label="创建人"></el-table-column>
                     <el-table-column align="center" prop="created_at" label="创建时间" width="180px"></el-table-column>
-                    <el-table-column align="center" prop="address" label="操作" width="250px">
+                     <el-table-column align="center" prop="address" label="操作" width="250px">
                         <template slot-scope="scope">
                             <div>
                                 <span class="cursor color-f8494c" v-if="menuData.start_stop" @click="edit(scope.row)">编辑</span>&nbsp;

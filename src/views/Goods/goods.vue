@@ -307,7 +307,7 @@ export default {
             fileList1: [],   //  轮播图附件容器
             fileList2: [],   //  详情图附件容器
             uploadUrl: uploadUrl(), //  上传地址
-            type:[{type: 0, value: "全部"},{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类"}], //商品类型
+            type:[{type: 1, value: "诊疗类" }, {type: 2, value: "实物类" }, {type: 3, value: "虚拟类"}], //商品类型
             status: [{ type: 1, value: "正常" }, { type: 2, value: "下架" }, { type:3, value: "暂停兑换"}],    //  状态
             timeValue:"",
             imgList1:[],
@@ -696,14 +696,14 @@ export default {
             //  清空删选条件
             this.params.goods_name = "";
             this.params.goods_type = "";
-            this.params.goods_status = "";
+            this.params.goods_status = 0;
             this.index();
         },
         async detail(id){
             this.detailData =[];
             let data =await goodsDetails({id:id});
             if(data.code ==200){
-                console.log(data.data);
+                // console.log(data.data);
                 this.detailData = data.data;
                 if(this.detailData.goods_loop !== ""){
                     this.detailData.goods_loop= JSON.parse(this.detailData.goods_loop);
