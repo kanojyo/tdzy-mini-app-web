@@ -276,7 +276,7 @@ export default {
         return {
             params: {
                 goods_name:"",
-                goods_type: 0, //  商品类型 0:全部 1：诊疗类，2：实物类, 3:虚拟类
+                goods_type: "", //  商品类型 0:全部 1：诊疗类，2：实物类, 3:虚拟类
                 goods_status: 1, //  状态 1：正常，2：下架, 3:暂停兑换
                 page: 1, //  分页
                 pagesize: 30 //    每页显示条数
@@ -696,7 +696,7 @@ export default {
             //  清空删选条件
             this.params.goods_name = "";
             this.params.goods_type = "";
-            this.params.goods_status = 0;
+            this.params.goods_status = "";
             this.index();
         },
         async detail(id){
