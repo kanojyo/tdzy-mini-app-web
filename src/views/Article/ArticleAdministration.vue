@@ -297,6 +297,7 @@ export default {
             let data = await articleTag();
             if(data.code ===200){
                 this.tagData=data.data;
+                
             }
         },
         handleCurrentChange(val) {
