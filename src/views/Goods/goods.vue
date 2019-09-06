@@ -701,7 +701,7 @@ export default {
         },
         async detail(id){
             this.detailData =[];
-            let data =await goodsDetails({id:id});
+            let data = await goodsDetails({id:id});
             if(data.code ==200){
                 // console.log(data.data);
                 this.detailData = data.data;
