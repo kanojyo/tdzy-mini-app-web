@@ -384,12 +384,9 @@ export default {
             if(typeof(this.formLabelAlign.office_details) !== 'string'){
                 this.formLabelAlign.office_details = JSON.stringify(this.formLabelAlign.office_details);
             }
-            console.log(this.formLabelAlign.department_json);
-            console.log(typeof(this.formLabelAlign.department_json))
-            if(this.formLabelAlign.department_json>0){
+            if(this.formLabelAlign.department_json.length>0){
                 this.formLabelAlign.department_json = JSON.stringify(this.formLabelAlign.department_json);
             }
-            console.log(this.formLabelAlign.department_json);
             let data;
             if (this.title === "添加") {
                 data = await officeUpdate(this.formLabelAlign);
