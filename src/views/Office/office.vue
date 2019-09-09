@@ -32,6 +32,11 @@
                             <img :src="scope.row.office_img"  >
                         </template>
                     </el-table-column>
+                    <el-table-column align="center" label="科室二维码" width="100px">
+                        <template slot-scope="scope">
+                            <img :src="scope.row.qrcode"  >
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="sort" label="排序值" width="150px"></el-table-column>
                     <el-table-column align="center"  label="状态" width="150px">
                         <template slot-scope="scope">
@@ -43,8 +48,8 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="ctime" :formatter="formatDate" label="创建时间" width="300px"></el-table-column>
                     <el-table-column align="center" prop="admin"  label="创建人" ></el-table-column>
+                    <el-table-column align="center" prop="ctime" :formatter="formatDate" label="创建时间" width="300px"></el-table-column>
                     <el-table-column align="center" label="操作" >
                         <template slot-scope="scope">
                             <div v-if="scope.row.state === 2">
@@ -124,6 +129,11 @@
                         <el-radio v-for="item in status"   :key="item.type" :label="item.type" >{{item.value}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
+                <el-form-item label=" 关联部门">
+                    <el-select v-model="formLabelAlign.department_json" multiple clearable size="mini" placeholder="请选择关联部门">
+                        <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id" ></el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -144,7 +154,7 @@
 
 <script type="text/javascript">
 import { mapState, mapActions } from 'vuex';
-import { office, officeUpdate, officeState, officeDetail} from "@/api/office.js";
+import { office, officeUpdate, officeState, officeDetail, departmentList} from "@/api/office.js";
 import { uploadUrl } from "@/api/imageUrl.js";
 import { integer, positiveInteger, positiveNum365 } from "@/utils/validate.js";
 import { dateFtt } from "@/utils/index.js";
@@ -169,6 +179,7 @@ export default {
                 office_details: '',
                 sort: '',
                 state: 1,
+                department_json:[],
             },
             fileList: [],   //  科室图标容器
             fileList2: [],   //  科室图片
@@ -179,6 +190,7 @@ export default {
             previewShow:false,
             previewImgList:[],
             menuData:[], //权限控制Data
+            departmentData:[], //部门
         };
     },
     computed: mapState({
@@ -194,6 +206,7 @@ export default {
     mounted() {
         this.index();
         this.menuGet(); //权限控制页面按钮
+        this.departmentListGet();
     },
     methods: {
         ...mapActions({ 
@@ -221,6 +234,12 @@ export default {
             let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
             let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
             return Y + M + D + h + m + s;
+        },
+        async departmentListGet(){
+            let data = await departmentList();
+            if(data.code == 200){
+                this.departmentData = data.data;
+            }
         },
         async index() {
             //  主页列表数据
@@ -315,6 +334,9 @@ export default {
                         this.fileList2.push({url: item})
                     })
                 }
+                if(this.formLabelAlign.department_json !== ''){
+                    this.formLabelAlign.department_json = JSON.parse(this.formLabelAlign.department_json);
+                }
                 this.dialogVisible = true;
             }
         },
@@ -327,6 +349,7 @@ export default {
                 office_details: '',
                 sort: '',
                 state: 1,
+                department_json:[],
             };
             this.fileList = [];
             this.fileList2 = [];
@@ -361,6 +384,12 @@ export default {
             if(typeof(this.formLabelAlign.office_details) !== 'string'){
                 this.formLabelAlign.office_details = JSON.stringify(this.formLabelAlign.office_details);
             }
+            console.log(this.formLabelAlign.department_json);
+            console.log(typeof(this.formLabelAlign.department_json))
+            if(this.formLabelAlign.department_json>0){
+                this.formLabelAlign.department_json = JSON.stringify(this.formLabelAlign.department_json);
+            }
+            console.log(this.formLabelAlign.department_json);
             let data;
             if (this.title === "添加") {
                 data = await officeUpdate(this.formLabelAlign);
@@ -375,6 +404,9 @@ export default {
                 // if(this.formLabelAlign.sort){
                 //    this.formLabelAlign.sort =this.formLabelAlign.sort.toString() ;
                 // }
+                if(this.formLabelAlign.department_json){
+                    this.formLabelAlign.department_json = JSON.parse(this.formLabelAlign.department_json);
+                }
             }
         },
         statusChange(id, val){ //  上架、下架、暂停兑换
@@ -411,7 +443,7 @@ export default {
                     this.previewImgList=JSON.parse(this.previewImgList);
                 }
                 this.previewShow=true;
-            }z
+            }
         },
         search() {
             //  检索

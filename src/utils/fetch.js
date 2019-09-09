@@ -26,7 +26,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(
     response => {
         const res = response.data;
-        if(res.code === 401){   //  token过期后跳转到登录页面
+        if(res.code === 401 || res.code === 40102){   //  token过期后跳转到登录页面
             router.push('/out');
             sessionStorage.clear();
             // ElementUI.Message.error(res.message);
