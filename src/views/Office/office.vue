@@ -386,6 +386,8 @@ export default {
             }
             if(this.formLabelAlign.department_json.length>0){
                 this.formLabelAlign.department_json = JSON.stringify(this.formLabelAlign.department_json);
+            }else{
+                this.formLabelAlign.department_json = '';
             }
             let data;
             if (this.title === "添加") {
