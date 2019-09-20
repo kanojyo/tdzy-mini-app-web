@@ -336,6 +336,8 @@ export default {
                 }
                 if(this.formLabelAlign.department_json !== ''){
                     this.formLabelAlign.department_json = JSON.parse(this.formLabelAlign.department_json);
+                }else{
+                    this.formLabelAlign.department_json=[]
                 }
                 this.dialogVisible = true;
             }
