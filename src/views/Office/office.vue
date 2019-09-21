@@ -32,7 +32,7 @@
                             <img :src="scope.row.office_img"  >
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="科室二维码" width="100px">
+                    <el-table-column align="center" label="科室二维码" width="160px">
                         <template slot-scope="scope">
                             <img :src="scope.row.qrcode"  >
                         </template>
