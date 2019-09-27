@@ -191,6 +191,7 @@ export default {
             previewImgList:[],
             menuData:[], //权限控制Data
             departmentData:[], //部门
+            d_id:'',
         };
     },
     computed: mapState({
@@ -206,7 +207,6 @@ export default {
     mounted() {
         this.index();
         this.menuGet(); //权限控制页面按钮
-        this.departmentListGet();
     },
     methods: {
         ...mapActions({ 
@@ -235,8 +235,8 @@ export default {
             let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
             return Y + M + D + h + m + s;
         },
-        async departmentListGet(){
-            let data = await departmentList();
+        async departmentListGet(d_id){
+            let data = await departmentList({d_id:d_id});
             if(data.code == 200){
                 this.departmentData = data.data;
             }
@@ -321,6 +321,7 @@ export default {
             this.title = "编辑";
             this.fileList = [];
             this.fileList2 = [];
+            
             let data = await officeDetail({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
@@ -335,12 +336,15 @@ export default {
                     })
                 }
                 if(this.formLabelAlign.department_json !== ''){
+                    this.d_id=this.formLabelAlign.department_json;
                     this.formLabelAlign.department_json = JSON.parse(this.formLabelAlign.department_json);
                 }else{
-                    this.formLabelAlign.department_json=[]
+                    this.formLabelAlign.department_json=[];
+                    this.d_id='';
                 }
                 this.dialogVisible = true;
             }
+            this.departmentListGet(this.d_id);
         },
         add() {  //添加
             this.title = "添加";
@@ -356,6 +360,8 @@ export default {
             this.fileList = [];
             this.fileList2 = [];
             this.picList = [];
+            this.d_id='';
+            this.departmentListGet(this.d_id);
             this.dialogVisible = true;
         },
         async handleClose() {
