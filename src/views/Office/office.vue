@@ -191,7 +191,7 @@ export default {
             previewImgList:[],
             menuData:[], //权限控制Data
             departmentData:[], //部门
-            d_id:'',
+            listParmas:'office',
         };
     },
     computed: mapState({
@@ -235,8 +235,8 @@ export default {
             let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
             return Y + M + D + h + m + s;
         },
-        async departmentListGet(d_id){
-            let data = await departmentList({d_id:d_id});
+        async departmentListGet(parmas){
+            let data = await departmentList({from:parmas});
             if(data.code == 200){
                 this.departmentData = data.data;
             }
@@ -321,7 +321,6 @@ export default {
             this.title = "编辑";
             this.fileList = [];
             this.fileList2 = [];
-            
             let data = await officeDetail({id: id});
             if (data.code === 200) {
                 this.formLabelAlign = data.data;
@@ -336,15 +335,13 @@ export default {
                     })
                 }
                 if(this.formLabelAlign.department_json !== ''){
-                    this.d_id=this.formLabelAlign.department_json;
                     this.formLabelAlign.department_json = JSON.parse(this.formLabelAlign.department_json);
                 }else{
                     this.formLabelAlign.department_json=[];
-                    this.d_id='';
                 }
                 this.dialogVisible = true;
             }
-            this.departmentListGet(this.d_id);
+            this.departmentListGet(this.listParmas);
         },
         add() {  //添加
             this.title = "添加";
@@ -360,8 +357,7 @@ export default {
             this.fileList = [];
             this.fileList2 = [];
             this.picList = [];
-            this.d_id='';
-            this.departmentListGet(this.d_id);
+            this.departmentListGet(this.listParmas);
             this.dialogVisible = true;
         },
         async handleClose() {

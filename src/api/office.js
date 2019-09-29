@@ -24,5 +24,5 @@ export function officeDetail(params){ return fetch({url: '/v1/office_details?id=
 /*
 *   NO:5    科室管理 -- 部门
 */
-export function departmentList(params){ return fetch({url: '/v1/rule/department-list?d_id='+params.d_id, method: 'GET',})}
+export function departmentList(params){ return fetch({url: '/v1/rule/department-list?from='+params.from, method: 'GET',})}
 
